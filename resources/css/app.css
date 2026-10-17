@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Token warna dan font dari style guide P3 (pwl/pertemuan-03/style-guide) */
+@theme {
+    --font-sans: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Barlow Condensed', 'Barlow', ui-sans-serif, sans-serif;
+
+    --color-ungu-900: #22005A;
+    --color-ungu-700: #4B1F9E;
+    --color-ungu-50: #F3EFFA;
+    --color-oranye-500: #F8921C;
+    --color-oranye-100: #FDEBD3;
+    --color-perak-400: #A8A8A8;
+}
+
+[x-cloak] { display: none !important; }
+
+/* Satu momen motion per layar; dimatikan untuk pengguna "kurangi gerakan" */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

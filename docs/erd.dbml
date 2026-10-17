@@ -1,0 +1,256 @@
+// Desain Database v1 · Bandung Spiders Basketball · tempel di https://dbdiagram.io
+
+Table users {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  nama "VARCHAR(100)" [not null, note: 'Nama lengkap']
+  email "VARCHAR(100)" [unique, not null, note: 'Dipakai untuk login']
+  no_hp "VARCHAR(20)" [unique, not null, note: 'No. WhatsApp, juga bisa dipakai untuk login']
+  password "VARCHAR(255)" [not null, note: 'Hash bcrypt, bukan teks asli']
+  peran "ENUM('orang_tua','coach','manajemen')" [not null, note: 'Menentukan menu yang tampil (K2)']
+  alamat "VARCHAR(255)" [note: 'Diisi untuk orang tua']
+  aktif "BOOLEAN" [not null, default: 1, note: 'Default 1; akun nonaktif tidak bisa login']
+  remember_token "VARCHAR(100)" [note: 'Bawaan Laravel']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Akun login untuk 3 peran. Orang tua dibuat saat pendaftaran diterima; coach dan manajemen dibuat oleh manajemen.'
+}
+
+Table password_reset_tokens {
+  email "VARCHAR(100)" [pk, not null, note: 'Email akun']
+  token "VARCHAR(255)" [not null, note: 'Token yang sudah di-hash']
+  created_at "TIMESTAMP" [note: 'Token kedaluwarsa 30 menit setelah waktu ini']
+  Note: 'Token lupa kata sandi (tabel bawaan Laravel). Masa berlaku 30 menit diatur di config/auth.php.'
+}
+
+Table kelompok_usia {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  nama "VARCHAR(20)" [unique, not null, note: 'KU 6–8, KU 9–12, KU 13–16']
+  usia_min "TINYINT UNSIGNED" [not null, note: 'Usia terendah (tahun)']
+  usia_max "TINYINT UNSIGNED" [not null, note: 'Usia tertinggi (tahun)']
+  iuran_bulanan "INT UNSIGNED" [not null, note: 'Rupiah, tanpa desimal (200000 / 250000 / 300000)']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Tiga kelompok usia beserta iuran bulanannya.'
+}
+
+Table coach_kelompok {
+  coach_id "BIGINT UNSIGNED" [not null, note: 'Akun dengan peran coach']
+  kelompok_usia_id "BIGINT UNSIGNED" [not null]
+  indexes {
+    (coach_id, kelompok_usia_id) [pk]
+  }
+  Note: 'Kelompok usia yang dipegang tiap coach. Satu coach bisa memegang lebih dari satu KU.'
+}
+
+Table anak {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  orang_tua_id "BIGINT UNSIGNED" [not null, note: 'Akun orang tua pemilik data (K10)']
+  kelompok_usia_id "BIGINT UNSIGNED" [not null, note: 'Menentukan coach, jadwal, dan iuran']
+  nama "VARCHAR(100)" [not null]
+  tanggal_lahir "DATE" [not null]
+  jenis_kelamin "ENUM('L','P')" [not null]
+  sekolah "VARCHAR(100)"
+  hubungan_orang_tua "VARCHAR(30)" [not null, note: 'Ibu, Ayah, atau Wali']
+  status "ENUM('aktif','nonaktif')" [not null, default: 'aktif', note: 'Default ’aktif’; anak nonaktif tidak dibuatkan tagihan']
+  tanggal_masuk "DATE" [not null, note: 'Tanggal pendaftaran diterima']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Data anak yang sudah resmi menjadi member.'
+}
+
+Table pendaftaran {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  kelompok_usia_id "BIGINT UNSIGNED" [not null, note: 'Dihitung otomatis dari tanggal lahir']
+  nama_anak "VARCHAR(100)" [not null, note: 'Langkah 1']
+  tanggal_lahir "DATE" [not null, note: 'Langkah 1']
+  jenis_kelamin "ENUM('L','P')" [not null, note: 'Langkah 1']
+  sekolah "VARCHAR(100)" [not null, note: 'Langkah 1']
+  nama_orang_tua "VARCHAR(100)" [not null, note: 'Langkah 2']
+  hubungan "VARCHAR(30)" [not null, note: 'Langkah 2']
+  no_whatsapp "VARCHAR(20)" [not null, note: 'Langkah 2, dipakai admin untuk konfirmasi']
+  email "VARCHAR(100)" [not null, note: 'Langkah 2, menjadi email login']
+  alamat "VARCHAR(255)" [not null, note: 'Langkah 2']
+  status "ENUM('menunggu_verifikasi','diterima','ditolak')" [not null, default: 'menunggu_verifikasi', note: 'Default ’menunggu_verifikasi’']
+  alasan_tolak "VARCHAR(255)" [note: 'Wajib jika status ditolak']
+  diverifikasi_oleh "BIGINT UNSIGNED" [note: 'Akun manajemen']
+  diverifikasi_pada "DATETIME" [note: 'Target ≤2 hari kerja setelah created_at']
+  anak_id "BIGINT UNSIGNED" [unique, note: 'Diisi saat diterima']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Formulir pendaftaran calon member (3 langkah) sampai diterima atau ditolak manajemen.'
+}
+
+Table dokumen_pendaftaran {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  pendaftaran_id "BIGINT UNSIGNED" [not null, note: 'Hapus berantai jika pendaftaran dihapus']
+  jenis "ENUM('foto_3x4','akte','kk')" [not null, note: 'UNIQUE bersama pendaftaran_id']
+  file_path "VARCHAR(255)" [not null, note: 'Lokasi file di storage/app/private']
+  file_tipe "ENUM('jpg','png','pdf')" [not null]
+  ukuran_kb "INT UNSIGNED" [not null, note: 'CHECK ≤ 2048 (2 MB)']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (pendaftaran_id, jenis) [unique]
+  }
+  Note: 'Tiga dokumen wajib per pendaftaran (langkah 3). File disimpan di storage, database hanya menyimpan path.'
+}
+
+Table jadwal {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  kelompok_usia_id "BIGINT UNSIGNED" [not null]
+  hari "TINYINT UNSIGNED" [not null, note: '1 = Senin … 7 = Minggu (CHECK 1–7)']
+  jam_mulai "TIME" [not null]
+  jam_selesai "TIME" [not null, note: 'CHECK jam_selesai > jam_mulai']
+  lokasi "VARCHAR(100)" [not null, note: 'Contoh: GOR Spiders, Lapangan A']
+  berlaku_mulai "DATE" [not null, note: 'Contoh: 2026-10-01']
+  aktif "BOOLEAN" [not null, default: 1, note: 'Default 1']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Jadwal mingguan tetap per kelompok usia.'
+}
+
+Table sesi_latihan {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  kelompok_usia_id "BIGINT UNSIGNED" [not null, note: 'UNIQUE bersama tanggal']
+  jadwal_id "BIGINT UNSIGNED" [note: 'NULL jika sesi tambahan di luar jadwal']
+  tanggal "DATE" [not null]
+  jam_mulai "TIME" [not null, note: 'Disalin dari jadwal, bisa diubah']
+  jam_selesai "TIME" [not null]
+  lokasi "VARCHAR(100)" [not null]
+  status "ENUM('terjadwal','diubah','batal')" [not null, default: 'terjadwal', note: 'Default ’terjadwal’']
+  alasan_perubahan "VARCHAR(255)" [note: 'Wajib jika status diubah atau batal']
+  diubah_oleh "BIGINT UNSIGNED" [note: 'Coach atau manajemen']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (kelompok_usia_id, tanggal) [unique]
+  }
+  Note: 'Satu latihan pada tanggal tertentu. Dibuat dari jadwal; dipakai untuk absensi dan untuk perubahan jadwal per tanggal.'
+}
+
+Table absensi {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  sesi_latihan_id "BIGINT UNSIGNED" [not null, note: 'UNIQUE bersama anak_id']
+  anak_id "BIGINT UNSIGNED" [not null]
+  status "ENUM('hadir','izin','alpa')" [not null, default: 'hadir', note: 'Default ’hadir’ (1 ketukan untuk mengubah)']
+  dicatat_oleh "BIGINT UNSIGNED" [not null, note: 'Akun coach']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (sesi_latihan_id, anak_id) [unique]
+  }
+  Note: 'Kehadiran satu anak di satu sesi latihan.'
+}
+
+Table kategori_rapor {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  nama "VARCHAR(30)" [unique, not null, note: 'Fundamental, Strategi, Mental, IQ Basket, Fisik']
+  urutan "TINYINT UNSIGNED" [not null, note: 'Urutan tampil 1–5']
+  Note: 'Lima kategori rapor. Dibuat tabel agar urutan dan nama bisa diubah tanpa mengubah struktur.'
+}
+
+Table rapor {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  anak_id "BIGINT UNSIGNED" [not null, note: 'UNIQUE bersama periode']
+  coach_id "BIGINT UNSIGNED" [not null, note: 'Coach yang mengisi']
+  periode "DATE" [not null, note: 'Selalu tanggal 1 bulan tersebut, contoh 2026-09-01']
+  status "ENUM('draf','terbit')" [not null, default: 'draf', note: 'Default ’draf’; terbit hanya jika 5 kategori terisi']
+  terbit_pada "DATETIME" [note: 'Saat orang tua mulai bisa melihat']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (anak_id, periode) [unique]
+  }
+  Note: 'Rapor bulanan satu anak. Hanya satu rapor per anak per bulan.'
+}
+
+Table nilai_rapor {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  rapor_id "BIGINT UNSIGNED" [not null, note: 'UNIQUE bersama kategori_rapor_id']
+  kategori_rapor_id "BIGINT UNSIGNED" [not null]
+  nilai "ENUM('A+','A','A-','B+','B','B-','C+','C','C-')" [not null, note: 'Sesuai rubrik coach']
+  catatan "VARCHAR(300)" [note: 'Maks. 300 karakter (detail dribbling, passing, dll.)']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (rapor_id, kategori_rapor_id) [unique]
+  }
+  Note: 'Nilai dan catatan coach untuk satu kategori dalam satu rapor (5 baris per rapor terbit).'
+}
+
+Table tagihan {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  anak_id "BIGINT UNSIGNED" [not null, note: 'UNIQUE bersama periode']
+  periode "DATE" [not null, note: 'Tanggal 1 bulan tagihan']
+  nominal "INT UNSIGNED" [not null, note: 'Disalin dari kelompok_usia.iuran_bulanan saat dibuat']
+  jatuh_tempo "DATE" [not null, note: 'Tanggal 10 bulan tersebut']
+  status "ENUM('belum_bayar','menunggu_verifikasi','lunas','ditolak')" [not null, default: 'belum_bayar', note: 'Default ’belum_bayar’; ’ditolak’ tampil ke orang tua sebagai "Perlu unggah ulang"']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  indexes {
+    (anak_id, periode) [unique]
+  }
+  Note: 'Tagihan iuran bulanan per anak, dibuat sistem setiap tanggal 1.'
+}
+
+Table bukti_transfer {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  tagihan_id "BIGINT UNSIGNED" [not null, note: 'Maks. 1 bukti berstatus menunggu/disetujui per tagihan']
+  diunggah_oleh "BIGINT UNSIGNED" [not null, note: 'Akun orang tua']
+  file_path "VARCHAR(255)" [not null, note: 'Lokasi file di storage/app/private']
+  file_tipe "ENUM('jpg','png','pdf')" [not null]
+  ukuran_kb "INT UNSIGNED" [not null, note: 'CHECK ≤ 2048 (2 MB)']
+  tanggal_transfer "DATE" [not null]
+  nominal_transfer "INT UNSIGNED" [not null, note: 'Rupiah']
+  status "ENUM('menunggu','disetujui','ditolak')" [not null, default: 'menunggu', note: 'Default ’menunggu’']
+  alasan_tolak "VARCHAR(255)" [note: 'CHECK: wajib diisi jika status ditolak']
+  diverifikasi_oleh "BIGINT UNSIGNED" [note: 'Akun manajemen']
+  diverifikasi_pada "DATETIME" [note: 'Target ≤2 hari kerja setelah created_at']
+  created_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  updated_at "TIMESTAMP" [note: 'Diisi otomatis Laravel']
+  Note: 'Setiap unggahan bukti transfer. Bukti yang ditolak tetap disimpan sebagai riwayat.'
+}
+
+Table notifikasi {
+  id "BIGINT UNSIGNED" [pk, increment, not null, note: 'Auto increment']
+  user_id "BIGINT UNSIGNED" [not null, note: 'Penerima']
+  jenis "ENUM('tagihan_terbit','bukti_ditolak','iuran_lunas','rapor_terbit','jadwal_berubah')" [not null, note: '5 kejadian di K13']
+  judul "VARCHAR(100)" [not null, note: 'Contoh: Rapor September sudah terbit']
+  isi "VARCHAR(255)" [not null]
+  tautan "VARCHAR(255)" [note: 'Halaman yang dibuka saat notifikasi diketuk']
+  dibaca_pada "DATETIME" [note: 'NULL = belum dibaca']
+  created_at "TIMESTAMP"
+  Note: 'Notifikasi di dalam website untuk orang tua (ikon lonceng).'
+}
+
+Table pengaturan {
+  kunci "VARCHAR(50)" [pk, not null, note: 'Contoh: rekening_nomor']
+  nilai "VARCHAR(255)" [not null, note: 'Contoh: 1234567890']
+  updated_at "TIMESTAMP"
+  Note: 'Nilai yang bisa diubah manajemen tanpa mengubah kode: rekening tujuan, No. WhatsApp admin, alamat GOR, tanggal jatuh tempo.'
+}
+
+Ref: coach_kelompok.coach_id > users.id
+Ref: coach_kelompok.kelompok_usia_id > kelompok_usia.id
+Ref: anak.orang_tua_id > users.id
+Ref: anak.kelompok_usia_id > kelompok_usia.id
+Ref: pendaftaran.kelompok_usia_id > kelompok_usia.id
+Ref: pendaftaran.diverifikasi_oleh > users.id
+Ref: pendaftaran.anak_id - anak.id
+Ref: dokumen_pendaftaran.pendaftaran_id > pendaftaran.id
+Ref: jadwal.kelompok_usia_id > kelompok_usia.id
+Ref: sesi_latihan.kelompok_usia_id > kelompok_usia.id
+Ref: sesi_latihan.jadwal_id > jadwal.id
+Ref: sesi_latihan.diubah_oleh > users.id
+Ref: absensi.sesi_latihan_id > sesi_latihan.id
+Ref: absensi.anak_id > anak.id
+Ref: absensi.dicatat_oleh > users.id
+Ref: rapor.anak_id > anak.id
+Ref: rapor.coach_id > users.id
+Ref: nilai_rapor.rapor_id > rapor.id
+Ref: nilai_rapor.kategori_rapor_id > kategori_rapor.id
+Ref: tagihan.anak_id > anak.id
+Ref: bukti_transfer.tagihan_id > tagihan.id
+Ref: bukti_transfer.diunggah_oleh > users.id
+Ref: bukti_transfer.diverifikasi_oleh > users.id
+Ref: notifikasi.user_id > users.id
