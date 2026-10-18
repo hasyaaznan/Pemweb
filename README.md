@@ -34,18 +34,21 @@ Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 | Coach | dita@spiders.test |
 | Orang tua | rina.pratama@gmail.com (atau No. HP 081234567890) |
 
-Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal minggu depan, dan iuran bulan ini untuk anak lain (4 bukti menunggu verifikasi, 3 lunas, 3 belum bayar). Lihat `database/seeders/DataDemoSeeder.php`.
+Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal minggu depan, iuran bulan ini untuk anak lain (4 bukti menunggu verifikasi, 3 lunas, 3 belum bayar), 3 pendaftar baru dengan dokumen contoh, dan 5 notifikasi untuk Bu Rina. Lihat `database/seeders/DataDemoSeeder.php`.
 
 ## Halaman yang sudah jadi
 
 | Layar mockup | Alamat | Isi |
 |---|---|---|
+| L10 Landing, L12 Menu | / | Program, biaya, jadwal dari database, lokasi dan WhatsApp Admin; tampilan ponsel dan laptop |
+| L13, L14, L11, L15 Pendaftaran | /daftar | Data anak (kelompok usia otomatis dari tanggal lahir), orang tua, 3 dokumen maks. 2 MB |
 | L0 Masuk | /masuk | Masuk dengan email atau No. HP, satu akun untuk semua peran |
 | L16 Lupa kata sandi | /lupa-kata-sandi | Kirim tautan atur ulang lewat email, berlaku 30 menit |
 | L1 Beranda orang tua | /orang-tua | Rapor terbaru, kehadiran 3 bulan, tagihan yang perlu dibayar |
 | L2 Rapor, L17 Absensi | /orang-tua/rapor, /orang-tua/absensi | 5 kategori dengan catatan coach, riwayat latihan |
 | L3 Tagihan, L4 Unggah bukti, L26 Bukti terkirim | /orang-tua/tagihan | Rekening klub, status tiap bulan, unggah bukti JPG/PNG/PDF maks. 2 MB |
 | L19 Profil | /orang-tua/profil | Data akun, WhatsApp admin, keluar |
+| L18 Notifikasi | /orang-tua/notifikasi | Lonceng dengan titik oranye; rapor terbit, iuran, tagihan baru, perubahan jadwal |
 | L7 Absensi coach | /coach | Hari latihan seminggu ke belakang dan ke depan, kelompok yang dipegang |
 | L8 Isi absensi | /coach/absensi/{kelompok}/{tanggal} | Semua anak bawaan Hadir, satu ketukan untuk Izin atau Alpa |
 | L23 Daftar rapor | /coach/rapor | Rapor bulan berjalan per kelompok, yang selesai dan belum |
@@ -55,9 +58,10 @@ Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan 
 | L5 Verifikasi, L6 Detail bukti, L27 Tolak bukti | /manajemen/verifikasi | Bukti terlama di atas, tanda lewat 2 hari kerja, Setujui atau Tolak dengan alasan wajib |
 | L21 Member | /manajemen/member | Saring per kelompok usia atau belum bayar; detail anak dengan pengingat WhatsApp |
 | L22 Profil Admin | /manajemen/profil | Data akun, keluar |
+| Pendaftar baru (baru) | /manajemen/pendaftaran | Cek data dan dokumen, Terima (akun orang tua dan data anak dibuat, tautan kata sandi dikirim ke email) atau Tolak dengan alasan |
 | Jadwal latihan (baru) | /manajemen/jadwal | Jadwal mingguan per kelompok usia, ubah atau batalkan latihan per tanggal |
 
-Setiap Setujui, Tolak, tagihan baru, dan perubahan jadwal membuat notifikasi untuk orang tua (tabel `notifikasi`). Halaman notifikasi orang tua (L18) dibuat di tahap berikutnya.
+Setiap Setujui, Tolak, tagihan baru, dan perubahan jadwal membuat notifikasi untuk orang tua (tabel `notifikasi`).
 
 ## Tagihan bulanan
 

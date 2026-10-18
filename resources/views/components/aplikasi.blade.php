@@ -1,4 +1,4 @@
-@props(['title', 'menu', 'aktif', 'judul' => null, 'kembali' => null])
+@props(['title', 'menu', 'aktif', 'judul' => null, 'kembali' => null, 'lonceng' => null])
 {{-- Kerangka layar setelah login: app bar + menu bawah 4 item sesuai peran (K2) --}}
 <x-layout :title="$title.' · Bandung Spiders'">
     <div class="mx-auto min-h-screen max-w-md pb-28">
@@ -10,7 +10,11 @@
                     <img src="{{ asset('images/logo-spiders.png') }}" alt="" class="size-10 object-contain">
                 @endif
                 <h1 class="font-display text-[22px] font-extrabold">{{ $judul }}</h1>
-                <span class="size-[38px]"></span>
+                @if ($lonceng)
+                    <x-lonceng :tautan="$lonceng[0]" :jumlah="$lonceng[1]" />
+                @else
+                    <span class="size-[38px]"></span>
+                @endif
             </header>
         @endif
         @if (session('status'))

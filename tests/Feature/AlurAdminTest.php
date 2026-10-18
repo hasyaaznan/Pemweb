@@ -122,6 +122,7 @@ class AlurAdminTest extends TestCase
     {
         Anak::where('nama', 'Rafa Pratama')->first()->update(['status' => 'nonaktif']);
 
+        $sebelum = Notifikasi::where('jenis', 'tagihan_terbit')->count();
         $this->travelTo(now()->setDate(2026, 11, 1)->setTime(6, 0));
         $this->artisan('tagihan:buat')->expectsOutput('9 tagihan November 2026 dibuat.')->assertSuccessful();
         $this->artisan('tagihan:buat')->expectsOutput('0 tagihan November 2026 dibuat.')->assertSuccessful();
@@ -131,7 +132,7 @@ class AlurAdminTest extends TestCase
         $keisha = $tagihan->first(fn ($t) => $t->anak->nama === 'Keisha Ramadhani');
         $this->assertSame(200000, $keisha->nominal);
         $this->assertSame('2026-11-10', $keisha->jatuh_tempo->toDateString());
-        $this->assertSame(9, Notifikasi::where('jenis', 'tagihan_terbit')->count());
+        $this->assertSame($sebelum + 9, Notifikasi::where('jenis', 'tagihan_terbit')->count());
     }
 
     public function test_beranda_bisa_membuat_tagihan_jika_cron_belum_jalan(): void
@@ -186,6 +187,7 @@ class AlurAdminTest extends TestCase
     public function test_admin_membatalkan_latihan_dan_orang_tua_diberi_tahu(): void
     {
         $url = '/manajemen/jadwal/'.$this->ku912->id.'/2026-10-24';
+        $sebelum = Notifikasi::where('jenis', 'jadwal_berubah')->count();
         $this->actingAs($this->sari)->get($url)->assertOk()->assertSee('Sabtu, 24 Oktober 2026');
         $this->put($url, ['aksi' => 'batal', 'alasan' => ''])->assertSessionHasErrors('alasan');
         $this->put($url, ['aksi' => 'batal', 'alasan' => 'GOR dipakai turnamen'])
@@ -193,7 +195,7 @@ class AlurAdminTest extends TestCase
 
         $sesi = SesiLatihan::where('kelompok_usia_id', $this->ku912->id)->whereDate('tanggal', '2026-10-24')->first();
         $this->assertSame('batal', $sesi->status);
-        $this->assertSame(7, Notifikasi::where('jenis', 'jadwal_berubah')->count());
+        $this->assertSame($sebelum + 7, Notifikasi::where('jenis', 'jadwal_berubah')->count());
 
         $this->put($url, ['aksi' => 'kembalikan'])->assertRedirect();
         $this->assertSame('terjadwal', $sesi->fresh()->status);

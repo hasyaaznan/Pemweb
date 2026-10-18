@@ -42,6 +42,14 @@
 .anim-bar { animation: isi-bar .9s cubic-bezier(.2,.8,.2,1) both .2s; }
 .anim-muncul { animation: muncul .35s ease-out both; }
 
+/* Landing (L10): garis lapangan tergambar sekali, 1,4 detik */
+@keyframes gambar-garis { to { stroke-dashoffset: 0; } }
+.garis-gambar :is(path, circle, rect) { stroke-dasharray: 1300; stroke-dashoffset: 1300; animation: gambar-garis 1.4s cubic-bezier(.3,.7,.2,1) forwards .1s; }
+
+/* Pendaftaran terkirim (L15): centang muncul dengan efek pop */
+@keyframes pop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); } }
+.anim-pop { animation: pop .45s cubic-bezier(.2,.8,.2,1) both; }
+
 /* Satu momen motion per layar; dimatikan untuk pengguna "kurangi gerakan" */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

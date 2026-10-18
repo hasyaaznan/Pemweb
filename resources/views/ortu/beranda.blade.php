@@ -13,7 +13,10 @@
                 <p class="text-[15px] text-white/75">{{ now()->translatedFormat('l, j F Y') }}</p>
                 <h1 class="mt-1 font-display text-[36px] font-extrabold leading-none">Halo, {{ $sapaan ? "$sapaan $namaDepan" : $namaDepan }}</h1>
             </div>
-            <img src="{{ asset('images/logo-spiders.png') }}" alt="" class="size-16 object-contain">
+            <div class="flex items-center gap-2">
+                <x-lonceng :tautan="route('ortu.notifikasi')" :jumlah="auth()->user()->notifikasi()->whereNull('dibaca_pada')->count()" gelap />
+                <img src="{{ asset('images/logo-spiders.png') }}" alt="" class="size-14 object-contain">
+            </div>
         </div>
     </header>
 

@@ -8,7 +8,7 @@
         [$belumBayar, 'Belum bayar '.$bulanIni->translatedFormat('F'),
             $jatuhTempo && Carbon::parse($jatuhTempo)->isPast() ? 'Lewat jatuh tempo '.Carbon::parse($jatuhTempo)->translatedFormat('j M').', kirim pengingat' : ($jatuhTempo ? 'Jatuh tempo '.Carbon::parse($jatuhTempo)->translatedFormat('j M') : 'Tagihan bulan ini belum dibuat'),
             'text-merah', route('manajemen.member', ['iuran' => 'belum'])],
-        [$pendaftarBaru, 'Pendaftar baru', 'Cek dokumen, lalu hubungi lewat WhatsApp', 'text-ungu-600', route('manajemen.member')],
+        [$pendaftarBaru, 'Pendaftar baru', 'Cek dokumen, lalu hubungi lewat WhatsApp', 'text-ungu-600', route('manajemen.pendaftaran')],
     ];
 @endphp
 <x-admin title="Beranda" aktif="Beranda">

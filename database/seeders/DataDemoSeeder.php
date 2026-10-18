@@ -6,6 +6,8 @@ use App\Models\Anak;
 use App\Models\BuktiTransfer;
 use App\Models\KategoriRapor;
 use App\Models\KelompokUsia;
+use App\Models\Notifikasi;
+use App\Models\Pendaftaran;
 use App\Models\Rapor;
 use App\Models\SesiLatihan;
 use App\Models\Tagihan;
@@ -18,7 +20,8 @@ use Illuminate\Support\Facades\Storage;
 // Data contoh untuk mencoba alur orang tua (L1–L4, L17) dan coach (L7–L9, L23, L24), dihitung dari hari ini:
 // 20 sesi terakhir (Raka 17 hadir = 85%), rapor bulan lalu, 3 tagihan dengan status berbeda,
 // teman sekelompok Raka, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal,
-// dan iuran anak lain untuk halaman Admin (4 bukti menunggu, 3 lunas, 3 belum bayar bulan ini).
+// iuran anak lain untuk halaman Admin (4 bukti menunggu, 3 lunas, 3 belum bayar bulan ini),
+// 3 pendaftar baru dengan dokumen contoh, dan notifikasi untuk Bu Rina (L18).
 class DataDemoSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -108,6 +111,53 @@ class DataDemoSeeder extends Seeder
         $buat($bulanIni, 'belum_bayar');
 
         $this->iuranAnakLain($raka, $sari);
+        $this->pendaftarBaru();
+        $this->notifikasiRina($raka);
+    }
+
+    // Tiga pendaftar menunggu verifikasi, dikirim 3 hari lalu, kemarin, dan hari ini
+    private function pendaftarBaru(): void
+    {
+        foreach (['foto-3x4', 'akte', 'kk'] as $f) {
+            if (! Storage::disk('local')->exists("pendaftaran/contoh/{$f}.jpg")) {
+                Storage::disk('local')->put("pendaftaran/contoh/{$f}.jpg", file_get_contents(__DIR__."/contoh/{$f}.jpg"));
+            }
+        }
+        $ku = KelompokUsia::orderBy('usia_min')->get();
+        foreach ([
+            ['Kayla Nugraha', 'P', now()->subYears(7)->subMonths(3), 0, 'SDN 5 Bandung', 'Fitri Nugraha', 'Ibu', '081311110001', 'fitri.nugraha@gmail.com', 3],
+            ['Daffa Hidayat', 'L', now()->subYears(11)->subMonths(5), 1, 'SD Al Azhar Bandung', 'Rudi Hidayat', 'Ayah', '081311110002', 'rudi.hidayat@gmail.com', 1],
+            ['Gilang Permana', 'L', now()->subYears(14)->subMonths(1), 2, 'SMPN 2 Bandung', 'Sri Permana', 'Ibu', '081311110003', 'sri.permana@gmail.com', 0],
+        ] as [$nama, $jk, $lahir, $k, $sekolah, $ortu, $hub, $wa, $email, $hariLalu]) {
+            $dikirim = $hariLalu ? now()->subDays($hariLalu)->setTime(20, 15) : now()->subMinutes(40);
+            $p = (new Pendaftaran)->forceFill([
+                'kelompok_usia_id' => $ku[$k]->id, 'nama_anak' => $nama, 'tanggal_lahir' => $lahir->toDateString(), 'jenis_kelamin' => $jk,
+                'sekolah' => $sekolah, 'nama_orang_tua' => $ortu, 'hubungan' => $hub, 'no_whatsapp' => $wa, 'email' => $email,
+                'alamat' => 'Jl. Dago No. '.(10 + $k).', Bandung', 'created_at' => $dikirim, 'updated_at' => $dikirim,
+            ]);
+            $p->save();
+            foreach (['foto_3x4' => 'foto-3x4', 'akte' => 'akte', 'kk' => 'kk'] as $jenis => $f) {
+                $p->dokumenPendaftaran()->create(['jenis' => $jenis, 'file_path' => "pendaftaran/contoh/{$f}.jpg", 'file_tipe' => 'jpg', 'ukuran_kb' => 8]);
+            }
+        }
+    }
+
+    // Notifikasi Bu Rina: 2 belum dibaca hari ini, 3 sudah dibaca sebelumnya (L18)
+    private function notifikasiRina(Anak $raka): void
+    {
+        $bulanLalu = now()->startOfMonth()->subMonth();
+        foreach ([
+            ['rapor_terbit', 'Rapor '.$bulanLalu->translatedFormat('F').' sudah terbit', 'Coach Dita sudah menulis rapor Raka Pratama bulan '.$bulanLalu->translatedFormat('F').'.', '/orang-tua/rapor', now()->subHours(2), null],
+            ['bukti_ditolak', 'Bukti transfer perlu diunggah ulang', 'Nominal transfer kurang Rp 50.000.', '/orang-tua/tagihan', now()->subMinutes(50), null],
+            ['jadwal_berubah', 'Jadwal KU 9–12 berubah', 'Minggu depan mulai 09.00–10.30, GOR Spiders, Lapangan A. GOR dipakai acara pagi', '/orang-tua', now()->subDays(2)->setTime(18, 0), true],
+            ['tagihan_terbit', 'Tagihan '.now()->translatedFormat('F Y'), 'Iuran Raka Pratama Rp 250.000, jatuh tempo '.now()->startOfMonth()->day(10)->translatedFormat('j F').'.', '/orang-tua/tagihan', now()->startOfMonth()->setTime(6, 0), true],
+            ['iuran_lunas', 'Iuran '.$bulanLalu->copy()->subMonth()->translatedFormat('F').' lunas', 'Pembayaran Rp 250.000 untuk Raka Pratama sudah diterima.', '/orang-tua/tagihan', $bulanLalu->copy()->subMonth()->day(7)->setTime(10, 0), true],
+        ] as [$jenis, $judul, $isi, $tautan, $waktu, $dibaca]) {
+            (new Notifikasi)->forceFill([
+                'user_id' => $raka->orang_tua_id, 'jenis' => $jenis, 'judul' => $judul, 'isi' => $isi, 'tautan' => $tautan,
+                'created_at' => $waktu, 'dibaca_pada' => $dibaca ? $waktu->copy()->addHour() : null,
+            ])->save();
+        }
     }
 
     // Gambar contoh bukti transfer (database/seeders/contoh) disalin ke disk privat agar bisa dibuka Admin

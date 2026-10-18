@@ -101,6 +101,7 @@ class AlurCoachTest extends TestCase
     public function test_rapor_terbit_setelah_lima_kategori_dan_orang_tua_mendapat_notifikasi(): void
     {
         $raka = $this->anak('Raka Pratama');
+        $sebelum = Notifikasi::where('jenis', 'rapor_terbit')->count();
         $this->actingAs($this->dita)->get('/coach/rapor/'.$raka->id)->assertOk()->assertSee('KU 9–12, Oktober 2026');
 
         // Baru satu kategori lagi: tetap draf, orang tua belum melihat rapor Oktober
@@ -116,7 +117,7 @@ class AlurCoachTest extends TestCase
         $rapor = Rapor::where('anak_id', $raka->id)->whereDate('periode', '2026-10-01')->first();
         $this->assertSame('terbit', $rapor->status);
         $this->assertSame(5, $rapor->nilaiRapor()->count());
-        $this->assertSame(1, Notifikasi::where('user_id', $rina->id)->where('jenis', 'rapor_terbit')->count());
+        $this->assertSame($sebelum + 1, Notifikasi::where('jenis', 'rapor_terbit')->count());
 
         $this->actingAs($rina)->get('/orang-tua')->assertSee('Rapor Oktober');
         $this->get('/orang-tua/rapor')->assertSee('Lari bolak-balik lapangan 10 kali.');
@@ -124,7 +125,7 @@ class AlurCoachTest extends TestCase
         // Mengubah rapor yang sudah terbit tidak mengirim notifikasi lagi
         $this->actingAs($this->dita)->put('/coach/rapor/'.$raka->id, ['nilai' => [5 => 'A+']])
             ->assertSessionHas('status', 'Perubahan rapor Raka tersimpan.');
-        $this->assertSame(1, Notifikasi::where('user_id', $rina->id)->count());
+        $this->assertSame($sebelum + 1, Notifikasi::where('jenis', 'rapor_terbit')->count());
     }
 
     public function test_simpan_dan_lanjut_membuka_anak_berikutnya(): void

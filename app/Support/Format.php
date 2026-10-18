@@ -44,6 +44,18 @@ class Format
         return str_starts_with($angka, '62') ? '0'.substr($angka, 2) : $angka;
     }
 
+    // 081234560000 → "0812 3456 0000" (seperti di mockup L10)
+    public static function tampilHp(string $nomor): string
+    {
+        return trim(implode(' ', str_split(self::noHp($nomor), 4)));
+    }
+
+    // Rp 200.000 → "Rp 200rb" untuk ringkasan singkat di landing
+    public static function rupiahSingkat(int $nominal): string
+    {
+        return $nominal % 1000 === 0 ? 'Rp '.number_format($nominal / 1000, 0, ',', '.').'rb' : self::rupiah($nominal);
+    }
+
     // 1234567890 → "123 456 7890" (kelompok 3-3-sisa, seperti di mockup L3)
     public static function rekening(string $nomor): string
     {
