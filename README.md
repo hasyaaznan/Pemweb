@@ -34,7 +34,7 @@ Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 | Coach | dita@spiders.test |
 | Orang tua | rina.pratama@gmail.com (atau No. HP 081234567890) |
 
-Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, dan satu perubahan jadwal minggu depan. Lihat `database/seeders/DataDemoSeeder.php`.
+Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal minggu depan, dan iuran bulan ini untuk anak lain (4 bukti menunggu verifikasi, 3 lunas, 3 belum bayar). Lihat `database/seeders/DataDemoSeeder.php`.
 
 ## Halaman yang sudah jadi
 
@@ -50,9 +50,24 @@ Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan 
 | L8 Isi absensi | /coach/absensi/{kelompok}/{tanggal} | Semua anak bawaan Hadir, satu ketukan untuk Izin atau Alpa |
 | L23 Daftar rapor | /coach/rapor | Rapor bulan berjalan per kelompok, yang selesai dan belum |
 | L9 Isi rapor | /coach/rapor/{anak} | Nilai A/B/C lalu −/+, catatan maks. 300 karakter; terbit otomatis saat 5 kategori terisi |
-| L24 Jadwal, L25 Profil | /coach/jadwal, /coach/profil | Jadwal per minggu dan perubahan jadwal |
+| L24 Jadwal, L25 Profil | /coach/jadwal, /coach/profil | Jadwal per minggu; coach bisa mengubah atau membatalkan latihan kelompoknya per tanggal |
+| L20 Beranda Admin | /manajemen | Member aktif, persen iuran bulan lalu lunas, bukti menunggu, belum bayar, jadwal 7 hari |
+| L5 Verifikasi, L6 Detail bukti, L27 Tolak bukti | /manajemen/verifikasi | Bukti terlama di atas, tanda lewat 2 hari kerja, Setujui atau Tolak dengan alasan wajib |
+| L21 Member | /manajemen/member | Saring per kelompok usia atau belum bayar; detail anak dengan pengingat WhatsApp |
+| L22 Profil Admin | /manajemen/profil | Data akun, keluar |
+| Jadwal latihan (baru) | /manajemen/jadwal | Jadwal mingguan per kelompok usia, ubah atau batalkan latihan per tanggal |
 
-Halaman manajemen masih berupa halaman sementara. Akun coach contoh: dita@spiders.test.
+Setiap Setujui, Tolak, tagihan baru, dan perubahan jadwal membuat notifikasi untuk orang tua (tabel `notifikasi`). Halaman notifikasi orang tua (L18) dibuat di tahap berikutnya.
+
+## Tagihan bulanan
+
+Tagihan iuran dibuat otomatis setiap tanggal 1 pukul 06.00 untuk semua anak aktif, jatuh tempo tanggal 10. Di server pasang satu cron:
+
+```
+* * * * * cd /path/ke/spiders-web && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Bisa juga dijalankan manual: `php artisan tagihan:buat` (atau `--periode=2026-11`). Perintah ini aman diulang; anak yang sudah punya tagihan bulan itu dilewati. Jika cron belum terpasang, beranda Admin menampilkan tombol "Buat tagihan" untuk bulan berjalan.
 
 ## Test
 

@@ -22,7 +22,7 @@ class JadwalLatihan
             return $sesi;
         }
 
-        $jadwal = self::jadwalHari($ku->id, $tanggal);
+        $jadwal = self::dariJadwal($ku, $tanggal);
 
         return $jadwal ? new SesiLatihan([
             'kelompok_usia_id' => $ku->id, 'jadwal_id' => $jadwal->id, 'tanggal' => $tanggal->toDateString(),
@@ -62,9 +62,10 @@ class JadwalLatihan
         return $hasil->sortBy(fn ($s) => $s->tanggal->toDateString().' '.$s->jam_mulai)->values();
     }
 
-    private static function jadwalHari(int $kuId, CarbonInterface $tanggal): ?Jadwal
+    /** Jadwal mingguan yang berlaku pada tanggal itu, tanpa melihat perubahan per tanggal. */
+    public static function dariJadwal(KelompokUsia $ku, CarbonInterface $tanggal): ?Jadwal
     {
-        return Jadwal::where('kelompok_usia_id', $kuId)
+        return Jadwal::where('kelompok_usia_id', $ku->id)
             ->where('hari', $tanggal->dayOfWeekIso)
             ->where('aktif', true)
             ->whereDate('berlaku_mulai', '<=', $tanggal)

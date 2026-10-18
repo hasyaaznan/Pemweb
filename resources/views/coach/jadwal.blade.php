@@ -34,7 +34,12 @@
                 <div @class(['flex-1 rounded-[18px] p-3.5', 'bg-ungu-600 text-white' => $i === 0 && $s->status !== 'batal', 'bg-white' => $i !== 0 || $s->status === 'batal', 'opacity-60' => $s->status === 'batal'])>
                     <p class="font-display text-[22px] font-extrabold leading-none">{{ $s->kelompokUsia->nama }}@if ($s->status === 'batal') <span class="text-base">(batal)</span>@endif</p>
                     <p class="mt-1 text-sm opacity-80">{{ $s->jumlah_anak }} anak</p>
-                    <span class="mt-2 inline-flex items-center gap-1 rounded-full bg-black/5 px-2 py-0.5 text-xs font-semibold"><x-icon name="pin" size="12" /> {{ $s->lokasi }}</span>
+                    <div class="mt-2 flex items-center justify-between gap-2">
+                        <span class="inline-flex min-w-0 items-center gap-1 rounded-full bg-black/5 px-2 py-0.5 text-xs font-semibold"><x-icon name="pin" size="12" class="shrink-0" /> <span class="truncate">{{ $s->lokasi }}</span></span>
+                        @unless ($s->tanggal->isBefore(today()))
+                            <a href="{{ route('coach.sesi', [$s->kelompokUsia, $s->tanggal->toDateString()]) }}" class="shrink-0 text-sm font-bold underline underline-offset-2">Ubah</a>
+                        @endunless
+                    </div>
                 </div>
             </div>
         @empty
