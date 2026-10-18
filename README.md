@@ -34,7 +34,7 @@ Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 | Coach | dita@spiders.test |
 | Orang tua | rina.pratama@gmail.com (atau No. HP 081234567890) |
 
-Seeder juga mengisi data contoh untuk Raka (anak Bu Rina), dihitung mundur dari tanggal hari ini: 20 latihan terakhir dengan kehadiran 85%, rapor bulan lalu, dan tiga tagihan (lunas, perlu unggah ulang, belum bayar). Lihat `database/seeders/DataDemoSeeder.php`.
+Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, dan satu perubahan jadwal minggu depan. Lihat `database/seeders/DataDemoSeeder.php`.
 
 ## Halaman yang sudah jadi
 
@@ -46,8 +46,13 @@ Seeder juga mengisi data contoh untuk Raka (anak Bu Rina), dihitung mundur dari 
 | L2 Rapor, L17 Absensi | /orang-tua/rapor, /orang-tua/absensi | 5 kategori dengan catatan coach, riwayat latihan |
 | L3 Tagihan, L4 Unggah bukti, L26 Bukti terkirim | /orang-tua/tagihan | Rekening klub, status tiap bulan, unggah bukti JPG/PNG/PDF maks. 2 MB |
 | L19 Profil | /orang-tua/profil | Data akun, WhatsApp admin, keluar |
+| L7 Absensi coach | /coach | Hari latihan seminggu ke belakang dan ke depan, kelompok yang dipegang |
+| L8 Isi absensi | /coach/absensi/{kelompok}/{tanggal} | Semua anak bawaan Hadir, satu ketukan untuk Izin atau Alpa |
+| L23 Daftar rapor | /coach/rapor | Rapor bulan berjalan per kelompok, yang selesai dan belum |
+| L9 Isi rapor | /coach/rapor/{anak} | Nilai A/B/C lalu −/+, catatan maks. 300 karakter; terbit otomatis saat 5 kategori terisi |
+| L24 Jadwal, L25 Profil | /coach/jadwal, /coach/profil | Jadwal per minggu dan perubahan jadwal |
 
-Halaman coach dan manajemen masih berupa halaman sementara.
+Halaman manajemen masih berupa halaman sementara. Akun coach contoh: dita@spiders.test.
 
 ## Test
 
