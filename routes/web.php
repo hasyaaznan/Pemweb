@@ -6,11 +6,16 @@ use App\Http\Controllers\Auth\LupaSandiController;
 use App\Http\Controllers\Auth\MasukController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\Coach;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\OrangTua;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\UbahSesiController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', LandingController::class)->name('landing');
+Route::get('/daftar', [PendaftaranController::class, 'create'])->name('daftar');
+Route::post('/daftar', [PendaftaranController::class, 'store'])->middleware('throttle:10,60')->name('daftar.simpan');
+Route::get('/daftar/terkirim', [PendaftaranController::class, 'terkirim'])->name('daftar.terkirim');
 
 Route::middleware('guest')->group(function () {
     Route::get('/masuk', [MasukController::class, 'create'])->name('login');
@@ -34,6 +39,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/tagihan/{tagihan}/unggah', [OrangTua\TagihanController::class, 'simpan'])->name('tagihan.simpan');
         Route::get('/tagihan/{tagihan}/terkirim', [OrangTua\TagihanController::class, 'terkirim'])->name('tagihan.terkirim');
         Route::get('/profil', OrangTua\ProfilController::class)->name('profil');
+        Route::get('/notifikasi', [OrangTua\NotifikasiController::class, 'index'])->name('notifikasi');
+        Route::get('/notifikasi/{notifikasi}', [OrangTua\NotifikasiController::class, 'buka'])->name('notifikasi.buka');
+        Route::post('/notifikasi/baca-semua', [OrangTua\NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca');
     });
 
     Route::middleware('peran:coach')->prefix('coach')->name('coach.')->group(function () {
@@ -58,6 +66,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/verifikasi/{bukti}/file', [Admin\VerifikasiController::class, 'file'])->name('verifikasi.file');
         Route::post('/verifikasi/{bukti}/setujui', [Admin\VerifikasiController::class, 'setujui'])->name('verifikasi.setujui');
         Route::post('/verifikasi/{bukti}/tolak', [Admin\VerifikasiController::class, 'tolak'])->name('verifikasi.tolak');
+        Route::get('/pendaftaran', [Admin\PendaftaranController::class, 'index'])->name('pendaftaran');
+        Route::get('/pendaftaran/{pendaftaran}', [Admin\PendaftaranController::class, 'show'])->name('pendaftaran.detail');
+        Route::get('/pendaftaran/dokumen/{dokumen}', [Admin\PendaftaranController::class, 'dokumen'])->name('pendaftaran.dokumen');
+        Route::post('/pendaftaran/{pendaftaran}/terima', [Admin\PendaftaranController::class, 'terima'])->name('pendaftaran.terima');
+        Route::post('/pendaftaran/{pendaftaran}/tolak', [Admin\PendaftaranController::class, 'tolak'])->name('pendaftaran.tolak');
         Route::get('/member', [Admin\MemberController::class, 'index'])->name('member');
         Route::get('/member/{anak}', [Admin\MemberController::class, 'show'])->name('member.detail');
         Route::get('/jadwal', [Admin\JadwalController::class, 'index'])->name('jadwal');

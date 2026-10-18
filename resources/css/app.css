@@ -36,11 +36,42 @@
 
 [x-cloak] { display: none !important; }
 
+/* Dropdown: panah bawaan browser terlalu mepet ke tepi, diganti panah sendiri dengan jarak 16px */
+@layer base {
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B6282' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 18px;
+        padding-right: 2.75rem;
+    }
+    select.pilih-kecil { background-position: right .625rem center; background-size: 16px; padding-right: 2rem; }
+
+    /* Tautan ke bagian di halaman yang sama (Program, Jadwal, Lokasi) bergulir halus */
+    html { scroll-behavior: smooth; }
+}
+
+/* Pindah halaman dengan crossfade singkat (Chrome, Edge, Safari 18+); browser lain tetap pindah biasa.
+   Penanda tab aktif (status iuran, kelompok, tanggal) bergeser ke tab baru karena memakai nama yang sama. */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
+::view-transition-group(tab-aktif), ::view-transition-group(nav-aktif) { animation-duration: .3s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+.tab-aktif { view-transition-name: tab-aktif; }
+
 /* Motion: satu momen per layar (lihat catatan motion di mockup v2) */
 @keyframes isi-bar { from { width: 0; } }
 @keyframes muncul { from { opacity: 0; transform: translateY(8px); } }
 .anim-bar { animation: isi-bar .9s cubic-bezier(.2,.8,.2,1) both .2s; }
 .anim-muncul { animation: muncul .35s ease-out both; }
+
+/* Landing (L10): garis lapangan tergambar sekali, 1,4 detik */
+@keyframes gambar-garis { to { stroke-dashoffset: 0; } }
+.garis-gambar :is(path, circle, rect) { stroke-dasharray: 1300; stroke-dashoffset: 1300; animation: gambar-garis 1.4s cubic-bezier(.3,.7,.2,1) forwards .1s; }
+
+/* Pendaftaran terkirim (L15): centang muncul dengan efek pop */
+@keyframes pop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); } }
+.anim-pop { animation: pop .45s cubic-bezier(.2,.8,.2,1) both; }
 
 /* Satu momen motion per layar; dimatikan untuk pengguna "kurangi gerakan" */
 @media (prefers-reduced-motion: reduce) {
@@ -48,4 +79,6 @@
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }
+    html { scroll-behavior: auto; }
+    @view-transition { navigation: none; }
 }

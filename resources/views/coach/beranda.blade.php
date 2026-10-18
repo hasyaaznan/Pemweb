@@ -23,7 +23,7 @@
             <nav class="flex gap-1 overflow-x-auto rounded-[18px] bg-white p-2 shadow-[0_2px_10px_rgba(34,0,90,.06)]" aria-label="Hari latihan">
                 @foreach ($hariLatihan as $h)
                     @php $c = Carbon::parse($h); @endphp
-                    <a href="{{ route('coach.beranda', ['tanggal' => $h]) }}" @class(['flex min-w-14 flex-1 flex-col items-center rounded-[14px] py-1.5 transition-colors duration-200', 'bg-oranye-500 text-ungu-900' => $h === $dipilih, 'text-redup' => $h !== $dipilih]) @if ($h === $dipilih) aria-current="date" @endif>
+                    <a href="{{ route('coach.beranda', ['tanggal' => $h]) }}" @class(['flex min-w-14 flex-1 flex-col items-center rounded-[14px] py-1.5 transition-colors duration-200', 'tab-aktif bg-oranye-500 text-ungu-900' => $h === $dipilih, 'text-redup' => $h !== $dipilih]) @if ($h === $dipilih) aria-current="date" @endif>
                         <span class="text-xs font-semibold">{{ $c->translatedFormat('D') }}</span>
                         <span class="font-display text-[26px] font-extrabold leading-none">{{ $c->day }}</span>
                     </a>

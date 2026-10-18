@@ -9,7 +9,7 @@
         @if ($kelompok->count() > 1)
             <nav class="mb-3 flex gap-1.5" aria-label="Kelompok usia">
                 @foreach ($kelompok as $k)
-                    <a href="{{ route('coach.rapor', ['ku' => $k->id]) }}" @class(['rounded-full px-3 py-1.5 text-sm font-bold', 'bg-ungu-600 text-white' => $k->id === $ku->id, 'bg-ungu-100 text-ungu-600' => $k->id !== $ku->id]) @if ($k->id === $ku->id) aria-current="page" @endif>{{ $k->nama }}</a>
+                    <a href="{{ route('coach.rapor', ['ku' => $k->id]) }}" @class(['rounded-full px-3 py-1.5 text-sm font-bold', 'tab-aktif bg-ungu-600 text-white' => $k->id === $ku->id, 'bg-ungu-100 text-ungu-600' => $k->id !== $ku->id]) @if ($k->id === $ku->id) aria-current="page" @endif>{{ $k->nama }}</a>
                 @endforeach
             </nav>
         @endif

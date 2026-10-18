@@ -18,7 +18,7 @@
     <div class="relative -mt-10 px-4" x-data="{ cari: '' }">
         <nav class="grid grid-cols-3 gap-2" aria-label="Status bukti">
             @foreach ($kotak as [$kunci, $label])
-                <a href="{{ route('manajemen.verifikasi', $kunci === 'menunggu' ? [] : ['status' => $kunci]) }}" @class(['rounded-[18px] px-3 py-2.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]', 'bg-oranye-500 text-ungu-900' => $tab === $kunci, 'bg-white' => $tab !== $kunci]) @if ($tab === $kunci) aria-current="page" @endif>
+                <a href="{{ route('manajemen.verifikasi', $kunci === 'menunggu' ? [] : ['status' => $kunci]) }}" @class(['rounded-[18px] px-3 py-2.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]', 'tab-aktif bg-oranye-500 text-ungu-900' => $tab === $kunci, 'bg-white' => $tab !== $kunci]) @if ($tab === $kunci) aria-current="page" @endif>
                     <p class="font-display text-[30px] font-extrabold leading-none">{{ $jumlah[$kunci] }}</p>
                     <p class="text-sm">{{ $label }}</p>
                 </a>

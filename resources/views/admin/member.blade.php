@@ -3,7 +3,7 @@
     <div class="px-4" x-data="{ cari: '' }">
         <nav class="flex gap-1.5 overflow-x-auto pb-1" aria-label="Saring member">
             @php
-                $chip = fn ($aktif) => 'shrink-0 rounded-full px-3 py-1.5 text-[13px] font-bold '.($aktif ? 'bg-ungu-600 text-white' : 'bg-white text-ungu-600');
+                $chip = fn ($aktif) => 'shrink-0 rounded-full px-3 py-1.5 text-[13px] font-bold '.($aktif ? 'tab-aktif bg-ungu-600 text-white' : 'bg-white text-ungu-600');
             @endphp
             <a href="{{ route('manajemen.member') }}" class="{{ $chip(! $ku && ! $belumBayar) }}">Semua {{ $jumlahSemua }}</a>
             @foreach ($kelompok as $k)
@@ -18,11 +18,11 @@
         </label>
 
         @if ($pendaftarBaru > 0 && ! $belumBayar)
-            <div class="mt-2.5 flex items-center gap-3 rounded-[18px] bg-ungu-50 p-3.5 ring-[1.5px] ring-inset ring-ungu-400">
+            <a href="{{ route('manajemen.pendaftaran') }}" class="mt-2.5 flex items-center gap-3 rounded-[18px] bg-ungu-50 p-3.5 ring-[1.5px] ring-inset ring-ungu-400">
                 <span class="flex size-[42px] shrink-0 items-center justify-center rounded-full bg-ungu-600 text-white"><x-icon name="users" size="20" /></span>
                 <span class="min-w-0 flex-1"><b class="block">{{ $pendaftarBaru }} pendaftar baru</b><span class="block text-sm text-redup">Menunggu verifikasi dokumen</span></span>
                 <span class="inline-flex items-center gap-1.5 rounded-full bg-amber-bg px-2.5 py-1 text-xs font-bold text-amber"><i class="size-[7px] rounded-full bg-current"></i>Baru</span>
-            </div>
+            </a>
         @endif
 
         @if ($belumBayar)
