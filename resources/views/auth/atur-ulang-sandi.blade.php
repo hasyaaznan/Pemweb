@@ -1,6 +1,6 @@
 {{-- Halaman dari tautan email lupa kata sandi --}}
-<x-layout title="Kata sandi baru · Bandung Spiders">
-    <form method="POST" action="{{ route('password.update') }}" class="mx-auto flex min-h-screen max-w-md flex-col px-4 py-8">
+<x-auth title="Kata sandi baru · Bandung Spiders">
+    <form method="POST" action="{{ route('password.update') }}" class="mx-auto flex min-h-screen max-w-md flex-col px-4 py-8 lg:min-h-0 lg:px-0">
         @csrf
         <input type="hidden" name="token" value="{{ $token }}">
         <input type="hidden" name="email" value="{{ $email }}">
@@ -16,4 +16,4 @@
 
         <button class="mt-8 flex h-[50px] w-full items-center justify-center rounded-[14px] bg-ungu-600 text-base font-bold text-white">Simpan kata sandi</button>
     </form>
-</x-layout>
+</x-auth>

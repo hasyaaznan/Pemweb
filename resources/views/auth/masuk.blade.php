@@ -1,18 +1,19 @@
 {{-- L0 Login --}}
-<x-layout title="Masuk · Bandung Spiders" class="bg-white">
-    <div class="mx-auto min-h-screen max-w-md bg-white">
-        <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-6 pb-14 pt-12 text-center text-white">
+<x-auth title="Masuk · Bandung Spiders" class="bg-white">
+    <div class="mx-auto min-h-screen max-w-md bg-white lg:min-h-0">
+        <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-6 pb-14 pt-12 text-center text-white lg:hidden">
             <x-court />
             <a href="{{ route('landing') }}" class="absolute left-4 top-4 z-10 flex h-[38px] items-center gap-1 rounded-xl bg-white/10 pl-2 pr-3 text-sm font-semibold text-white hover:bg-white/20">
                 <x-icon name="back" size="20" /> Halaman utama
             </a>
             <img src="{{ asset('images/logo-spiders.png') }}" alt="Logo Bandung Spiders Basketball" class="relative mx-auto size-[104px] object-contain drop-shadow-lg">
             <h1 class="relative mt-4 font-display text-[34px] font-extrabold leading-none">Masuk ke akun</h1>
-            <p class="relative mt-2 text-sm text-white/75">Untuk orang tua, coach, dan manajemen</p>
+            <p class="relative mt-2 text-sm text-white/75">Untuk orang tua, coach, dan Admin</p>
         </header>
 
-        <form method="POST" action="{{ route('login') }}" class="px-4 pt-8" x-data="{ lihat: false }">
+        <form method="POST" action="{{ route('login') }}" class="px-4 pt-8 lg:px-0 lg:pt-0" x-data="{ lihat: false }">
             @csrf
+            <h1 class="mb-6 hidden font-display text-[40px] font-extrabold leading-none lg:block">Masuk ke akun</h1>
             @if (session('status'))
                 <p class="mb-4 rounded-[14px] bg-hijau-bg px-3.5 py-2.5 text-[13px] font-semibold text-hijau">{{ session('status') }}</p>
             @endif
@@ -45,4 +46,4 @@
             <p class="mt-5 text-center text-[15px] text-redup">Belum jadi member? <a href="{{ route('daftar') }}" class="font-bold text-oranye-700">Daftar di sini</a></p>
         </form>
     </div>
-</x-layout>
+</x-auth>

@@ -6,7 +6,7 @@
     $coach = $anak->kelompokUsia->coach->first();
 @endphp
 <x-ortu title="Beranda" aktif="Beranda">
-    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-4 pb-20 pt-6 text-white">
+    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 lg:rounded-[28px] lg:px-8 px-4 pb-20 pt-6 text-white">
         <x-court />
         <div class="relative flex items-start justify-between">
             <div>
@@ -14,14 +14,14 @@
                 <h1 class="mt-1 font-display text-[36px] font-extrabold leading-none">Halo, {{ $sapaan ? "$sapaan $namaDepan" : $namaDepan }}</h1>
             </div>
             <div class="flex items-center gap-2">
-                <x-lonceng :tautan="route('ortu.notifikasi')" :jumlah="auth()->user()->notifikasi()->whereNull('dibaca_pada')->count()" gelap />
+                <span class="lg:hidden"><x-lonceng :tautan="route('ortu.notifikasi')" :jumlah="auth()->user()->notifikasi()->whereNull('dibaca_pada')->count()" gelap /></span>
                 <img src="{{ asset('images/logo-spiders.png') }}" alt="" class="size-14 object-contain">
             </div>
         </div>
     </header>
 
-    <div class="relative -mt-14 space-y-3 px-4">
-        <section class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]" x-data="{ buka: false }">
+    <div class="relative -mt-14 space-y-3 px-4 lg:grid lg:grid-cols-3 lg:items-start lg:gap-4 lg:space-y-0 lg:px-8">
+        <section class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)] lg:col-span-3 lg:p-5" x-data="{ buka: false }">
             <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-oranye-100 font-display text-xl font-extrabold text-oranye-700">{{ mb_substr($anak->nama, 0, 1) }}</span>
             <div class="min-w-0 flex-1">
                 <p class="truncate text-lg font-bold leading-tight">{{ $anak->nama }}</p>
@@ -39,7 +39,7 @@
             @endif
         </section>
 
-        <section class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
+        <section class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)] lg:col-span-2 lg:p-5">
             @if ($rapor)
                 <div class="flex items-baseline justify-between border-b border-garis pb-2">
                     <h2 class="font-display text-2xl font-extrabold">Rapor {{ $rapor->periode->translatedFormat('F') }}</h2>
@@ -60,7 +60,7 @@
             @endif
         </section>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-3 lg:grid-cols-1 lg:gap-4">
             <a href="{{ route('ortu.absensi') }}" class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
                 <p class="font-display text-[34px] font-extrabold leading-none">{{ $kehadiran['persen'] }}%</p>
                 <p class="mt-1 text-sm leading-tight">Hadir {{ $kehadiran['hadir'] }} dari {{ $kehadiran['total'] }} latihan</p>

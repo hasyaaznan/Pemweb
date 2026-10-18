@@ -6,7 +6,8 @@
     $perubahan = $sesi->where('status', '!=', 'terjadwal');
 @endphp
 <x-coach title="Jadwal" aktif="Jadwal" judul="Jadwal">
-    <div class="px-4">
+    <div class="px-4 lg:grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:items-start lg:gap-8">
+        <div>
         <div class="flex items-center justify-between">
             <a href="{{ route('coach.jadwal', ['tanggal' => $senin->copy()->subWeek()->toDateString()]) }}" class="flex size-9 items-center justify-center rounded-xl bg-ungu-600/10" aria-label="Minggu sebelumnya"><x-icon name="back" size="18" /></a>
             <h2 class="font-display text-2xl font-extrabold">{{ $senin->translatedFormat('F Y') }}</h2>
@@ -45,12 +46,17 @@
         @empty
             <p class="rounded-[18px] bg-white p-4 text-sm text-redup">Tidak ada latihan di hari ini.</p>
         @endforelse
+        </div>
 
+        <div class="lg:rounded-[18px] lg:bg-white lg:p-5">
+        <h3 class="mb-2 mt-5 hidden font-display text-xl font-extrabold text-ungu-700 lg:mt-0 lg:block">Perubahan jadwal minggu ini</h3>
+        @if ($perubahan->isEmpty())<p class="hidden text-sm text-redup lg:block">Semua latihan minggu ini sesuai jadwal.</p>@endif
         @foreach ($perubahan as $s)
             <p class="mt-2 flex gap-2 rounded-[14px] bg-amber-bg px-3.5 py-3 text-[13px] font-semibold text-amber">
                 <x-icon name="warn" size="18" class="shrink-0" />
                 <span>{{ $s->tanggal->translatedFormat('l j M') }}: {{ $s->kelompokUsia->nama }} {{ $s->status === 'batal' ? 'batal' : 'mulai '.Format::jam($s->jam_mulai) }}@if ($s->alasan_perubahan) ({{ $s->alasan_perubahan }})@endif</span>
             </p>
         @endforeach
+        </div>
     </div>
 </x-coach>

@@ -1,8 +1,8 @@
 {{-- L3 Tagihan iuran --}}
 @php use App\Support\Format; use App\Support\Klub; @endphp
 <x-ortu title="Tagihan iuran" aktif="Tagihan" judul="Tagihan iuran" :kembali="route('ortu.beranda')">
-    <div class="px-4">
-        <section class="relative overflow-hidden rounded-[18px] bg-ungu-900 p-4 text-white" x-data="{ disalin: false }">
+    <div class="px-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:items-start lg:gap-6">
+        <section class="relative overflow-hidden rounded-[18px] bg-ungu-900 p-4 text-white lg:sticky lg:top-8 lg:p-6" x-data="{ disalin: false }">
             <x-court :opacity="0.12" />
             <div class="relative flex items-start justify-between">
                 <div>
@@ -16,11 +16,12 @@
             </div>
         </section>
 
+        <div>
         @if (session('info'))
             <p class="mt-3 rounded-xl bg-netral-bg px-3 py-2.5 text-sm text-netral" role="status">{{ session('info') }}</p>
         @endif
 
-        <h2 class="mt-5 font-display text-2xl font-extrabold">Tagihan{{ auth()->user()->anak()->count() > 1 ? ' '.$anak->nama : '' }}</h2>
+        <h2 class="mt-5 font-display text-2xl font-extrabold lg:mt-0">Tagihan{{ auth()->user()->anak()->count() > 1 ? ' '.$anak->nama : '' }}</h2>
         <ul class="mt-2 space-y-2.5">
             @forelse ($tagihan as $t)
                 @php $buktiTerakhir = $t->buktiTransfer->first(); @endphp
@@ -52,5 +53,6 @@
                 <li class="rounded-[18px] bg-white p-4 text-sm text-redup">Belum ada tagihan.</li>
             @endforelse
         </ul>
+        </div>
     </div>
 </x-ortu>

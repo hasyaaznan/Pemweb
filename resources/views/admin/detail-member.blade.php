@@ -10,7 +10,8 @@
         : null;
 @endphp
 <x-admin title="{{ $anak->nama }}" aktif="Member" judul="Member" :kembali="route('manajemen.member')">
-    <div class="space-y-3 px-4">
+    <div class="space-y-3 px-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
+        <div class="space-y-3">
         <div class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-oranye-100 font-display text-xl font-extrabold text-oranye-700">{{ mb_substr($anak->nama, 0, 1) }}</span>
             <div class="min-w-0 flex-1">
@@ -34,7 +35,10 @@
             <a href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="wa" class="text-ungu-600" /> Hubungi {{ $ortu->nama }} lewat WhatsApp <x-icon name="chev" class="ml-auto text-redup" /></a>
         @endif
 
-        <h2 class="pt-2 font-display text-[22px] font-extrabold text-ungu-700">Iuran</h2>
+        </div>
+
+        <div class="space-y-3">
+        <h2 class="pt-2 font-display text-[22px] font-extrabold text-ungu-700 lg:pt-0">Iuran</h2>
         <div class="divide-y divide-garis rounded-[18px] bg-white px-4 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             @forelse ($anak->tagihan as $t)
                 <div class="flex items-center justify-between gap-3 py-3">
@@ -44,6 +48,7 @@
             @empty
                 <p class="py-3 text-sm text-redup">Belum ada tagihan.</p>
             @endforelse
+        </div>
         </div>
     </div>
 </x-admin>
