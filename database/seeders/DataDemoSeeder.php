@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Anak;
+use App\Models\BuktiTransfer;
 use App\Models\KategoriRapor;
 use App\Models\KelompokUsia;
 use App\Models\Rapor;
@@ -12,10 +13,12 @@ use App\Models\User;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 // Data contoh untuk mencoba alur orang tua (L1–L4, L17) dan coach (L7–L9, L23, L24), dihitung dari hari ini:
 // 20 sesi terakhir (Raka 17 hadir = 85%), rapor bulan lalu, 3 tagihan dengan status berbeda,
-// teman sekelompok Raka, rapor bulan ini yang sebagian sudah diisi, dan satu perubahan jadwal.
+// teman sekelompok Raka, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal,
+// dan iuran anak lain untuk halaman Admin (4 bukti menunggu, 3 lunas, 3 belum bayar bulan ini).
 class DataDemoSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -82,8 +85,9 @@ class DataDemoSeeder extends Seeder
             'anak_id' => $raka->id, 'periode' => $periode->toDateString(), 'nominal' => $nominal,
             'jatuh_tempo' => $periode->copy()->day(10)->toDateString(), 'status' => $status,
         ]);
+        $this->salinContohBukti();
         $bukti = fn ($periode, $kurang = 0) => [
-            'diunggah_oleh' => $rina->id, 'file_path' => 'bukti/contoh.jpg', 'file_tipe' => 'jpg', 'ukuran_kb' => 640,
+            'diunggah_oleh' => $rina->id, 'file_path' => 'bukti/contoh-'.($nominal - $kurang).'.jpg', 'file_tipe' => 'jpg', 'ukuran_kb' => 640,
             'tanggal_transfer' => $periode->copy()->day(5)->toDateString(), 'nominal_transfer' => $nominal - $kurang,
         ];
 
@@ -102,6 +106,58 @@ class DataDemoSeeder extends Seeder
 
         // Bulan ini: belum bayar
         $buat($bulanIni, 'belum_bayar');
+
+        $this->iuranAnakLain($raka, $sari);
+    }
+
+    // Gambar contoh bukti transfer (database/seeders/contoh) disalin ke disk privat agar bisa dibuka Admin
+    private function salinContohBukti(): void
+    {
+        foreach ([200000, 250000] as $n) {
+            if (! Storage::disk('local')->exists("bukti/contoh-{$n}.jpg")) {
+                Storage::disk('local')->put("bukti/contoh-{$n}.jpg", file_get_contents(__DIR__."/contoh/bukti-{$n}.jpg"));
+            }
+        }
+    }
+
+    // Iuran 9 anak lain: bulan lalu 8 lunas dan 1 belum bayar; bulan ini campuran untuk L5 dan L20
+    private function iuranAnakLain(Anak $raka, User $sari): void
+    {
+        $bulanIni = now()->startOfMonth();
+        $bulanLalu = $bulanIni->copy()->subMonth();
+        // nama => [status bulan ini, diunggah berapa hari lalu, kurang berapa]
+        $bulanIniPer = [
+            'Fikri Ramadhan' => ['menunggu_verifikasi', 5, 0],
+            'Nadia Putri' => ['menunggu_verifikasi', 3, 0],
+            'Salsa Aulia' => ['menunggu_verifikasi', 1, 50000],
+            'Keisha Ramadhani' => ['menunggu_verifikasi', 0, 0],
+            'Bima Saputra' => ['lunas', 8, 0],
+            'Aldi Firmansyah' => ['lunas', 7, 0],
+            'Arka Wijaya' => ['lunas', 6, 0],
+        ];
+
+        foreach (Anak::with('kelompokUsia')->whereKeyNot($raka->id)->orderBy('id')->get() as $anak) {
+            $nominal = $anak->kelompokUsia->iuran_bulanan;
+            foreach ([[$bulanLalu, $anak->nama === 'Fikri Ramadhan' ? 'belum_bayar' : 'lunas', 25, 0], [$bulanIni, ...($bulanIniPer[$anak->nama] ?? ['belum_bayar', 0, 0])]] as [$periode, $status, $hariLalu, $kurang]) {
+                $tagihan = Tagihan::create([
+                    'anak_id' => $anak->id, 'periode' => $periode->toDateString(), 'nominal' => $nominal,
+                    'jatuh_tempo' => $periode->copy()->day(10)->toDateString(), 'status' => $status,
+                ]);
+                if ($status === 'belum_bayar') {
+                    continue;
+                }
+                $diunggah = $hariLalu ? now()->subDays($hariLalu)->setTime(19, 30) : now()->subHour();
+                (new BuktiTransfer)->forceFill([
+                    'tagihan_id' => $tagihan->id, 'diunggah_oleh' => $anak->orang_tua_id,
+                    'file_path' => 'bukti/contoh-'.($nominal - $kurang <= 200000 ? 200000 : 250000).'.jpg', 'file_tipe' => 'jpg', 'ukuran_kb' => 31,
+                    'tanggal_transfer' => $diunggah->toDateString(), 'nominal_transfer' => $nominal - $kurang,
+                    'status' => $status === 'lunas' ? 'disetujui' : 'menunggu',
+                    'diverifikasi_oleh' => $status === 'lunas' ? $sari->id : null,
+                    'diverifikasi_pada' => $status === 'lunas' ? $diunggah->copy()->addDay()->setTime(10, 0) : null,
+                    'created_at' => $diunggah, 'updated_at' => $diunggah,
+                ])->save();
+            }
+        }
     }
 
     // Teman sekelompok Raka dan anak KU 6–8, masing-masing dengan akun orang tua sendiri

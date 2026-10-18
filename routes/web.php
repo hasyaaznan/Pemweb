@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin;
 use App\Http\Controllers\Auth\AturUlangSandiController;
 use App\Http\Controllers\Auth\LupaSandiController;
 use App\Http\Controllers\Auth\MasukController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\Coach;
 use App\Http\Controllers\OrangTua;
+use App\Http\Controllers\UbahSesiController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -42,9 +44,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/rapor/{anak}', [Coach\RaporController::class, 'edit'])->name('rapor.isi');
         Route::put('/rapor/{anak}', [Coach\RaporController::class, 'update'])->name('rapor.simpan');
         Route::get('/jadwal', Coach\JadwalController::class)->name('jadwal');
+        Route::get('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'edit'])->name('sesi');
+        Route::put('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'update'])->name('sesi.simpan');
         Route::get('/profil', Coach\ProfilController::class)->name('profil');
     });
 
-    // Halaman manajemen dibuat di tahap berikutnya
-    Route::view('/manajemen', 'segera', ['peran' => 'manajemen'])->middleware('peran:manajemen')->name('manajemen.beranda');
+    // Admin (peran manajemen): verifikasi iuran, member, jadwal latihan
+    Route::middleware('peran:manajemen')->prefix('manajemen')->name('manajemen.')->group(function () {
+        Route::get('/', Admin\BerandaController::class)->name('beranda');
+        Route::post('/tagihan', [Admin\BerandaController::class, 'buatTagihan'])->name('tagihan.buat');
+        Route::get('/verifikasi', [Admin\VerifikasiController::class, 'index'])->name('verifikasi');
+        Route::get('/verifikasi/{bukti}', [Admin\VerifikasiController::class, 'show'])->name('verifikasi.detail');
+        Route::get('/verifikasi/{bukti}/file', [Admin\VerifikasiController::class, 'file'])->name('verifikasi.file');
+        Route::post('/verifikasi/{bukti}/setujui', [Admin\VerifikasiController::class, 'setujui'])->name('verifikasi.setujui');
+        Route::post('/verifikasi/{bukti}/tolak', [Admin\VerifikasiController::class, 'tolak'])->name('verifikasi.tolak');
+        Route::get('/member', [Admin\MemberController::class, 'index'])->name('member');
+        Route::get('/member/{anak}', [Admin\MemberController::class, 'show'])->name('member.detail');
+        Route::get('/jadwal', [Admin\JadwalController::class, 'index'])->name('jadwal');
+        Route::get('/jadwal/tambah', [Admin\JadwalController::class, 'create'])->name('jadwal.tambah');
+        Route::post('/jadwal', [Admin\JadwalController::class, 'store'])->name('jadwal.simpan');
+        Route::get('/jadwal/{jadwal}/ubah', [Admin\JadwalController::class, 'edit'])->name('jadwal.ubah');
+        Route::put('/jadwal/{jadwal}', [Admin\JadwalController::class, 'update'])->name('jadwal.perbarui');
+        Route::delete('/jadwal/{jadwal}', [Admin\JadwalController::class, 'destroy'])->name('jadwal.hapus');
+        Route::get('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'edit'])->name('sesi');
+        Route::put('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'update'])->name('sesi.simpan');
+        Route::get('/profil', Admin\ProfilController::class)->name('profil');
+    });
 });
