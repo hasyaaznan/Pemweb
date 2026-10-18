@@ -11,7 +11,7 @@
 <x-layout title="Bandung Spiders Basketball · Latihan basket anak 6–16 tahun di Bandung">
     <div x-data="{ menu: false }" @keydown.escape.window="menu = false" class="bg-white">
         {{-- Hero --}}
-        <section class="relative flex min-h-[100svh] flex-col overflow-hidden bg-gradient-to-b from-ungu-600 via-[#3A1088] to-ungu-900 text-white lg:min-h-[88vh]">
+        <section class="relative flex min-h-[100svh] md:min-h-[min(100svh,760px)] flex-col overflow-hidden bg-gradient-to-b from-ungu-600 via-[#3A1088] to-ungu-900 text-white lg:min-h-[min(88vh,820px)]">
             <svg class="garis-gambar pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 360 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                 <g fill="none" stroke="rgba(255,255,255,.16)" stroke-width="2"><path d="M0 330h360"/><circle cx="180" cy="330" r="62"/><rect x="110" y="-40" width="140" height="190" rx="2"/><circle cx="180" cy="150" r="52"/><path d="M40 -10v120a140 140 0 0 0 280 0V-10"/></g>
             </svg>
@@ -63,31 +63,31 @@
         <section id="program" class="mx-auto max-w-6xl scroll-mt-4 px-4 py-10 lg:px-8 lg:py-20">
             <h2 class="font-display text-[40px] font-extrabold leading-none text-ungu-900 lg:text-5xl">Program per usia</h2>
             <p class="mt-2 text-sm text-redup lg:text-base">Anak masuk kelompok sesuai usianya saat mendaftar.</p>
-            <div class="mt-5 divide-y-[1.5px] divide-garis rounded-[20px] px-3.5 ring-[1.5px] ring-inset ring-garis lg:grid lg:grid-cols-3 lg:gap-5 lg:divide-y-0 lg:px-0 lg:ring-0">
+            <div class="mt-5 divide-y-[1.5px] divide-garis rounded-[20px] px-3.5 ring-[1.5px] ring-inset ring-garis md:grid md:grid-cols-3 md:gap-5 md:divide-y-0 md:px-0 md:ring-0">
                 @foreach ($kelompok as $k)
-                    <div class="flex items-center gap-3 py-3.5 transition-colors duration-150 active:bg-ungu-50 lg:flex-col lg:items-start lg:rounded-[20px] lg:p-6 lg:ring-[1.5px] lg:ring-inset lg:ring-garis">
-                        <div class="w-[74px] shrink-0 lg:w-auto">
-                            <p class="font-display text-[38px] font-extrabold leading-none text-ungu-600 lg:text-6xl">{{ $k->usia_min }}–{{ $k->usia_max }}</p>
+                    <div class="flex items-center gap-3 py-3.5 transition-colors duration-150 active:bg-ungu-50 md:flex-col md:items-start md:rounded-[20px] md:p-6 md:ring-[1.5px] md:ring-inset md:ring-garis">
+                        <div class="w-[74px] shrink-0 md:w-auto">
+                            <p class="font-display text-[38px] font-extrabold leading-none text-ungu-600 md:text-6xl">{{ $k->usia_min }}–{{ $k->usia_max }}</p>
                             <p class="text-sm text-redup">tahun</p>
                         </div>
                         <div class="min-w-0 flex-1">
-                            <p class="font-bold lg:text-lg">{{ $k->nama }}</p>
-                            <p class="mt-0.5 text-[13px] leading-snug text-redup lg:text-[15px]">{{ $k->program }}</p>
+                            <p class="font-bold md:text-lg">{{ $k->nama }}</p>
+                            <p class="mt-0.5 text-[13px] leading-snug text-redup md:text-[15px]">{{ $k->program }}</p>
                             <p class="mt-1 text-sm font-semibold text-ungu-600">{{ $k->jadwal->map(fn ($j) => JadwalController::HARI[$j->hari])->unique()->implode(' & ') ?: 'Jadwal menyusul' }}</p>
                         </div>
-                        <div class="text-right lg:mt-auto lg:w-full lg:border-t-[1.5px] lg:border-garis lg:pt-4 lg:text-left">
-                            <p class="font-display text-xl font-extrabold lg:inline lg:text-3xl">{{ Format::rupiahSingkat($k->iuran_bulanan) }}</p>
-                            <p class="text-sm text-redup lg:inline">/bulan</p>
+                        <div class="text-right md:mt-auto md:w-full md:border-t-[1.5px] md:border-garis md:pt-4 md:text-left">
+                            <p class="font-display text-xl font-extrabold md:inline md:text-3xl">{{ Format::rupiahSingkat($k->iuran_bulanan) }}</p>
+                            <p class="text-sm text-redup md:inline">/bulan</p>
                         </div>
                     </div>
                 @endforeach
             </div>
 
-            <h2 class="mt-9 font-display text-2xl font-extrabold text-ungu-900 lg:mt-16 lg:text-4xl">Kenapa di Spiders</h2>
-            <ul class="mt-2 space-y-2 lg:mt-5 lg:grid lg:grid-cols-3 lg:gap-5 lg:space-y-0">
+            <h2 class="mt-9 font-display text-2xl font-extrabold text-ungu-900 md:mt-16 md:text-4xl">Kenapa di Spiders</h2>
+            <ul class="mt-2 space-y-2 md:mt-5 md:grid md:grid-cols-3 md:gap-5 md:space-y-0">
                 @foreach (['Coach berlisensi Perbasi di setiap kelompok', 'Rapor bulanan untuk fundamental, strategi, mental, IQ basket, dan fisik', 'Kehadiran anak bisa dicek setelah setiap latihan'] as $poin)
-                    <li class="flex items-start gap-2.5 text-[15px] leading-snug lg:rounded-[20px] lg:bg-ungu-50 lg:p-6 lg:text-lg">
-                        <x-icon name="check" size="20" class="mt-px shrink-0 text-oranye-500 lg:size-7" />{{ $poin }}
+                    <li class="flex items-start gap-2.5 text-[15px] leading-snug md:rounded-[20px] md:bg-ungu-50 md:p-6 md:text-lg">
+                        <x-icon name="check" size="20" class="mt-px shrink-0 text-oranye-500 md:size-7" />{{ $poin }}
                     </li>
                 @endforeach
             </ul>

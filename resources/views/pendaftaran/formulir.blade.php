@@ -125,7 +125,7 @@
             <p class="mt-3 rounded-[14px] bg-ungu-100 px-3.5 py-3 text-[13px] leading-snug text-ungu-700">Setelah dikirim, Admin memeriksa dokumen dan menghubungi Anda lewat WhatsApp paling lambat 2 hari kerja.</p>
         </fieldset>
 
-        <div class="fixed inset-x-0 bottom-0 mx-auto flex max-w-md gap-2.5 bg-gradient-to-t from-ungu-50 via-ungu-50 px-4 pb-5 pt-6 lg:static lg:mt-6 lg:max-w-none lg:bg-none lg:p-0">
+        <div class="fixed inset-x-0 bottom-0 mx-auto flex max-w-md gap-2.5 bg-gradient-to-t from-ungu-50 via-ungu-50 px-4 pb-5 pt-6 lg:static lg:mx-0 lg:mt-6 lg:max-w-none lg:bg-none lg:p-0">
             <button type="button" x-cloak x-show="langkah > 1" @click="kembali()" class="flex h-[50px] flex-[.6] items-center justify-center rounded-[14px] bg-ungu-100 font-bold text-ungu-600">Kembali</button>
             <button type="button" x-show="langkah < 3" @click="lanjut()" class="flex h-[50px] flex-1 items-center justify-center rounded-[14px] bg-oranye-500 font-bold text-ungu-900">Lanjut</button>
             <button type="submit" x-cloak x-show="langkah === 3" class="flex h-[50px] flex-1 items-center justify-center rounded-[14px] bg-oranye-500 font-bold text-ungu-900">Kirim pendaftaran</button>

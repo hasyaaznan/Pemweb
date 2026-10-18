@@ -26,6 +26,8 @@ npm run dev                   # jalankan di terminal pertama
 php artisan serve             # jalankan di terminal kedua, lalu buka http://localhost:8000
 ```
 
+Kalau tampilan berantakan (jarak antar elemen hilang, tombol bawah ikut naik ke atas), CSS yang dipakai adalah hasil build lama. Ini terjadi kalau `npm run dev` tidak berjalan dan folder `public/build` dibuat dari branch sebelumnya. Jalankan `npm run dev`, atau `npm run build` setiap kali selesai pindah branch atau `git pull`, lalu muat ulang halaman.
+
 Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 
 | Peran | Email |

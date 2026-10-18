@@ -3,6 +3,9 @@
     <div class="mx-auto min-h-screen max-w-md bg-white">
         <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-6 pb-14 pt-12 text-center text-white">
             <x-court />
+            <a href="{{ route('landing') }}" class="absolute left-4 top-4 z-10 flex h-[38px] items-center gap-1 rounded-xl bg-white/10 pl-2 pr-3 text-sm font-semibold text-white hover:bg-white/20">
+                <x-icon name="back" size="20" /> Halaman utama
+            </a>
             <img src="{{ asset('images/logo-spiders.png') }}" alt="Logo Bandung Spiders Basketball" class="relative mx-auto size-[104px] object-contain drop-shadow-lg">
             <h1 class="relative mt-4 font-display text-[34px] font-extrabold leading-none">Masuk ke akun</h1>
             <p class="relative mt-2 text-sm text-white/75">Untuk orang tua, coach, dan manajemen</p>
@@ -39,7 +42,7 @@
 
             <button type="submit" class="mt-6 flex h-[50px] w-full items-center justify-center rounded-[14px] bg-ungu-600 text-base font-bold text-white active:scale-[.98]">Masuk</button>
 
-            <p class="mt-5 text-center text-[15px] text-redup">Belum jadi member? <a href="{{ url('/') }}" class="font-bold text-oranye-700">Daftar di sini</a></p>
+            <p class="mt-5 text-center text-[15px] text-redup">Belum jadi member? <a href="{{ route('daftar') }}" class="font-bold text-oranye-700">Daftar di sini</a></p>
         </form>
     </div>
 </x-layout>
