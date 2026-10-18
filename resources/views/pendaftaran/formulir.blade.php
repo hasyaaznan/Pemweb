@@ -60,7 +60,7 @@
             </div>
 
             <label for="sekolah" class="{{ $label }}">Sekolah</label>
-            <div class="relative"><x-icon name="file" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
+            <div class="relative"><x-icon name="school" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
                 <input id="sekolah" name="sekolah" required maxlength="100" value="{{ old('sekolah') }}" class="{{ $kolom }} pl-10 pr-3.5"></div>
             @error('sekolah')<p class="{{ $salah }}">{{ $message }}</p>@enderror
         </fieldset>
@@ -76,19 +76,19 @@
             @error('nama_orang_tua')<p class="{{ $salah }}">{{ $message }}</p>@enderror
 
             <label for="hubungan" class="{{ $label }}">Hubungan dengan anak</label>
-            <select id="hubungan" name="hubungan" required class="{{ $kolom }} px-3.5">
+            <select id="hubungan" name="hubungan" required class="{{ $kolom }} pl-3.5 pr-11">
                 <option value="">Pilih</option>
                 @foreach (PendaftaranController::HUBUNGAN as $h)<option @selected(old('hubungan') === $h)>{{ $h }}</option>@endforeach
             </select>
             @error('hubungan')<p class="{{ $salah }}">{{ $message }}</p>@enderror
 
             <label for="no_whatsapp" class="{{ $label }}">No. WhatsApp</label>
-            <div class="relative"><x-icon name="wa" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
+            <div class="relative"><x-icon name="phone" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
                 <input id="no_whatsapp" name="no_whatsapp" type="tel" inputmode="numeric" required pattern="[0-9 +\-]{10,18}" placeholder="08xx xxxx xxxx" value="{{ old('no_whatsapp') }}" autocomplete="tel" class="{{ $kolom }} pl-10 pr-3.5"></div>
             @error('no_whatsapp')<p class="{{ $salah }}">{{ $message }}</p>@enderror
 
             <label for="email" class="{{ $label }}">Email (untuk login)</label>
-            <div class="relative"><x-icon name="file" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
+            <div class="relative"><x-icon name="mail" size="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-redup" />
                 <input id="email" name="email" type="email" required maxlength="100" value="{{ old('email') }}" autocomplete="email" class="{{ $kolom }} pl-10 pr-3.5"></div>
             @error('email')<p class="{{ $salah }}">{{ $message }}</p>@enderror
 

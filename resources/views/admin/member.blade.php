@@ -3,7 +3,7 @@
     <div class="px-4" x-data="{ cari: '' }">
         <nav class="flex gap-1.5 overflow-x-auto pb-1" aria-label="Saring member">
             @php
-                $chip = fn ($aktif) => 'shrink-0 rounded-full px-3 py-1.5 text-[13px] font-bold '.($aktif ? 'bg-ungu-600 text-white' : 'bg-white text-ungu-600');
+                $chip = fn ($aktif) => 'shrink-0 rounded-full px-3 py-1.5 text-[13px] font-bold '.($aktif ? 'tab-aktif bg-ungu-600 text-white' : 'bg-white text-ungu-600');
             @endphp
             <a href="{{ route('manajemen.member') }}" class="{{ $chip(! $ku && ! $belumBayar) }}">Semua {{ $jumlahSemua }}</a>
             @foreach ($kelompok as $k)

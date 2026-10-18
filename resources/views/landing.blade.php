@@ -129,11 +129,13 @@
                         <p class="mt-1 text-sm leading-snug text-[#CFC3EE] lg:text-base">{{ trim(substr($alamat, strlen($gor)), ', ') }}<br>Admin: {{ Format::tampilHp($waAdmin) }} (WhatsApp)</p>
                     </div>
                     <iframe src="{{ $petaEmbed }}" title="Peta lokasi {{ $gor }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="relative mt-5 hidden h-56 w-full rounded-2xl border-0 lg:block"></iframe>
-                    <div class="relative mt-4 grid grid-cols-2 gap-2.5 lg:mt-5">
-                        <a href="{{ $tautanMaps }}" target="_blank" rel="noopener" class="flex h-[46px] items-center justify-center gap-1.5 rounded-[14px] bg-white font-bold text-ungu-900"><x-icon name="map" size="18" /> Buka Maps</a>
-                        <a href="{{ $tautanWa }}" target="_blank" rel="noopener" class="flex h-[46px] items-center justify-center gap-1.5 rounded-[14px] font-bold ring-2 ring-inset ring-white/40"><x-icon name="wa" size="18" /> Chat WhatsApp</a>
+                    <div class="relative mt-5 space-y-3 lg:mt-auto lg:pt-6">
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="{{ $tautanMaps }}" target="_blank" rel="noopener" class="flex h-[46px] items-center justify-center gap-1.5 rounded-[14px] bg-white font-bold text-ungu-900"><x-icon name="map" size="18" /> Buka Maps</a>
+                            <a href="{{ $tautanWa }}" target="_blank" rel="noopener" class="flex h-[46px] items-center justify-center gap-1.5 rounded-[14px] font-bold ring-2 ring-inset ring-white/40"><x-icon name="wa" size="18" /> Chat WhatsApp</a>
+                        </div>
+                        <a href="{{ $daftar }}" class="flex h-[52px] items-center justify-center rounded-[14px] bg-oranye-500 font-bold text-ungu-900">Daftar sekarang</a>
                     </div>
-                    <a href="{{ $daftar }}" class="relative mt-2.5 flex h-[52px] items-center justify-center rounded-[14px] bg-oranye-500 font-bold text-ungu-900 lg:mt-auto">Daftar sekarang</a>
                 </div>
             </div>
         </section>

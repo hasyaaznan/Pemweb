@@ -10,7 +10,7 @@
         @unless ($baru) @method('PUT') @endunless
 
         <label for="kelompok_usia_id" class="mb-1.5 block text-[13px] font-semibold text-ungu-700">Kelompok usia</label>
-        <select id="kelompok_usia_id" name="kelompok_usia_id" required class="{{ $kolom }}">
+        <select id="kelompok_usia_id" name="kelompok_usia_id" required class="{{ $kolom }} pr-11">
             <option value="">Pilih kelompok</option>
             @foreach ($kelompok as $k)
                 <option value="{{ $k->id }}" @selected((int) old('kelompok_usia_id', $jadwal->kelompok_usia_id) === $k->id)>{{ $k->nama }}</option>
@@ -19,7 +19,7 @@
         @error('kelompok_usia_id')<p class="mt-1 text-sm font-semibold text-merah">{{ $message }}</p>@enderror
 
         <label for="hari" class="{{ $label }}">Hari</label>
-        <select id="hari" name="hari" required class="{{ $kolom }}">
+        <select id="hari" name="hari" required class="{{ $kolom }} pr-11">
             @foreach ($hari as $no => $nama)
                 <option value="{{ $no }}" @selected((int) old('hari', $jadwal->hari) === $no)>{{ $nama }}</option>
             @endforeach

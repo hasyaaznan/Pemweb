@@ -24,10 +24,10 @@
         @endif
         {{ $slot }}
     </div>
-    <nav class="fixed inset-x-3 bottom-3 mx-auto flex h-[66px] max-w-[calc(28rem-1.5rem)] rounded-[22px] bg-white shadow-[0_8px_26px_rgba(34,0,90,.16)]" aria-label="Menu utama">
+    <nav class="fixed inset-x-3 bottom-3 [view-transition-name:nav-bawah] mx-auto flex h-[66px] max-w-[calc(28rem-1.5rem)] rounded-[22px] bg-white shadow-[0_8px_26px_rgba(34,0,90,.16)]" aria-label="Menu utama">
         @foreach ($menu as [$rute, $ikon, $label])
             <a href="{{ route($rute) }}" @class(['flex flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-semibold', 'text-ungu-600' => $aktif === $label, 'text-redup' => $aktif !== $label]) @if ($aktif === $label) aria-current="page" @endif>
-                <span @class(['flex h-7 w-[34px] items-center justify-center rounded-[10px]', 'bg-ungu-100' => $aktif === $label])><x-icon :name="$ikon" /></span>
+                <span @class(['flex h-7 w-[34px] items-center justify-center rounded-[10px]', 'bg-ungu-100 [view-transition-name:nav-aktif]' => $aktif === $label])><x-icon :name="$ikon" /></span>
                 {{ $label }}
             </a>
         @endforeach

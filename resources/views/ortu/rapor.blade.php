@@ -6,7 +6,7 @@
         <div class="mt-4 flex items-center justify-between px-4">
             <form method="GET" action="{{ route('ortu.rapor') }}">
                 <label class="sr-only" for="periode">Bulan rapor</label>
-                <select id="periode" name="periode" onchange="this.form.submit()" class="rounded-full bg-ungu-100 py-1.5 pl-3 pr-8 text-sm font-bold text-ungu-600">
+                <select id="periode" name="periode" onchange="this.form.submit()" class="pilih-kecil rounded-full bg-ungu-100 py-1.5 pl-3 pr-8 text-sm font-bold text-ungu-600">
                     @foreach ($daftar as $r)
                         <option value="{{ $r->periode->toDateString() }}" @selected($r->id === $rapor->id)>{{ $r->periode->translatedFormat('F Y') }}</option>
                     @endforeach
