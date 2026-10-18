@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AturUlangSandiController;
 use App\Http\Controllers\Auth\LupaSandiController;
 use App\Http\Controllers\Auth\MasukController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\Coach;
 use App\Http\Controllers\OrangTua;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/profil', OrangTua\ProfilController::class)->name('profil');
     });
 
-    // Halaman coach dan manajemen dibuat di tahap berikutnya
-    Route::view('/coach', 'segera', ['peran' => 'coach'])->middleware('peran:coach')->name('coach.beranda');
+    Route::middleware('peran:coach')->prefix('coach')->name('coach.')->group(function () {
+        Route::get('/', Coach\BerandaController::class)->name('beranda');
+        Route::get('/absensi/{kelompok}/{tanggal}', [Coach\AbsensiController::class, 'edit'])->name('absensi');
+        Route::put('/absensi/{kelompok}/{tanggal}', [Coach\AbsensiController::class, 'update'])->name('absensi.simpan');
+        Route::get('/rapor', [Coach\RaporController::class, 'index'])->name('rapor');
+        Route::get('/rapor/{anak}', [Coach\RaporController::class, 'edit'])->name('rapor.isi');
+        Route::put('/rapor/{anak}', [Coach\RaporController::class, 'update'])->name('rapor.simpan');
+        Route::get('/jadwal', Coach\JadwalController::class)->name('jadwal');
+        Route::get('/profil', Coach\ProfilController::class)->name('profil');
+    });
+
+    // Halaman manajemen dibuat di tahap berikutnya
     Route::view('/manajemen', 'segera', ['peran' => 'manajemen'])->middleware('peran:manajemen')->name('manajemen.beranda');
 });
