@@ -59,5 +59,10 @@ class DatabaseSeeder extends Seeder
                 'lokasi' => 'GOR Spiders, Lapangan A', 'berlaku_mulai' => '2026-10-01',
             ]);
         }
+
+        // Data contoh alur orang tua. Test memanggilnya sendiri dengan tanggal yang dibekukan.
+        if (! app()->runningUnitTests()) {
+            $this->call(DataDemoSeeder::class);
+        }
     }
 }

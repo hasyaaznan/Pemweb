@@ -32,7 +32,22 @@ Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 |---|---|
 | Manajemen | admin@spiders.test |
 | Coach | dita@spiders.test |
-| Orang tua | rina.pratama@gmail.com |
+| Orang tua | rina.pratama@gmail.com (atau No. HP 081234567890) |
+
+Seeder juga mengisi data contoh untuk Raka (anak Bu Rina), dihitung mundur dari tanggal hari ini: 20 latihan terakhir dengan kehadiran 85%, rapor bulan lalu, dan tiga tagihan (lunas, perlu unggah ulang, belum bayar). Lihat `database/seeders/DataDemoSeeder.php`.
+
+## Halaman yang sudah jadi
+
+| Layar mockup | Alamat | Isi |
+|---|---|---|
+| L0 Masuk | /masuk | Masuk dengan email atau No. HP, satu akun untuk semua peran |
+| L16 Lupa kata sandi | /lupa-kata-sandi | Kirim tautan atur ulang lewat email, berlaku 30 menit |
+| L1 Beranda orang tua | /orang-tua | Rapor terbaru, kehadiran 3 bulan, tagihan yang perlu dibayar |
+| L2 Rapor, L17 Absensi | /orang-tua/rapor, /orang-tua/absensi | 5 kategori dengan catatan coach, riwayat latihan |
+| L3 Tagihan, L4 Unggah bukti, L26 Bukti terkirim | /orang-tua/tagihan | Rekening klub, status tiap bulan, unggah bukti JPG/PNG/PDF maks. 2 MB |
+| L19 Profil | /orang-tua/profil | Data akun, WhatsApp admin, keluar |
+
+Halaman coach dan manajemen masih berupa halaman sementara.
 
 ## Test
 
