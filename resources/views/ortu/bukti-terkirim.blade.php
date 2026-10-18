@@ -1,7 +1,7 @@
 {{-- L26 Bukti terkirim --}}
 @php $batas = $bukti->created_at->copy()->addWeekdays((int) \App\Support\Klub::get('batas_verifikasi_hari_kerja', 2)); @endphp
 <x-layout title="Bukti terkirim · Bandung Spiders" class="bg-white">
-    <div class="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-6">
+    <div class="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-6 lg:min-h-0 lg:py-10">
         <header class="flex h-16 items-center justify-end">
             <a href="{{ route('ortu.tagihan') }}" class="flex size-[38px] items-center justify-center rounded-xl bg-ungu-600/10" aria-label="Tutup"><x-icon name="x" /></a>
         </header>
@@ -32,6 +32,6 @@
             </li>
         </ol>
 
-        <a href="{{ route('ortu.tagihan') }}" class="mt-auto flex h-[50px] items-center justify-center rounded-[14px] bg-white font-bold text-ungu-600 ring-2 ring-inset ring-ungu-600">Kembali ke tagihan</a>
+        <a href="{{ route('ortu.tagihan') }}" class="mt-auto flex h-[50px] items-center justify-center rounded-[14px] bg-white font-bold text-ungu-600 lg:mt-8 ring-2 ring-inset ring-ungu-600">Kembali ke tagihan</a>
     </div>
 </x-layout>

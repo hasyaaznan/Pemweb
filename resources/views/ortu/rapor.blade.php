@@ -3,7 +3,7 @@
     <x-tab-rapor aktif="rapor" :persen="$kehadiran['persen']" />
 
     @if ($rapor)
-        <div class="mt-4 flex items-center justify-between px-4">
+        <div class="mt-4 flex items-center justify-between px-4 lg:mt-5">
             <form method="GET" action="{{ route('ortu.rapor') }}">
                 <label class="sr-only" for="periode">Bulan rapor</label>
                 <select id="periode" name="periode" onchange="this.form.submit()" class="pilih-kecil rounded-full bg-ungu-100 py-1.5 pl-3 pr-8 text-sm font-bold text-ungu-600">
@@ -15,15 +15,16 @@
             <span class="text-sm text-redup">Coach {{ $rapor->coach->nama }}</span>
         </div>
 
-        <div class="mt-3 space-y-2.5 px-4" x-data="{ buka: 0 }">
+        <div class="mt-3 space-y-2.5 px-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-4 lg:space-y-0" x-data="{ buka: 0 }">
             @foreach ($rapor->nilaiRapor as $i => $n)
-                <section class="rounded-[18px] bg-white" :class="buka === {{ $i }} ? 'ring-2 ring-ungu-600' : ''">
-                    <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left" @click="buka = buka === {{ $i }} ? null : {{ $i }}" :aria-expanded="buka === {{ $i }}">
+                {{-- Di laptop semua catatan langsung terbuka dalam 2 kolom --}}
+                <section class="rounded-[18px] bg-white lg:ring-0" :class="buka === {{ $i }} ? 'ring-2 ring-ungu-600' : ''">
+                    <button type="button" class="flex w-full items-center gap-3 px-4 py-3 text-left lg:pointer-events-none" @click="buka = buka === {{ $i }} ? null : {{ $i }}" :aria-expanded="buka === {{ $i }}">
                         <h2 class="flex-1 font-display text-[26px] font-extrabold">{{ $n->kategori }}</h2>
                         <x-nilai :nilai="$n->nilai" :besar="true" />
-                        <x-icon name="down" class="text-redup transition-transform" ::class="buka === {{ $i }} && 'rotate-180'" />
+                        <x-icon name="down" class="text-redup transition-transform lg:hidden" ::class="buka === {{ $i }} && 'rotate-180'" />
                     </button>
-                    <div x-cloak x-show="buka === {{ $i }}" x-transition.opacity.duration.200ms class="mx-4 border-t border-garis pb-4 pt-3">
+                    <div x-cloak x-show="buka === {{ $i }}" x-transition.opacity.duration.200ms class="mx-4 border-t border-garis pb-4 pt-3 lg:!block">
                         <p class="text-sm font-semibold text-ungu-600">Catatan Coach {{ $rapor->coach->nama }}</p>
                         @forelse (preg_split('/\R/', trim((string) $n->catatan)) as $baris)
                             @if ($baris !== '')

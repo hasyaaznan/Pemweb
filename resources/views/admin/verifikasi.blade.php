@@ -4,7 +4,7 @@
     $kotak = [['menunggu', 'Menunggu'], ['disetujui', 'Lunas'], ['ditolak', 'Ditolak']];
 @endphp
 <x-admin title="Verifikasi iuran" aktif="Verifikasi">
-    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-4 pb-16 pt-6 text-white">
+    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 lg:rounded-[28px] lg:px-8 px-4 pb-16 pt-6 text-white">
         <x-court />
         <div class="relative flex items-start justify-between">
             <div>
@@ -15,8 +15,8 @@
         </div>
     </header>
 
-    <div class="relative -mt-10 px-4" x-data="{ cari: '' }">
-        <nav class="grid grid-cols-3 gap-2" aria-label="Status bukti">
+    <div class="relative -mt-10 px-4 lg:px-8" x-data="{ cari: '' }">
+        <nav class="grid grid-cols-3 gap-2 lg:gap-4" aria-label="Status bukti">
             @foreach ($kotak as [$kunci, $label])
                 <a href="{{ route('manajemen.verifikasi', $kunci === 'menunggu' ? [] : ['status' => $kunci]) }}" @class(['rounded-[18px] px-3 py-2.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]', 'tab-aktif bg-oranye-500 text-ungu-900' => $tab === $kunci, 'bg-white' => $tab !== $kunci]) @if ($tab === $kunci) aria-current="page" @endif>
                     <p class="font-display text-[30px] font-extrabold leading-none">{{ $jumlah[$kunci] }}</p>
@@ -28,12 +28,12 @@
             <p class="mt-2 text-sm text-redup">Diperiksa sejak 1 {{ now()->translatedFormat('F Y') }}.</p>
         @endif
 
-        <label class="mt-3 flex h-12 items-center gap-2 rounded-[14px] bg-white px-3.5 ring-[1.5px] ring-inset ring-garis focus-within:ring-2 focus-within:ring-ungu-600">
+        <label class="mt-3 flex h-12 lg:mt-5 lg:max-w-md items-center gap-2 rounded-[14px] bg-white px-3.5 ring-[1.5px] ring-inset ring-garis focus-within:ring-2 focus-within:ring-ungu-600">
             <x-icon name="search" size="18" class="text-redup" />
             <input type="search" x-model="cari" placeholder="Cari nama anak" aria-label="Cari nama anak" class="min-w-0 flex-1 bg-transparent text-[15px] outline-none">
         </label>
 
-        <div class="mt-2.5 space-y-2">
+        <div class="mt-2.5 space-y-2 lg:grid lg:grid-cols-2 lg:gap-3 lg:space-y-0">
             @forelse ($bukti as $b)
                 @php $anak = $b->tagihan->anak; $telat = $b->status === 'menunggu' && HariKerja::lewatBatas($b->created_at); @endphp
                 <a href="{{ route('manajemen.verifikasi.detail', $b) }}" x-show="cari === '' || @js(mb_strtolower($anak->nama)).includes(cari.toLowerCase())"

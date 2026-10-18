@@ -24,7 +24,7 @@
 
         @if ($belum->isNotEmpty())
             <h3 class="mb-2 mt-4 text-sm text-redup">Belum selesai</h3>
-            <ul class="space-y-2">
+            <ul class="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2.5 lg:space-y-0">
                 @foreach ($belum as $i => $a)
                     @php $isi = $a->rapor_ini?->nilai_rapor_count ?? 0; @endphp
                     <li>
@@ -40,7 +40,7 @@
 
         @if ($selesai->isNotEmpty())
             <h3 class="mb-2 mt-4 text-sm text-redup">Selesai, sudah bisa dibaca orang tua</h3>
-            <ul class="space-y-2">
+            <ul class="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2.5 lg:space-y-0">
                 @foreach ($selesai as $a)
                     <li>
                         <a href="{{ route('coach.rapor.isi', $a) }}" class="flex items-center gap-3 rounded-[16px] bg-white px-3 py-2.5">

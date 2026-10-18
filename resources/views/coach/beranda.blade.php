@@ -5,7 +5,7 @@
     $tgl = $dipilih ? Carbon::parse($dipilih) : null;
 @endphp
 <x-coach title="Absensi" aktif="Absensi">
-    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-4 pb-16 pt-6 text-white">
+    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 lg:rounded-[28px] lg:px-8 px-4 pb-16 pt-6 text-white">
         <x-court />
         <div class="relative flex items-start justify-between">
             <div>
@@ -16,7 +16,7 @@
         </div>
     </header>
 
-    <div class="relative -mt-10 px-4">
+    <div class="relative -mt-10 px-4 lg:px-8">
         @if ($hariLatihan->isEmpty())
             <p class="rounded-[18px] bg-white p-4 text-sm text-redup shadow-[0_2px_10px_rgba(34,0,90,.06)]">Tidak ada latihan untuk kelompok Anda dalam 7 hari terakhir dan 7 hari ke depan.</p>
         @else
@@ -31,7 +31,7 @@
             </nav>
 
             <h2 class="mt-5 font-display text-2xl font-extrabold text-ungu-700">{{ $tgl->translatedFormat('l, j F') }}</h2>
-            <div class="mt-2 space-y-2.5">
+            <div class="mt-2 space-y-2.5 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
                 @foreach ($sesi as $i => $s)
                     @php
                         $gelap = $i === 0;

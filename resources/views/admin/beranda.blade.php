@@ -12,7 +12,7 @@
     ];
 @endphp
 <x-admin title="Beranda" aktif="Beranda">
-    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-4 pb-16 pt-6 text-white">
+    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 lg:rounded-[28px] lg:px-8 px-4 pb-16 pt-6 text-white">
         <x-court />
         <div class="relative flex items-start justify-between">
             <div>
@@ -23,8 +23,8 @@
         </div>
     </header>
 
-    <div class="relative -mt-10 px-4">
-        <div class="grid grid-cols-2 gap-2.5">
+    <div class="relative -mt-10 px-4 lg:px-8">
+        <div class="grid grid-cols-2 gap-2.5 lg:gap-4">
             <a href="{{ route('manajemen.member') }}" class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
                 <p class="font-display text-[34px] font-extrabold leading-none text-ungu-700">{{ $memberAktif }}</p>
                 <p class="mt-1 text-sm text-redup">Member aktif</p>
@@ -44,6 +44,8 @@
             </form>
         @endif
 
+        <div class="lg:mt-3 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6">
+        <div>
         <h2 class="mb-2 mt-5 font-display text-[22px] font-extrabold text-ungu-700">Perlu tindakan</h2>
         <div class="divide-y divide-garis rounded-[18px] bg-white px-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             @foreach ($tugas as [$angka, $judul, $ket, $warna, $tautan])
@@ -58,6 +60,9 @@
             @endforeach
         </div>
 
+        </div>
+
+        <div>
         <h2 class="mb-2 mt-5 font-display text-[22px] font-extrabold text-ungu-700">Jadwal latihan</h2>
         <a href="{{ route('manajemen.jadwal') }}" class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-ungu-100 text-ungu-600"><x-icon name="cal" /></span>
@@ -73,5 +78,7 @@
                 <span>{{ $s->tanggal->translatedFormat('l j M') }}: {{ $s->kelompokUsia->nama }} {{ $s->status === 'batal' ? 'batal' : 'mulai '.Format::jam($s->jam_mulai) }}@if ($s->alasan_perubahan) ({{ $s->alasan_perubahan }})@endif</span>
             </p>
         @endforeach
+        </div>
+        </div>
     </div>
 </x-admin>

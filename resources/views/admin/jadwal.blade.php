@@ -4,7 +4,8 @@
     use App\Support\Format;
 @endphp
 <x-admin title="Jadwal latihan" aktif="Beranda" judul="Jadwal latihan" :kembali="route('manajemen.beranda')">
-    <div class="px-4">
+    <div class="px-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:items-start lg:gap-8">
+        <div>
         <div class="flex items-center justify-between">
             <h2 class="font-display text-[22px] font-extrabold text-ungu-700">Jadwal mingguan</h2>
             <a href="{{ route('manajemen.jadwal.tambah') }}" class="inline-flex h-9 items-center gap-1 rounded-xl bg-ungu-600 px-3 text-sm font-bold text-white"><x-icon name="plus" size="16" /> Tambah</a>
@@ -34,7 +35,10 @@
             @endforeach
         </div>
 
-        <h2 class="mb-0.5 mt-6 font-display text-[22px] font-extrabold text-ungu-700">4 minggu ke depan</h2>
+        </div>
+
+        <div>
+        <h2 class="mb-0.5 mt-6 font-display text-[22px] font-extrabold text-ungu-700 lg:mt-0">4 minggu ke depan</h2>
         <p class="mb-2.5 text-sm text-redup">Ketuk latihan untuk mengubah jam, tempat, atau membatalkannya. Orang tua di kelompok itu akan diberi tahu.</p>
         <div class="space-y-1.5">
             @forelse ($sesi->groupBy(fn ($s) => $s->tanggal->toDateString()) as $tanggal => $hari)
@@ -54,6 +58,7 @@
             @empty
                 <p class="rounded-[18px] bg-white p-4 text-sm text-redup">Tidak ada latihan dalam 4 minggu ke depan.</p>
             @endforelse
+        </div>
         </div>
     </div>
 </x-admin>

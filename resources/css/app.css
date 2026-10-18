@@ -56,7 +56,7 @@
    Penanda tab aktif (status iuran, kelompok, tanggal) bergeser ke tab baru karena memakai nama yang sama. */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .22s; }
-::view-transition-group(tab-aktif), ::view-transition-group(nav-aktif) { animation-duration: .3s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
+::view-transition-group(tab-aktif), ::view-transition-group(nav-aktif), ::view-transition-group(samping-aktif) { animation-duration: .3s; animation-timing-function: cubic-bezier(.2,.8,.2,1); }
 .tab-aktif { view-transition-name: tab-aktif; }
 
 /* Motion: satu momen per layar (lihat catatan motion di mockup v2) */
