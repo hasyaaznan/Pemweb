@@ -2,7 +2,7 @@
 @php use App\Support\Format; @endphp
 <x-layout title="Unggah bukti · Bandung Spiders">
     <form method="POST" action="{{ route('ortu.tagihan.simpan', $tagihan) }}" enctype="multipart/form-data"
-        class="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-6"
+        class="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-6 lg:my-10 lg:min-h-0 lg:max-w-xl lg:rounded-[28px] lg:bg-white lg:px-10 lg:pb-10 lg:pt-4 lg:shadow-[0_10px_40px_rgba(34,0,90,.10)]"
         x-data="unggahBukti({{ (int) old('nominal_transfer', $tagihan->nominal) }})" @submit="if (salah) $event.preventDefault()">
         @csrf
         <header class="flex h-16 items-center justify-between">
@@ -48,7 +48,7 @@
         </div>
         @error('nominal_transfer')<p class="mt-1 text-sm font-semibold text-merah">{{ $message }}</p>@enderror
 
-        <button class="mt-auto flex h-[50px] w-full items-center justify-center rounded-[14px] bg-oranye-500 text-base font-bold text-ungu-900 disabled:opacity-50" :disabled="salah">Kirim bukti</button>
+        <button class="mt-auto flex h-[50px] lg:mt-8 w-full items-center justify-center rounded-[14px] bg-oranye-500 text-base font-bold text-ungu-900 disabled:opacity-50" :disabled="salah">Kirim bukti</button>
     </form>
 
     <script>

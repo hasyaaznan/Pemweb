@@ -1,12 +1,12 @@
 {{-- L16 Lupa kata sandi --}}
-<x-layout title="Lupa kata sandi · Bandung Spiders">
-    <div class="mx-auto flex min-h-screen max-w-md flex-col px-4">
+<x-auth title="Lupa kata sandi · Bandung Spiders">
+    <div class="mx-auto flex min-h-screen max-w-md flex-col px-4 lg:min-h-0 lg:px-0">
         <header class="flex h-16 items-center justify-between">
             <a href="{{ route('login') }}" class="flex size-[38px] items-center justify-center rounded-xl bg-ungu-600/10" aria-label="Kembali"><x-icon name="back" /></a>
             <h1 class="font-display text-[22px] font-extrabold">Lupa kata sandi</h1>
             <span class="size-[38px]"></span>
         </header>
-        <form method="POST" action="{{ route('password.email') }}" class="flex flex-1 flex-col pb-6">
+        <form method="POST" action="{{ route('password.email') }}" class="flex flex-1 flex-col pb-6 lg:pb-0">
             @csrf
             <span class="mt-2 flex size-16 items-center justify-center rounded-full bg-ungu-100 text-ungu-600"><x-icon name="lock" size="26" /></span>
             <h2 class="mt-4 font-display text-[30px] font-extrabold leading-none">Atur ulang kata sandi</h2>
@@ -26,7 +26,7 @@
                 </p>
             @endif
 
-            <button class="mt-auto flex h-[50px] w-full items-center justify-center rounded-[14px] bg-oranye-500 text-base font-bold text-ungu-900">Kirim tautan</button>
+            <button class="mt-auto flex h-[50px] lg:mt-8 w-full items-center justify-center rounded-[14px] bg-oranye-500 text-base font-bold text-ungu-900">Kirim tautan</button>
         </form>
     </div>
-</x-layout>
+</x-auth>

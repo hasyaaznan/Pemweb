@@ -19,7 +19,7 @@
             <p class="mt-3 rounded-[18px] bg-white p-4 text-sm text-redup">Belum ada anak aktif di kelompok ini.</p>
         @endif
 
-        <ul class="mt-3 space-y-2">
+        <ul class="mt-3 space-y-2 lg:grid lg:grid-cols-2 lg:gap-2.5 lg:space-y-0">
             @foreach ($anak as $a)
                 <li class="flex items-center gap-3 rounded-[16px] bg-white py-2 pl-2.5 pr-2">
                     <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-ungu-100 font-display text-base font-extrabold text-ungu-600">{{ mb_substr($a->nama, 0, 1) }}</span>
@@ -39,10 +39,10 @@
         <p class="mt-3 text-center text-xs text-redup">H = hadir, I = izin, A = alpa. Semua anak otomatis Hadir; ubah yang tidak datang saja.</p>
 
         @if ($anak->isNotEmpty())
-            <div class="fixed inset-x-0 bottom-[86px] z-10 mx-auto max-w-md px-4">
+            <div class="fixed inset-x-0 bottom-[86px] z-10 mx-auto max-w-md px-4 lg:sticky lg:bottom-6 lg:mx-0 lg:mt-5 lg:max-w-sm lg:px-0">
                 <button type="submit" class="flex h-[50px] w-full items-center justify-center rounded-[14px] bg-oranye-500 text-base font-bold text-ungu-900 shadow-[0_6px_18px_rgba(248,146,28,.35)]">Simpan absensi ({{ $anak->count() }} anak)</button>
             </div>
-            <div class="h-16"></div>
+            <div class="h-16 lg:hidden"></div>
         @endif
     </form>
 </x-coach>

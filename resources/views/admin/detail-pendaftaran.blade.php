@@ -12,7 +12,8 @@
     $baris = 'flex justify-between gap-3 py-2.5';
 @endphp
 <x-admin :title="$p->nama_anak" aktif="Member" judul="Pendaftar" :kembali="route('manajemen.pendaftaran')">
-    <div class="space-y-3 px-4 pb-24" x-data="{ tolak: {{ $errors->has('alasan') ? 'true' : 'false' }}, alasan: @js(old('alasan', '')) }">
+    <div class="space-y-3 px-4 pb-24 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0 lg:pb-0" x-data="{ tolak: {{ $errors->has('alasan') ? 'true' : 'false' }}, alasan: @js(old('alasan', '')) }">
+        <div class="space-y-3">
         <div class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             <p class="text-[13px] text-redup">{{ PendaftaranController::nomor($p) }}, dikirim {{ $p->created_at->translatedFormat('j M Y, H.i') }}</p>
             <p class="mt-0.5 font-display text-[26px] font-extrabold leading-none">{{ $p->nama_anak }}</p>
@@ -29,7 +30,10 @@
             <div class="{{ $baris }}"><dt class="text-redup">Alamat</dt><dd class="text-right font-bold">{{ $p->alamat }}</dd></div>
         </dl>
 
-        <h2 class="pt-1 font-display text-[22px] font-extrabold text-ungu-700">Dokumen</h2>
+        </div>
+
+        <div class="space-y-3">
+        <h2 class="pt-1 font-display text-[22px] font-extrabold text-ungu-700 lg:pt-0">Dokumen</h2>
         <div class="grid grid-cols-3 gap-2">
             @foreach (PendaftaranController::DOKUMEN as $jenis => $nama)
                 @php $d = $p->dokumenPendaftaran->firstWhere('jenis', $jenis); @endphp
@@ -66,7 +70,7 @@
         </a>
 
         @if ($p->status === 'menunggu_verifikasi')
-            <div class="fixed inset-x-0 bottom-[90px] mx-auto flex max-w-md gap-2.5 px-4">
+            <div class="fixed inset-x-0 bottom-[90px] mx-auto flex max-w-md gap-2.5 px-4 lg:static lg:mx-0 lg:mt-4 lg:max-w-none lg:px-0">
                 <button type="button" @click="tolak = true" class="flex h-[50px] flex-[.6] items-center justify-center rounded-[14px] bg-white font-bold text-merah ring-2 ring-inset ring-merah">Tolak</button>
                 <form method="POST" action="{{ route('manajemen.pendaftaran.terima', $p) }}" class="flex flex-1">
                     @csrf
@@ -74,14 +78,14 @@
                 </form>
             </div>
 
-            <div x-cloak x-show="tolak" class="fixed inset-0 z-40" role="dialog" aria-modal="true" aria-labelledby="judul-tolak" @keydown.escape.window="tolak = false">
+            <div x-cloak x-show="tolak" class="fixed inset-0 z-40 lg:flex lg:items-center lg:justify-center" role="dialog" aria-modal="true" aria-labelledby="judul-tolak" @keydown.escape.window="tolak = false">
                 <div x-show="tolak" x-transition.opacity.duration.280ms class="absolute inset-0 bg-ungu-900/45" @click="tolak = false"></div>
                 <form method="POST" action="{{ route('manajemen.pendaftaran.tolak', $p) }}" x-show="tolak"
-                    x-transition:enter="transition duration-[280ms] ease-out" x-transition:enter-start="translate-y-full" x-transition:enter-end="translate-y-0"
-                    x-transition:leave="transition duration-200 ease-in" x-transition:leave-start="translate-y-0" x-transition:leave-end="translate-y-full"
-                    class="absolute inset-x-0 bottom-0 mx-auto max-w-md rounded-t-[28px] bg-white px-4 pb-5 pt-2.5">
+                    x-transition:enter="transition duration-[280ms] ease-out" x-transition:enter-start="translate-y-full lg:translate-y-4 lg:opacity-0" x-transition:enter-end="translate-y-0 lg:opacity-100"
+                    x-transition:leave="transition duration-200 ease-in" x-transition:leave-start="translate-y-0 lg:opacity-100" x-transition:leave-end="translate-y-full lg:translate-y-4 lg:opacity-0"
+                    class="absolute inset-x-0 bottom-0 mx-auto max-w-md rounded-t-[28px] bg-white px-4 pb-5 pt-2.5 lg:relative lg:inset-auto lg:w-full lg:rounded-[28px] lg:p-7">
                     @csrf
-                    <span class="mx-auto mb-3 block h-[5px] w-11 rounded-full bg-garis"></span>
+                    <span class="mx-auto mb-3 block h-[5px] w-11 rounded-full bg-garis lg:hidden"></span>
                     <h2 id="judul-tolak" class="font-display text-[28px] font-extrabold">Tolak pendaftaran ini?</h2>
                     <p class="mb-3 mt-1 text-sm text-redup">Alasan ini masuk ke pesan WhatsApp untuk pendaftar.</p>
                     <label for="alasan" class="mb-1.5 block text-[13px] font-semibold text-ungu-700">Alasan (wajib)</label>
@@ -95,5 +99,6 @@
                 </form>
             </div>
         @endif
+        </div>
     </div>
 </x-admin>

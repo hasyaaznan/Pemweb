@@ -26,17 +26,18 @@
             </div>
         @endif
 
-        <div class="mt-3 space-y-2">
+        {{-- Di laptop kelima kategori langsung terbuka dalam 2 kolom --}}
+        <div class="mt-3 space-y-2 lg:grid lg:grid-cols-2 lg:items-start lg:gap-3 lg:space-y-0">
             @foreach ($kategori as $i => $k)
-                <section class="rounded-[18px] bg-white" :class="buka === {{ $k->id }} && 'ring-2 ring-ungu-600'">
+                <section class="rounded-[18px] bg-white lg:ring-0" :class="buka === {{ $k->id }} && 'ring-2 ring-ungu-600'">
                     <input type="hidden" name="nilai[{{ $k->id }}]" :value="nilai[{{ $k->id }}]" value="{{ $awal[$k->id] }}">
-                    <button type="button" class="flex w-full items-center gap-3 px-4 py-2.5 text-left" @click="buka = buka === {{ $k->id }} ? null : {{ $k->id }}" :aria-expanded="buka === {{ $k->id }}">
+                    <button type="button" class="flex w-full items-center gap-3 px-4 py-2.5 text-left lg:pointer-events-none lg:pt-3.5" @click="buka = buka === {{ $k->id }} ? null : {{ $k->id }}" :aria-expanded="buka === {{ $k->id }}">
                         <span class="flex size-[22px] shrink-0 items-center justify-center rounded-full" :class="nilai[{{ $k->id }}] ? 'bg-hijau text-white' : 'bg-garis'"><x-icon name="check" size="14" x-show="nilai[{{ $k->id }}]" /></span>
                         <span class="flex-1 font-display text-[22px] font-extrabold">{{ $i + 1 }}. {{ $k->nama }}</span>
-                        <span x-show="buka !== {{ $k->id }}" class="text-sm text-redup" x-text="nilai[{{ $k->id }}] ? nilai[{{ $k->id }}].replace('-', '−') : 'belum dinilai'"></span>
-                        <x-icon name="down" size="20" class="text-redup transition-transform" ::class="buka === {{ $k->id }} && 'rotate-180'" />
+                        <span x-show="buka !== {{ $k->id }}" class="text-sm text-redup lg:!hidden" x-text="nilai[{{ $k->id }}] ? nilai[{{ $k->id }}].replace('-', '−') : 'belum dinilai'"></span>
+                        <x-icon name="down" size="20" class="text-redup transition-transform lg:hidden" ::class="buka === {{ $k->id }} && 'rotate-180'" />
                     </button>
-                    <div x-cloak x-show="buka === {{ $k->id }}" x-transition.opacity.duration.200ms class="px-4 pb-4">
+                    <div x-cloak x-show="buka === {{ $k->id }}" x-transition.opacity.duration.200ms class="px-4 pb-4 lg:!block">
                         <p class="text-[13px] font-semibold text-redup">Nilai</p>
                         <div class="mt-1.5 grid grid-cols-3 gap-2">
                             @foreach (['A', 'B', 'C'] as $h)
@@ -62,10 +63,10 @@
         </div>
         <p class="mt-3 text-xs text-redup">A sangat baik, B baik, C perlu latihan. Orang tua baru bisa membaca rapor setelah kelima kategori dinilai.</p>
 
-        <div class="fixed inset-x-0 bottom-[86px] z-10 mx-auto flex max-w-md gap-2 px-4">
+        <div class="fixed inset-x-0 bottom-[86px] z-10 mx-auto flex max-w-md gap-2 px-4 lg:sticky lg:bottom-6 lg:mx-0 lg:mt-5 lg:max-w-md lg:rounded-[18px] lg:bg-white/90 lg:p-2.5 lg:shadow-[0_8px_26px_rgba(34,0,90,.16)] lg:backdrop-blur">
             <button type="submit" name="aksi" value="simpan" class="flex h-[50px] flex-[0.6] items-center justify-center rounded-[14px] bg-white font-bold text-ungu-600 ring-2 ring-inset ring-ungu-600">Simpan</button>
             <button type="submit" name="aksi" value="lanjut" class="flex h-[50px] flex-1 items-center justify-center rounded-[14px] bg-oranye-500 font-bold text-ungu-900">Simpan & lanjut</button>
         </div>
-        <div class="h-16"></div>
+        <div class="h-16 lg:hidden"></div>
     </form>
 </x-coach>

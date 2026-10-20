@@ -10,11 +10,11 @@
     $waktu = fn ($t) => $t->isToday() ? $t->format('H.i') : ($t->greaterThan(now()->subDays(6)->startOfDay()) ? $t->translatedFormat('D') : $t->translatedFormat('j M'));
 @endphp
 <x-ortu title="Notifikasi" aktif="Beranda">
-    <header class="flex h-16 items-center justify-between px-3.5">
+    <header class="flex h-16 items-center justify-between px-3.5 lg:mb-2 lg:h-auto lg:max-w-3xl lg:justify-start lg:gap-4 lg:px-4">
         <a href="{{ route('ortu.beranda') }}" class="flex size-[38px] items-center justify-center rounded-xl bg-ungu-600/10" aria-label="Kembali"><x-icon name="back" /></a>
-        <h1 class="font-display text-[22px] font-extrabold">Notifikasi</h1>
+        <h1 class="font-display text-[22px] font-extrabold lg:text-4xl">Notifikasi</h1>
         @if ($belumDibaca)
-            <form method="POST" action="{{ route('ortu.notifikasi.baca') }}">
+            <form method="POST" action="{{ route('ortu.notifikasi.baca') }}" class="lg:ml-auto">
                 @csrf
                 <button type="submit" class="flex size-[38px] items-center justify-center rounded-xl bg-ungu-600/10" aria-label="Tandai semua sudah dibaca" title="Tandai semua sudah dibaca"><x-icon name="check" /></button>
             </form>
@@ -23,7 +23,7 @@
         @endif
     </header>
 
-    <div class="px-4">
+    <div class="px-4 lg:max-w-3xl">
         @if ($hariIni->isEmpty() && $sebelumnya->isEmpty())
             <p class="rounded-[18px] bg-white p-4 text-sm text-redup">Belum ada notifikasi. Rapor baru, tagihan, dan perubahan jadwal akan muncul di sini.</p>
         @endif

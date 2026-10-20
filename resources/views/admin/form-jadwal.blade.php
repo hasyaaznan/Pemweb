@@ -5,7 +5,7 @@
     $label = 'mb-1.5 mt-4 block text-[13px] font-semibold text-ungu-700';
 @endphp
 <x-admin :title="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" aktif="Beranda" :judul="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" :kembali="route('manajemen.jadwal')">
-    <form method="POST" action="{{ $baru ? route('manajemen.jadwal.simpan') : route('manajemen.jadwal.perbarui', $jadwal) }}" class="px-4">
+    <form method="POST" action="{{ $baru ? route('manajemen.jadwal.simpan') : route('manajemen.jadwal.perbarui', $jadwal) }}" class="px-4 lg:max-w-xl">
         @csrf
         @unless ($baru) @method('PUT') @endunless
 
@@ -55,7 +55,7 @@
     </form>
 
     @unless ($baru)
-        <form method="POST" action="{{ route('manajemen.jadwal.hapus', $jadwal) }}" class="mt-2.5 px-4" x-data @submit="if (! confirm('Hapus jadwal {{ $jadwal->kelompokUsia->nama }} hari {{ $hari[$jadwal->hari] }}? Latihan di hari itu tidak muncul lagi.')) $event.preventDefault()">
+        <form method="POST" action="{{ route('manajemen.jadwal.hapus', $jadwal) }}" class="mt-2.5 px-4 lg:max-w-xl" x-data @submit="if (! confirm('Hapus jadwal {{ $jadwal->kelompokUsia->nama }} hari {{ $hari[$jadwal->hari] }}? Latihan di hari itu tidak muncul lagi.')) $event.preventDefault()">
             @csrf
             @method('DELETE')
             <button type="submit" class="flex h-[50px] w-full items-center justify-center rounded-[14px] bg-white font-bold text-merah ring-[1.5px] ring-inset ring-merah-bg">Hapus jadwal</button>

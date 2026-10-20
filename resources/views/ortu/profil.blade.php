@@ -1,14 +1,14 @@
 {{-- L19 Profil orang tua --}}
 @php $wa = preg_replace('/^0/', '62', (string) \App\Support\Klub::get('whatsapp_admin')); @endphp
 <x-ortu title="Profil" aktif="Profil">
-    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 px-4 pb-16 pt-6 text-center text-white">
+    <header class="relative overflow-hidden rounded-b-[34px] bg-ungu-900 lg:rounded-[28px] lg:px-8 px-4 pb-16 pt-6 text-center text-white">
         <x-court />
         <h1 class="relative font-display text-[22px] font-extrabold">Profil</h1>
         <span class="relative mx-auto mt-4 flex size-20 items-center justify-center rounded-full bg-oranye-500 font-display text-4xl font-extrabold text-ungu-900 ring-4 ring-white/20">{{ mb_substr($user->nama, 0, 1) }}</span>
         <p class="relative mt-3 font-display text-[28px] font-extrabold leading-none">{{ $user->nama }}</p>
         <p class="relative mt-1 text-sm text-white/75">Orang tua, member sejak {{ ($semuaAnak->min('tanggal_masuk') ?? $user->created_at)?->translatedFormat('M Y') }}</p>
     </header>
-    <div class="relative -mt-10 space-y-3 px-4">
+    <div class="relative -mt-10 space-y-3 px-4 lg:mx-auto lg:max-w-2xl">
         <dl class="divide-y divide-garis rounded-[18px] bg-white px-4 text-[15px] shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             @foreach ($semuaAnak as $a)
                 <div class="flex justify-between gap-3 py-3"><dt class="text-redup">Anak</dt><dd class="text-right font-bold">{{ $a->nama }}, {{ $a->kelompokUsia->nama }}</dd></div>

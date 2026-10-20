@@ -40,6 +40,8 @@ Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan 
 
 ## Halaman yang sudah jadi
 
+Semua halaman bisa dibuka di ponsel dan laptop. Di layar selebar 1024 px ke atas, halaman orang tua, coach, dan Admin memakai menu samping kiri, dan daftar serta detail tampil dalam dua kolom.
+
 | Layar mockup | Alamat | Isi |
 |---|---|---|
 | L10 Landing, L12 Menu | / | Program, biaya, jadwal dari database, lokasi dan WhatsApp Admin; tampilan ponsel dan laptop |
