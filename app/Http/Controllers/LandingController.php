@@ -38,6 +38,8 @@ class LandingController extends Controller
             'tautanWa' => 'https://wa.me/'.$wa.'?text='.rawurlencode('Halo Admin Bandung Spiders, saya ingin bertanya tentang latihan basket untuk anak.'),
             'tautanMaps' => 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($alamat),
             'petaEmbed' => 'https://maps.google.com/maps?q='.rawurlencode($alamat).'&output=embed',
+            // Sejarah, coach, prestasi, galeri, tanya jawab (config/landing.php, masih isi contoh)
+            'konten' => config('landing'),
         ]);
     }
 }

@@ -38,13 +38,19 @@ Akun contoh (kata sandi `password`, hanya untuk uji coba lokal):
 
 Seeder juga mengisi data contoh yang dihitung dari tanggal hari ini: 20 latihan terakhir Raka (anak Bu Rina) dengan kehadiran 85%, rapor bulan lalu, tiga tagihan (lunas, perlu unggah ulang, belum bayar), 9 anak lain di KU 6–8 dan KU 9–12, rapor bulan ini yang sebagian sudah diisi, satu perubahan jadwal minggu depan, iuran bulan ini untuk anak lain (4 bukti menunggu verifikasi, 3 lunas, 3 belum bayar), 3 pendaftar baru dengan dokumen contoh, dan 5 notifikasi untuk Bu Rina. Lihat `database/seeders/DataDemoSeeder.php`.
 
+## Isi landing page
+
+Sejarah klub, daftar coach, siswa berprestasi, galeri, dan tanya jawab diisi di `config/landing.php`. Isinya **masih contoh**: foto dari Unsplash (lisensi gratis) di `public/images/contoh/`, video contoh di `public/video/`, nama dan cerita karangan. Selama `'contoh' => true`, setiap bagian itu memakai label "Isi contoh". Setelah foto, video, dan cerita asli dari klub masuk, ganti isinya lalu ubah menjadi `false`. Video galeri bisa berupa file mp4/webm di `public/` atau ID video YouTube.
+
+Gerak di landing page memakai [GSAP](https://gsap.com) (judul hero, linimasa sejarah yang mengikuti gulir, daftar prestasi) dan [Lenis](https://lenis.darkroom.engineering) (gulir halus). Keduanya hanya diunduh di landing page (`resources/js/landing.js`) dan tidak dijalankan kalau pengguna menyalakan pengaturan "kurangi gerakan" di perangkatnya.
+
 ## Halaman yang sudah jadi
 
 Semua halaman bisa dibuka di ponsel dan laptop. Di layar selebar 1024 px ke atas, halaman orang tua, coach, dan Admin memakai menu samping kiri, dan daftar serta detail tampil dalam dua kolom.
 
 | Layar mockup | Alamat | Isi |
 |---|---|---|
-| L10 Landing, L12 Menu | / | Program, biaya, jadwal dari database, lokasi dan WhatsApp Admin; tampilan ponsel dan laptop |
+| L10 Landing, L12 Menu | / | Program, biaya, jadwal dari database, lokasi dan WhatsApp Admin; sejarah klub, coach, siswa berprestasi, galeri foto/video, dan tanya jawab dari `config/landing.php`; tampilan ponsel dan laptop |
 | L13, L14, L11, L15 Pendaftaran | /daftar | Data anak (kelompok usia otomatis dari tanggal lahir), orang tua, 3 dokumen maks. 2 MB |
 | L0 Masuk | /masuk | Masuk dengan email atau No. HP, satu akun untuk semua peran |
 | L16 Lupa kata sandi | /lupa-kata-sandi | Kirim tautan atur ulang lewat email, berlaku 30 menit |

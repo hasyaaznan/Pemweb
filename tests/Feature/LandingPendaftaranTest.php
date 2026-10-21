@@ -54,6 +54,27 @@ class LandingPendaftaranTest extends TestCase
             ->assertSee('Daftar sekarang');
     }
 
+    public function test_landing_menampilkan_sejarah_coach_prestasi_galeri_dan_tanya_jawab_dari_config(): void
+    {
+        config([
+            'landing.contoh' => false,
+            'landing.sejarah.linimasa' => [['tahun' => '2015', 'isi' => 'Latihan pertama di Dago.']],
+            'landing.prestasi' => [['nama' => 'Naufal R.', 'kelompok' => 'KU 13–16', 'prestasi' => 'Pemain terbaik 2025', 'foto' => 'images/contoh/prestasi-1.webp']],
+            'landing.galeri' => [['jenis' => 'video', 'youtube' => 'abc123', 'poster' => 'images/contoh/video-poster.webp', 'keterangan' => 'Latihan Sabtu']],
+        ]);
+
+        $this->get('/')->assertOk()
+            ->assertSeeInOrder(['Program per usia', 'Sejarah klub', 'Coach kami', 'Siswa berprestasi', 'Galeri latihan', 'Jadwal latihan', 'Yang sering ditanyakan'])
+            ->assertSee('Latihan pertama di Dago.')
+            ->assertSee('Pemain terbaik 2025')
+            ->assertSee('Lihat video: Latihan Sabtu')
+            ->assertSee('Bagaimana cara membayar iuran?')
+            ->assertDontSee('Isi contoh');
+
+        config(['landing.contoh' => true]);
+        $this->get('/')->assertSee('Isi contoh');
+    }
+
     public function test_landing_menyapa_member_yang_sudah_masuk(): void
     {
         $rina = User::where('email', 'rina.pratama@gmail.com')->first();

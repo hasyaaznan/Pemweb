@@ -50,6 +50,10 @@
 
     /* Tautan ke bagian di halaman yang sama (Program, Jadwal, Lokasi) bergulir halus */
     html { scroll-behavior: smooth; }
+
+    /* Judul tidak menyisakan satu kata di baris terakhir */
+    :is(h1, h2, h3) { text-wrap: balance; }
+    p { text-wrap: pretty; }
 }
 
 /* Pindah halaman dengan crossfade singkat (Chrome, Edge, Safari 18+); browser lain tetap pindah biasa.
@@ -72,6 +76,11 @@
 /* Pendaftaran terkirim (L15): centang muncul dengan efek pop */
 @keyframes pop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); } }
 .anim-pop { animation: pop .45s cubic-bezier(.2,.8,.2,1) both; }
+
+/* Tanya jawab di landing: jawaban membuka dengan tinggi yang beranimasi (Chrome 131+; browser lain langsung terbuka) */
+:root { interpolate-size: allow-keywords; }
+details::details-content { block-size: 0; overflow: hidden; transition: block-size .25s cubic-bezier(.2,.8,.2,1), content-visibility .25s allow-discrete; }
+details[open]::details-content { block-size: auto; }
 
 /* Satu momen motion per layar; dimatikan untuk pengguna "kurangi gerakan" */
 @media (prefers-reduced-motion: reduce) {
