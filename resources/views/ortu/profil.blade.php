@@ -16,6 +16,7 @@
             <div class="flex justify-between gap-3 py-3"><dt class="text-redup">No. WhatsApp</dt><dd class="font-bold">{{ $user->no_hp }}</dd></div>
             <div class="flex justify-between gap-3 py-3"><dt class="text-redup">Email</dt><dd class="truncate font-bold">{{ $user->email }}</dd></div>
         </dl>
+        <a href="{{ route('profil.ubah') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="user" class="text-ungu-600" /> Ubah profil dan kata sandi <x-icon name="chev" class="ml-auto text-redup" /></a>
         <a href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="wa" class="text-ungu-600" /> Hubungi admin lewat WhatsApp <x-icon name="chev" class="ml-auto text-redup" /></a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf

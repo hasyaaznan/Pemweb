@@ -47,6 +47,17 @@ return [
             'report' => false,
         ],
 
+        // Foto dan video yang diunggah Admin untuk halaman depan (coach, turnamen, galeri, sampul).
+        // Disimpan langsung di public/unggahan supaya tidak perlu php artisan storage:link.
+        'unggahan' => [
+            'driver' => 'local',
+            'root' => public_path('unggahan'),
+            'url' => '/unggahan',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

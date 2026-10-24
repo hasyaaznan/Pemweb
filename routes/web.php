@@ -9,6 +9,7 @@ use App\Http\Controllers\Coach;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\OrangTua;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UbahSesiController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/keluar', [MasukController::class, 'destroy'])->name('logout');
     Route::get('/beranda', BerandaController::class)->name('beranda');
+    Route::get('/profil/ubah', [ProfilController::class, 'edit'])->name('profil.ubah');
+    Route::put('/profil', [ProfilController::class, 'update'])->name('profil.perbarui');
+    Route::put('/profil/kata-sandi', [ProfilController::class, 'kataSandi'])->name('profil.sandi');
 
     Route::middleware('peran:orang_tua')->prefix('orang-tua')->name('ortu.')->group(function () {
         Route::get('/', OrangTua\BerandaController::class)->name('beranda');
@@ -57,7 +61,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profil', Coach\ProfilController::class)->name('profil');
     });
 
-    // Admin (peran manajemen): verifikasi iuran, member, jadwal latihan
+    // Admin (peran manajemen): verifikasi iuran, member, jadwal latihan, dan kelola data klub
     Route::middleware('peran:manajemen')->prefix('manajemen')->name('manajemen.')->group(function () {
         Route::get('/', Admin\BerandaController::class)->name('beranda');
         Route::post('/tagihan', [Admin\BerandaController::class, 'buatTagihan'])->name('tagihan.buat');
@@ -73,6 +77,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/pendaftaran/{pendaftaran}/tolak', [Admin\PendaftaranController::class, 'tolak'])->name('pendaftaran.tolak');
         Route::get('/member', [Admin\MemberController::class, 'index'])->name('member');
         Route::get('/member/{anak}', [Admin\MemberController::class, 'show'])->name('member.detail');
+        Route::get('/member/{anak}/ubah', [Admin\MemberController::class, 'edit'])->name('member.ubah');
+        Route::put('/member/{anak}', [Admin\MemberController::class, 'update'])->name('member.perbarui');
         Route::get('/jadwal', [Admin\JadwalController::class, 'index'])->name('jadwal');
         Route::get('/jadwal/tambah', [Admin\JadwalController::class, 'create'])->name('jadwal.tambah');
         Route::post('/jadwal', [Admin\JadwalController::class, 'store'])->name('jadwal.simpan');
@@ -82,5 +88,25 @@ Route::middleware('auth')->group(function () {
         Route::get('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'edit'])->name('sesi');
         Route::put('/jadwal/{kelompok}/{tanggal}', [UbahSesiController::class, 'update'])->name('sesi.simpan');
         Route::get('/profil', Admin\ProfilController::class)->name('profil');
+        Route::get('/kelola', Admin\KelolaController::class)->name('kelola');
+        Route::get('/kelompok-usia', [Admin\KelompokUsiaController::class, 'index'])->name('kelompok');
+        Route::get('/kelompok-usia/tambah', [Admin\KelompokUsiaController::class, 'create'])->name('kelompok.tambah');
+        Route::post('/kelompok-usia', [Admin\KelompokUsiaController::class, 'store'])->name('kelompok.simpan');
+        Route::get('/kelompok-usia/{kelompok}/ubah', [Admin\KelompokUsiaController::class, 'edit'])->name('kelompok.ubah');
+        Route::put('/kelompok-usia/{kelompok}', [Admin\KelompokUsiaController::class, 'update'])->name('kelompok.perbarui');
+        Route::delete('/kelompok-usia/{kelompok}', [Admin\KelompokUsiaController::class, 'destroy'])->name('kelompok.hapus');
+        Route::get('/coach', [Admin\CoachController::class, 'index'])->name('coach');
+        Route::get('/coach/tambah', [Admin\CoachController::class, 'create'])->name('coach.tambah');
+        Route::post('/coach', [Admin\CoachController::class, 'store'])->name('coach.simpan');
+        Route::get('/coach/{coach}/ubah', [Admin\CoachController::class, 'edit'])->name('coach.ubah');
+        Route::put('/coach/{coach}', [Admin\CoachController::class, 'update'])->name('coach.perbarui');
+        Route::get('/pengaturan', [Admin\PengaturanController::class, 'edit'])->name('pengaturan');
+        Route::put('/pengaturan', [Admin\PengaturanController::class, 'update'])->name('pengaturan.simpan');
+        Route::get('/konten/{jenis}', [Admin\KontenController::class, 'index'])->name('konten');
+        Route::get('/konten/{jenis}/tambah', [Admin\KontenController::class, 'create'])->name('konten.tambah');
+        Route::post('/konten/{jenis}', [Admin\KontenController::class, 'store'])->name('konten.simpan');
+        Route::get('/konten/{jenis}/{id}/ubah', [Admin\KontenController::class, 'edit'])->whereNumber('id')->name('konten.ubah');
+        Route::put('/konten/{jenis}/{id}', [Admin\KontenController::class, 'update'])->whereNumber('id')->name('konten.perbarui');
+        Route::delete('/konten/{jenis}/{id}', [Admin\KontenController::class, 'destroy'])->whereNumber('id')->name('konten.hapus');
     });
 });

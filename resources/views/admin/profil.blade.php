@@ -9,10 +9,12 @@
     </header>
     <div class="relative -mt-10 space-y-3 px-4 lg:mx-auto lg:max-w-2xl">
         <dl class="divide-y divide-garis rounded-[18px] bg-white px-4 text-[15px] shadow-[0_2px_10px_rgba(34,0,90,.06)]">
-            <div class="flex justify-between gap-3 py-3"><dt class="text-redup">Akses</dt><dd class="text-right font-bold">Iuran, member, jadwal latihan</dd></div>
+            <div class="flex justify-between gap-3 py-3"><dt class="text-redup">Akses</dt><dd class="text-right font-bold">Iuran, member, jadwal, data klub</dd></div>
             <div class="flex justify-between gap-3 py-3"><dt class="text-redup">No. WhatsApp</dt><dd class="font-bold">{{ $user->no_hp }}</dd></div>
             <div class="flex justify-between gap-3 py-3"><dt class="text-redup">Email</dt><dd class="truncate font-bold">{{ $user->email }}</dd></div>
         </dl>
+        <a href="{{ route('profil.ubah') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="user" class="text-ungu-600" /> Ubah profil dan kata sandi <x-icon name="chev" class="ml-auto text-redup" /></a>
+        <a href="{{ route('manajemen.kelola') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="settings" class="text-ungu-600" /> Kelola data klub dan halaman depan <x-icon name="chev" class="ml-auto text-redup" /></a>
         <a href="{{ route('manajemen.jadwal') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="cal" class="text-ungu-600" /> Jadwal latihan <x-icon name="chev" class="ml-auto text-redup" /></a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf

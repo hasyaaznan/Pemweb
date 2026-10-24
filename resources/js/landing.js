@@ -38,9 +38,11 @@ export default function mulaiGerakLanding() {
         });
     }
 
-    // Kartu prestasi muncul berurutan sekali, sebagai satu daftar
-    gsap.from('[data-prestasi] > li', {
-        y: 28, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out',
-        scrollTrigger: { trigger: '[data-prestasi]', start: 'top 80%', once: true },
-    });
+    // Kartu turnamen muncul berurutan sekali, sebagai satu daftar (bagian ini hanya ada kalau sudah ada turnamen)
+    if (document.querySelector('[data-prestasi]')) {
+        gsap.from('[data-prestasi] > li', {
+            y: 28, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out',
+            scrollTrigger: { trigger: '[data-prestasi]', start: 'top 80%', once: true },
+        });
+    }
 }

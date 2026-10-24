@@ -5,11 +5,14 @@
             @php
                 $chip = fn ($aktif) => 'shrink-0 rounded-full px-3 py-1.5 text-[13px] font-bold '.($aktif ? 'tab-aktif bg-ungu-600 text-white' : 'bg-white text-ungu-600');
             @endphp
-            <a href="{{ route('manajemen.member') }}" class="{{ $chip(! $ku && ! $belumBayar) }}">Semua {{ $jumlahSemua }}</a>
+            <a href="{{ route('manajemen.member') }}" class="{{ $chip(! $ku && ! $belumBayar && ! $nonaktif) }}">Semua {{ $jumlahSemua }}</a>
             @foreach ($kelompok as $k)
                 <a href="{{ route('manajemen.member', ['ku' => $k->id]) }}" class="{{ $chip($ku?->id === $k->id) }}">{{ $k->nama }}</a>
             @endforeach
             <a href="{{ route('manajemen.member', ['iuran' => 'belum']) }}" class="{{ $chip($belumBayar) }}">Belum bayar</a>
+            @if ($jumlahNonaktif)
+                <a href="{{ route('manajemen.member', ['status' => 'nonaktif']) }}" class="{{ $chip($nonaktif) }}">Nonaktif {{ $jumlahNonaktif }}</a>
+            @endif
         </nav>
 
         <label class="mt-2.5 flex h-12 lg:mt-4 lg:max-w-md items-center gap-2 rounded-[14px] bg-white px-3.5 ring-[1.5px] ring-inset ring-garis focus-within:ring-2 focus-within:ring-ungu-600">
@@ -43,7 +46,7 @@
                     @endif
                 </a>
             @empty
-                <p class="rounded-[18px] bg-white p-4 text-sm text-redup">{{ $belumBayar ? 'Semua tagihan bulan ini sudah dibayar atau sedang diperiksa.' : 'Belum ada member di kelompok ini.' }}</p>
+                <p class="rounded-[18px] bg-white p-4 text-sm text-redup">{{ $belumBayar ? 'Semua tagihan bulan ini sudah dibayar atau sedang diperiksa.' : ($nonaktif ? 'Tidak ada member nonaktif.' : 'Belum ada member di kelompok ini.') }}</p>
             @endforelse
         </div>
     </div>
