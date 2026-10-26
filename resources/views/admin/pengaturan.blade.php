@@ -17,10 +17,12 @@
             <h2 class="mt-3 font-display text-[22px] font-extrabold text-ungu-700">Halaman depan</h2>
             @foreach (P::FOTO as $kunci => $label)
                 @if (! empty($nilai[$kunci]))
-                    <img src="{{ asset($nilai[$kunci]) }}" alt="{{ $label }} sekarang" class="mt-4 aspect-[16/9] w-full rounded-[14px] object-cover">
+                    <img src="{{ asset($nilai[$kunci]) }}" alt="{{ $label }} sekarang" @class(['mt-4 aspect-[16/9] w-full rounded-[14px]', 'bg-ungu-900 object-contain object-bottom' => $kunci === 'foto_sampul', 'object-cover' => $kunci !== 'foto_sampul'])>
                 @endif
                 <x-kolom :name="$kunci" :label="(empty($nilai[$kunci]) ? '' : 'Ganti ').lcfirst($label)" type="file" accept="image/jpeg,image/png,image/webp"
-                    bantuan="JPG, PNG, atau WebP, maksimal 4 MB. Pakai foto mendatar dengan lebar minimal 1600 px." :class="empty($nilai[$kunci]) ? '' : 'mt-2'" />
+                    :bantuan="$kunci === 'foto_sampul'
+                        ? 'PNG atau WebP tanpa latar (transparan), maksimal 4 MB. Latar foto bisa dihapus gratis di remove.bg. Foto berlatar tetap bisa dipakai, tetapi tampil kotak di atas lingkaran oranye.'
+                        : 'JPG, PNG, atau WebP, maksimal 4 MB. Foto tegak atau mendatar, ditampilkan utuh tanpa dipotong.'" :class="empty($nilai[$kunci]) ? '' : 'mt-2'" />
             @endforeach
             <x-kolom name="tentang_judul" label="Judul bagian Tentang klub" :value="$nilai['tentang_judul'] ?? null" required maxlength="80" />
             <x-kolom name="tentang_cerita" label="Cerita singkat klub" type="textarea" :value="$nilai['tentang_cerita'] ?? null" required maxlength="600" bantuan="Maksimal 600 huruf. Tulis apa adanya: sejak kapan, latihan di mana, untuk siapa." />

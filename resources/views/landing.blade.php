@@ -25,11 +25,9 @@
 @endphp
 <x-layout title="Bandung Spiders Basketball · Latihan basket anak 6–16 tahun di Bandung">
     <div x-data="{ menu: false }" @keydown.escape.window="menu = false" x-effect="window.lenis?.[menu ? 'stop' : 'start']()" class="bg-white" data-landing>
-        {{-- Hero: latar ungu polos, foto latihan sebagai fokus --}}
-        <section class="relative flex min-h-[100svh] flex-col overflow-hidden bg-ungu-900 text-white md:min-h-[min(100svh,760px)] lg:min-h-[min(92vh,860px)]">
-            {{-- Ponsel: foto di bagian atas, memudar ke ungu --}}
-            <img src="{{ $fotoSampul }}" alt="" class="absolute inset-x-0 top-0 h-[60%] w-full object-cover object-[50%_35%] opacity-80 [mask-image:linear-gradient(#000_50%,transparent)] lg:hidden" fetchpriority="high">
-            <span class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/55 to-transparent lg:hidden" aria-hidden="true"></span>
+        {{-- Hero: latar ungu polos. Foto sampul tanpa latar berdiri di atas lingkaran oranye, menempel ke tepi bawah.
+             Ponsel: teks di atas, foto di bawah (tidak bertumpuk). Laptop: teks kiri, foto kanan. --}}
+        <section class="relative flex flex-col overflow-hidden bg-ungu-900 text-white lg:min-h-[min(92vh,860px)]">
             <svg class="garis-gambar pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 360 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                 <g fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"><path d="M0 330h360"/><circle cx="180" cy="330" r="62"/><rect x="110" y="-40" width="140" height="190" rx="2"/><circle cx="180" cy="150" r="52"/><path d="M40 -10v120a140 140 0 0 0 280 0V-10"/></g>
             </svg>
@@ -49,9 +47,8 @@
                 <button type="button" @click="menu = true" class="flex size-11 items-center justify-center rounded-xl bg-white/15 lg:hidden" aria-label="Buka menu"><x-icon name="menu" /></button>
             </header>
 
-            <div class="relative mx-auto flex w-full max-w-6xl flex-1 items-end px-4 pb-6 lg:items-center lg:px-8 lg:pb-16">
-                <div class="w-full lg:grid lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-12">
-                    <div>
+            <div class="relative mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 lg:flex-row lg:items-stretch lg:gap-8 lg:px-8">
+                <div class="relative z-10 pt-8 lg:w-[54%] lg:self-center lg:py-16">
                         <h1 class="font-display font-extrabold uppercase italic leading-[.86]">
                             <span class="block overflow-hidden pr-3"><span data-hero-baris class="block text-[72px] sm:text-[96px] lg:text-[112px]">Bandung</span></span>
                             <span class="block overflow-hidden pr-3"><span data-hero-baris class="block text-[94px] sm:text-[124px] lg:text-[148px]">Spiders</span></span>
@@ -69,12 +66,11 @@
                             </div>
                         </div>
                     </div>
-                    {{-- Laptop: foto latihan dalam bingkai tinggi --}}
-                    <figure data-hero-foto class="relative hidden aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px] lg:block">
-                        <img src="{{ $fotoSampul }}" alt="Anak-anak Bandung Spiders berfoto bersama coach di lapangan" class="size-full object-cover object-[50%_40%]">
-                        <img src="{{ asset('images/logo-spiders.png') }}" alt="" class="absolute bottom-5 right-5 size-16 drop-shadow-lg">
-                    </figure>
-                </div>
+                <figure data-hero-foto class="relative mt-8 flex flex-1 items-end justify-center lg:mt-0 lg:w-[46%]">
+                    <span data-hero-lingkaran class="absolute left-1/2 top-0 aspect-square w-[86%] max-w-[520px] -translate-x-1/2 rounded-full bg-oranye-500 lg:top-[22%] lg:w-[88%]" aria-hidden="true"></span>
+                    <img data-hero-anak src="{{ $fotoSampul }}" alt="Coach Bandung Spiders memberi arahan kepada anak-anak berjersey ungu" fetchpriority="high"
+                        class="relative block w-full max-w-[520px] object-contain object-bottom [mask-image:linear-gradient(to_right,transparent,#000_7%,#000_93%,transparent)] lg:max-h-[min(72vh,640px)] lg:max-w-none">
+                </figure>
             </div>
         </section>
 
@@ -102,38 +98,49 @@
                 @endforeach
             </div>
 
-            <h2 class="mt-9 font-display text-2xl font-extrabold text-ungu-900 md:mt-16 md:text-4xl">Kenapa di Spiders</h2>
-            <ul class="mt-2 space-y-2 md:mt-5 md:grid md:grid-cols-3 md:gap-5 md:space-y-0">
-                @foreach (['Coach berlisensi Perbasi di setiap kelompok', 'Rapor bulanan untuk fundamental, strategi, mental, IQ basket, dan fisik', 'Kehadiran anak bisa dicek setelah setiap latihan'] as $poin)
-                    <li class="flex items-start gap-2.5 text-[15px] leading-snug md:rounded-[20px] md:bg-ungu-50 md:p-6 md:text-lg">
-                        <x-icon name="check" size="20" class="mt-px shrink-0 text-oranye-500 md:size-7" />{{ $poin }}
-                    </li>
-                @endforeach
-            </ul>
+            {{-- Kenapa di Spiders: tiga alasan bernomor, dipisah garis tebal seperti daftar coach --}}
+            <div class="mt-12 md:mt-20 lg:grid lg:grid-cols-[1fr_2.4fr] lg:gap-12">
+                <h2 class="font-display text-[40px] font-extrabold leading-none text-ungu-900 lg:text-5xl">Kenapa di Spiders</h2>
+                <ol class="mt-5 space-y-6 sm:grid sm:grid-cols-3 sm:gap-6 sm:space-y-0 lg:mt-1">
+                    @foreach ([
+                        ['Coach di setiap kelompok', 'Setiap kelompok usia dipegang coach berlisensi Perbasi.'],
+                        ['Rapor setiap bulan', 'Nilai A+ sampai C- untuk fundamental, strategi, mental, IQ basket, dan fisik, ditambah catatan coach.'],
+                        ['Kehadiran tercatat', 'Orang tua bisa mengecek kehadiran anak setelah setiap latihan.'],
+                    ] as $i => [$judul, $isi])
+                        <li class="border-t-[3px] border-ungu-900 pt-4">
+                            <p class="font-display text-5xl font-extrabold leading-none text-oranye-700 lg:text-6xl">0{{ $i + 1 }}</p>
+                            <p class="mt-3 font-display text-2xl font-extrabold leading-tight text-ungu-900">{{ $judul }}</p>
+                            <p class="mt-1.5 text-[15px] leading-relaxed text-ungu-700">{{ $isi }}</p>
+                        </li>
+                    @endforeach
+                </ol>
+            </div>
         </section>
 
         {{-- Tentang klub: cerita dan linimasa, lalu coach --}}
         <section id="tentang" class="scroll-mt-4 border-t-[1.5px] border-garis">
-            <div @class(['mx-auto max-w-6xl px-4 py-10 lg:px-8 lg:py-20', 'lg:grid lg:grid-cols-[1fr_1fr] lg:gap-14' => $linimasa->isNotEmpty()])>
-                <div @class(['lg:grid lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-14' => $linimasa->isEmpty()])>
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-wide text-oranye-700">Tentang klub</p>
-                        <h2 class="mt-1 font-display text-[40px] font-extrabold leading-none text-ungu-900 lg:text-5xl">{{ $tentang['judul'] ?? 'Bandung Spiders Basketball' }}</h2>
-                        @if ($tentang['cerita'])
-                            <p class="mt-3 max-w-prose whitespace-pre-line text-[15px] leading-relaxed text-ungu-700 lg:text-lg">{{ $tentang['cerita'] }}</p>
-                        @endif
-                    </div>
-                    @if ($tentang['foto'])
-                        <img src="{{ asset($tentang['foto']) }}" alt="Tim Bandung Spiders berfoto di {{ $gor }}" loading="lazy" class="mt-6 aspect-[3/2] w-full rounded-[20px] object-cover">
+            {{-- Ponsel: cerita, foto, linimasa. Laptop: cerita dan linimasa di kiri, foto utuh di kanan --}}
+            <div class="mx-auto max-w-6xl px-4 py-10 lg:grid lg:grid-cols-2 lg:gap-x-14 lg:px-8 lg:py-20">
+                <div class="lg:col-start-1">
+                    <p class="text-sm font-bold uppercase tracking-wide text-oranye-700">Tentang klub</p>
+                    <h2 class="mt-1 font-display text-[40px] font-extrabold leading-none text-ungu-900 lg:text-5xl">{{ $tentang['judul'] ?? 'Bandung Spiders Basketball' }}</h2>
+                    @if ($tentang['cerita'])
+                        <p class="mt-3 max-w-prose whitespace-pre-line text-[15px] leading-relaxed text-ungu-700 lg:text-lg">{{ $tentang['cerita'] }}</p>
                     @endif
                 </div>
+                @if ($tentang['foto'])
+                    <img src="{{ asset($tentang['foto']) }}" alt="Tim Bandung Spiders berfoto di {{ $gor }}" loading="lazy" class="mt-6 h-auto w-full rounded-[20px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-start">
+                @endif
                 @if ($linimasa->isNotEmpty())
-                    <ol class="relative mt-8 lg:mt-14 lg:self-start" data-linimasa>
-                        <span class="absolute bottom-3 left-[7px] top-3 w-0.5 bg-garis" aria-hidden="true"></span>
-                        <span data-linimasa-isi class="absolute bottom-3 left-[7px] top-3 w-0.5 origin-top bg-oranye-500" aria-hidden="true"></span>
+                    {{-- Garis dimulai dan berhenti di tengah titik pertama dan terakhir; ujung bawahnya dihitung dari posisi titik terakhir --}}
+                    <ol class="relative mt-8 lg:col-start-1 lg:mt-10 lg:self-start" data-linimasa
+                        x-data="{ ukur() { const t = $el.querySelector('li:last-child [data-titik]').getBoundingClientRect(); const b = $el.getBoundingClientRect().bottom - (t.top + t.height / 2); $el.querySelectorAll('[data-garis]').forEach((g) => g.style.bottom = b + 'px') } }"
+                        x-init="ukur(); new ResizeObserver(() => ukur()).observe($el)">
+                        <span data-garis class="absolute bottom-3 left-[7px] top-[18px] w-0.5 bg-garis" aria-hidden="true"></span>
+                        <span data-garis data-linimasa-isi class="absolute bottom-3 left-[7px] top-[18px] w-0.5 origin-top bg-oranye-500" aria-hidden="true"></span>
                         @foreach ($linimasa as $t)
                             <li data-linimasa-titik class="relative grid grid-cols-[16px_1fr] gap-x-4 pb-7 last:pb-0">
-                                <span class="lewat mt-2.5 size-4 rounded-full border-[3px] border-oranye-500 bg-white transition-colors duration-300 [&.lewat]:bg-oranye-500" aria-hidden="true"></span>
+                                <span data-titik class="lewat mt-2.5 size-4 rounded-full border-[3px] border-oranye-500 bg-white transition-colors duration-300 [&.lewat]:bg-oranye-500" aria-hidden="true"></span>
                                 <div>
                                     <p class="font-display text-[32px] font-extrabold leading-none text-ungu-600 lg:text-4xl">{{ $t->tahun }}</p>
                                     <p class="mt-1 text-[15px] leading-snug text-ungu-700 lg:text-base">{{ $t->isi }}</p>
@@ -223,7 +230,7 @@
                         <button type="button" @click="lihat({{ $i }})" class="group relative block size-full overflow-hidden rounded-2xl focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-oranye-500" aria-label="Lihat {{ $g['jenis'] }}: {{ $g['keterangan'] }}">
                             <img src="{{ $g['gambar'] }}" alt="" loading="lazy" @class(['size-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]', 'aspect-square' => $i > 0, 'aspect-[3/2] md:aspect-auto' => $i === 0])>
                             @if ($g['jenis'] === 'video')
-                                <span class="absolute inset-0 flex items-center justify-center bg-ungu-900/30">
+                                <span class="absolute inset-0 flex items-center justify-center bg-black/15">
                                     <span class="flex size-16 items-center justify-center rounded-full bg-oranye-500 text-ungu-900 transition-transform duration-200 group-hover:scale-110 lg:size-20"><x-icon name="play" size="30" class="ml-1 fill-current" /></span>
                                 </span>
                                 <span class="absolute bottom-3 left-3 rounded-lg bg-ungu-900/80 px-2.5 py-1 text-[13px] font-semibold text-white">{{ $g['keterangan'] }}</span>
