@@ -11,7 +11,7 @@ class KelompokUsia extends Model
 {
     protected $table = 'kelompok_usia';
 
-    protected $fillable = ['nama', 'usia_min', 'usia_max', 'iuran_bulanan'];
+    protected $fillable = ['nama', 'usia_min', 'usia_max', 'iuran_bulanan', 'program'];
 
     public function anak(): HasMany
     {

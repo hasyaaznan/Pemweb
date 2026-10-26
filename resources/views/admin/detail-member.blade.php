@@ -16,8 +16,9 @@
             <span class="flex size-12 shrink-0 items-center justify-center rounded-full bg-oranye-100 font-display text-xl font-extrabold text-oranye-700">{{ mb_substr($anak->nama, 0, 1) }}</span>
             <div class="min-w-0 flex-1">
                 <p class="font-display text-[26px] font-extrabold leading-none">{{ $anak->nama }}</p>
-                <p class="mt-0.5 text-sm text-redup">{{ $anak->kelompokUsia->nama }}, member sejak {{ $anak->tanggal_masuk->translatedFormat('M Y') }}</p>
+                <p class="mt-0.5 text-sm text-redup">{{ $anak->kelompokUsia->nama }}, member sejak {{ $anak->tanggal_masuk->translatedFormat('M Y') }}@if ($anak->status === 'nonaktif') · <b class="text-merah">Nonaktif</b>@endif</p>
             </div>
+            <a href="{{ route('manajemen.member.ubah', $anak) }}" class="shrink-0 rounded-xl bg-ungu-600/10 px-3 py-2 text-sm font-bold text-ungu-600">Ubah</a>
         </div>
 
         <dl class="divide-y divide-garis rounded-[18px] bg-white px-4 text-[15px] shadow-[0_2px_10px_rgba(34,0,90,.06)]">

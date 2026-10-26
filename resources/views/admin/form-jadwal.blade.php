@@ -4,7 +4,7 @@
     $kolom = 'h-[50px] w-full rounded-[14px] bg-white px-3.5 text-[15px] outline-none ring-[1.5px] ring-inset ring-garis focus:ring-2 focus:ring-ungu-600';
     $label = 'mb-1.5 mt-4 block text-[13px] font-semibold text-ungu-700';
 @endphp
-<x-admin :title="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" aktif="Beranda" :judul="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" :kembali="route('manajemen.jadwal')">
+<x-admin :title="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" aktif="Profil" :judul="$baru ? 'Tambah jadwal' : 'Ubah jadwal'" :kembali="route('manajemen.jadwal')">
     <form method="POST" action="{{ $baru ? route('manajemen.jadwal.simpan') : route('manajemen.jadwal.perbarui', $jadwal) }}" class="px-4 lg:max-w-xl">
         @csrf
         @unless ($baru) @method('PUT') @endunless

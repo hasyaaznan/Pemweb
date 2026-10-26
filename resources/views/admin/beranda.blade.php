@@ -64,7 +64,7 @@
 
         <div>
         <h2 class="mb-2 mt-5 font-display text-[22px] font-extrabold text-ungu-700">Jadwal latihan</h2>
-        <a href="{{ route('manajemen.jadwal') }}" class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
+        <a href="{{ route('manajemen.jadwal', ['dari' => 'beranda']) }}" class="flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-ungu-100 text-ungu-600"><x-icon name="cal" /></span>
             <span class="min-w-0 flex-1">
                 <b class="block">{{ $sesiMingguIni->where('status', '!=', 'batal')->count() }} latihan dalam 7 hari ke depan</b>
@@ -78,6 +78,11 @@
                 <span>{{ $s->tanggal->translatedFormat('l j M') }}: {{ $s->kelompokUsia->nama }} {{ $s->status === 'batal' ? 'batal' : 'mulai '.Format::jam($s->jam_mulai) }}@if ($s->alasan_perubahan) ({{ $s->alasan_perubahan }})@endif</span>
             </p>
         @endforeach
+        <a href="{{ route('manajemen.kelola') }}" class="mt-2.5 flex items-center gap-3 rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
+            <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-ungu-100 text-ungu-600"><x-icon name="settings" /></span>
+            <span class="min-w-0 flex-1"><b class="block">Kelola data klub</b><span class="block text-sm text-redup">Kelompok usia, coach, rekening, isi halaman depan</span></span>
+            <x-icon name="chev" size="20" class="text-redup" />
+        </a>
         </div>
         </div>
     </div>

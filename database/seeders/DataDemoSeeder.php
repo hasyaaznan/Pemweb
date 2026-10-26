@@ -47,7 +47,7 @@ class DataDemoSeeder extends Seeder
         foreach ($sesi as $i => $tgl) {
             $s = SesiLatihan::create([
                 'kelompok_usia_id' => $raka->kelompok_usia_id, 'tanggal' => $tgl->toDateString(),
-                'jam_mulai' => '08:30', 'jam_selesai' => '10:00', 'lokasi' => 'GOR Spiders, Lapangan A',
+                'jam_mulai' => '08:30', 'jam_selesai' => '10:00', 'lokasi' => 'GOR Rabbani',
             ]);
             $s->absensi()->create(['anak_id' => $raka->id, 'status' => $statusKe[$i] ?? 'hadir', 'dicatat_oleh' => $dita->id]);
             foreach ($teman as $j => $t) {
@@ -59,7 +59,7 @@ class DataDemoSeeder extends Seeder
         $minggu = now()->next(CarbonInterface::SUNDAY);
         SesiLatihan::create([
             'kelompok_usia_id' => $raka->kelompok_usia_id, 'tanggal' => $minggu->toDateString(),
-            'jam_mulai' => '09:00', 'jam_selesai' => '10:30', 'lokasi' => 'GOR Spiders, Lapangan A',
+            'jam_mulai' => '09:00', 'jam_selesai' => '10:30', 'lokasi' => 'GOR Rabbani',
             'status' => 'diubah', 'alasan_perubahan' => 'GOR dipakai acara pagi', 'diubah_oleh' => $sari->id,
         ]);
 
@@ -149,7 +149,7 @@ class DataDemoSeeder extends Seeder
         foreach ([
             ['rapor_terbit', 'Rapor '.$bulanLalu->translatedFormat('F').' sudah terbit', 'Coach Dita sudah menulis rapor Raka Pratama bulan '.$bulanLalu->translatedFormat('F').'.', '/orang-tua/rapor', now()->subHours(2), null],
             ['bukti_ditolak', 'Bukti transfer perlu diunggah ulang', 'Nominal transfer kurang Rp 50.000.', '/orang-tua/tagihan', now()->subMinutes(50), null],
-            ['jadwal_berubah', 'Jadwal KU 9–12 berubah', 'Minggu depan mulai 09.00–10.30, GOR Spiders, Lapangan A. GOR dipakai acara pagi', '/orang-tua', now()->subDays(2)->setTime(18, 0), true],
+            ['jadwal_berubah', 'Jadwal KU 9–12 berubah', 'Minggu depan mulai 09.00–10.30, GOR Rabbani. GOR dipakai acara pagi', '/orang-tua', now()->subDays(2)->setTime(18, 0), true],
             ['tagihan_terbit', 'Tagihan '.now()->translatedFormat('F Y'), 'Iuran Raka Pratama Rp 250.000, jatuh tempo '.now()->startOfMonth()->day(10)->translatedFormat('j F').'.', '/orang-tua/tagihan', now()->startOfMonth()->setTime(6, 0), true],
             ['iuran_lunas', 'Iuran '.$bulanLalu->copy()->subMonth()->translatedFormat('F').' lunas', 'Pembayaran Rp 250.000 untuk Raka Pratama sudah diterima.', '/orang-tua/tagihan', $bulanLalu->copy()->subMonth()->day(7)->setTime(10, 0), true],
         ] as [$jenis, $judul, $isi, $tautan, $waktu, $dibaca]) {

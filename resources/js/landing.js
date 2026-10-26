@@ -17,10 +17,12 @@ export default function mulaiGerakLanding() {
     gsap.ticker.add((waktu) => lenis.raf(waktu * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // Momen utama: judul naik dari balik garis, foto terbuka dari bawah, lalu teks dan tombol
+    // Momen utama: judul naik dari balik garis, foto muncul (bingkai terbuka dari bawah, atau lingkaran oranye membesar dan anak-anak naik), lalu teks dan tombol
     gsap.timeline({ defaults: { ease: 'expo.out' } })
         .from('[data-hero-baris]', { yPercent: 110, duration: 1, stagger: 0.1 })
-        .from('[data-hero-foto]', { clipPath: 'inset(100% 0% 0% 0% round 28px)', duration: 1.1, ease: 'power3.inOut' }, 0.05)
+        .from('[data-hero-bingkai]', { clipPath: 'inset(100% 0% 0% 0% round 28px)', duration: 1.1, ease: 'power3.inOut' }, 0.05)
+        .from('[data-hero-lingkaran]', { scale: 0.6, opacity: 0, duration: 1.1 }, 0.05)
+        .from('[data-hero-anak]', { yPercent: 18, opacity: 0, duration: 1.1, ease: 'power3.out' }, 0.2)
         .from('[data-hero-isi] > *', { y: 18, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.4);
 
     // Linimasa sejarah: garis oranye mengikuti gulir, titik tahun terisi saat garis melewatinya
@@ -38,9 +40,11 @@ export default function mulaiGerakLanding() {
         });
     }
 
-    // Kartu prestasi muncul berurutan sekali, sebagai satu daftar
-    gsap.from('[data-prestasi] > li', {
-        y: 28, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out',
-        scrollTrigger: { trigger: '[data-prestasi]', start: 'top 80%', once: true },
-    });
+    // Kartu turnamen muncul berurutan sekali, sebagai satu daftar (bagian ini hanya ada kalau sudah ada turnamen)
+    if (document.querySelector('[data-prestasi]')) {
+        gsap.from('[data-prestasi] > li', {
+            y: 28, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out',
+            scrollTrigger: { trigger: '[data-prestasi]', start: 'top 80%', once: true },
+        });
+    }
 }

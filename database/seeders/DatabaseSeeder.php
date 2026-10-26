@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $ku = collect([
-            ['nama' => 'KU 6–8', 'usia_min' => 6, 'usia_max' => 8, 'iuran_bulanan' => 200000],
-            ['nama' => 'KU 9–12', 'usia_min' => 9, 'usia_max' => 12, 'iuran_bulanan' => 250000],
-            ['nama' => 'KU 13–16', 'usia_min' => 13, 'usia_max' => 16, 'iuran_bulanan' => 300000],
+            ['nama' => 'KU 6–8', 'usia_min' => 6, 'usia_max' => 8, 'iuran_bulanan' => 200000, 'program' => 'Gerak dasar lewat permainan'],
+            ['nama' => 'KU 9–12', 'usia_min' => 9, 'usia_max' => 12, 'iuran_bulanan' => 250000, 'program' => 'Dribbling, passing, kerja tim'],
+            ['nama' => 'KU 13–16', 'usia_min' => 13, 'usia_max' => 16, 'iuran_bulanan' => 300000, 'program' => 'Taktik tim dan persiapan turnamen'],
         ])->map(fn ($k) => KelompokUsia::create($k));
 
         foreach (['Fundamental', 'Strategi', 'Mental', 'IQ Basket', 'Fisik'] as $i => $nama) {
@@ -33,8 +33,9 @@ class DatabaseSeeder extends Seeder
             'rekening_bank' => 'BCA',
             'rekening_nomor' => '1234567890',
             'rekening_atas_nama' => 'Bandung Spiders Basketball',
-            'whatsapp_admin' => '081234560000',
-            'alamat_gor' => 'GOR Spiders, Jl. Pajajaran No. 88, Bandung',
+            // Kontak dan alamat asli dari klub (Reza, 24 Okt 2026)
+            'whatsapp_admin' => '08112436600',
+            'alamat_gor' => 'GOR Rabbani, Sportainment Rabbani, Jl. A.H. Nasution No.285, Pasanggrahan, Ujung Berung, Bandung 40614',
             'tanggal_jatuh_tempo' => '10',
             'batas_verifikasi_hari_kerja' => '2',
         ] as $kunci => $nilai) {
@@ -56,9 +57,11 @@ class DatabaseSeeder extends Seeder
         foreach ([[0, 6, '07:00', '08:30'], [1, 6, '08:30', '10:00'], [1, 7, '08:30', '10:00'], [2, 6, '15:00', '17:00'], [2, 7, '15:00', '17:00']] as [$k, $hari, $mulai, $selesai]) {
             Jadwal::create([
                 'kelompok_usia_id' => $ku[$k]->id, 'hari' => $hari, 'jam_mulai' => $mulai, 'jam_selesai' => $selesai,
-                'lokasi' => 'GOR Spiders, Lapangan A', 'berlaku_mulai' => '2026-10-01',
+                'lokasi' => 'GOR Rabbani', 'berlaku_mulai' => '2026-10-01',
             ]);
         }
+
+        $this->call(KontenLandingSeeder::class);
 
         // Data contoh alur orang tua. Test memanggilnya sendiri dengan tanggal yang dibekukan.
         if (! app()->runningUnitTests()) {

@@ -19,13 +19,13 @@ class User extends Authenticatable
     public const PERAN_COACH = 'coach';
     public const PERAN_MANAJEMEN = 'manajemen';
 
-    protected $fillable = ['nama', 'email', 'no_hp', 'password', 'peran', 'alamat', 'aktif'];
+    protected $fillable = ['nama', 'email', 'no_hp', 'password', 'peran', 'alamat', 'aktif', 'jabatan', 'lisensi', 'foto', 'tampil_di_landing'];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
     {
-        return ['password' => 'hashed', 'aktif' => 'boolean'];
+        return ['password' => 'hashed', 'aktif' => 'boolean', 'tampil_di_landing' => 'boolean'];
     }
 
     // Orang tua: anak miliknya (dasar aturan akses K10)

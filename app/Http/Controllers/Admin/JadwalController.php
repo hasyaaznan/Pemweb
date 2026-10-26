@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
 use App\Models\KelompokUsia;
 use App\Support\JadwalLatihan;
+use App\Support\Klub;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -32,7 +33,7 @@ class JadwalController extends Controller
     {
         return $this->form(new Jadwal([
             'kelompok_usia_id' => $request->integer('ku') ?: null, 'hari' => 6,
-            'lokasi' => 'GOR Spiders, Lapangan A', 'berlaku_mulai' => today(),
+            'lokasi' => trim(strtok((string) Klub::get('alamat_gor', 'GOR'), ',')), 'berlaku_mulai' => today(),
         ]));
     }
 

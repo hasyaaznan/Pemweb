@@ -49,30 +49,43 @@ class LandingPendaftaranTest extends TestCase
             ->assertSee('Rp 300rb')
             ->assertSee('07.00–08.30')
             ->assertSee('Kenapa di Spiders')
-            ->assertSee('0812 3456 0000')
-            ->assertSee('https://wa.me/6281234560000?text=', false)
+            ->assertSee('0811 2436 600')
+            ->assertSee('https://wa.me/628112436600?text=', false)
+            ->assertSee('GOR Rabbani')
+            ->assertSee('Jl. A.H. Nasution No.285')
             ->assertSee('Daftar sekarang');
     }
 
-    public function test_landing_menampilkan_sejarah_coach_prestasi_galeri_dan_tanya_jawab_dari_config(): void
+    public function test_landing_menampilkan_isi_halaman_depan_dari_database(): void
     {
-        config([
-            'landing.contoh' => false,
-            'landing.sejarah.linimasa' => [['tahun' => '2015', 'isi' => 'Latihan pertama di Dago.']],
-            'landing.prestasi' => [['nama' => 'Naufal R.', 'kelompok' => 'KU 13–16', 'prestasi' => 'Pemain terbaik 2025', 'foto' => 'images/contoh/prestasi-1.webp']],
-            'landing.galeri' => [['jenis' => 'video', 'youtube' => 'abc123', 'poster' => 'images/contoh/video-poster.webp', 'keterangan' => 'Latihan Sabtu']],
-        ]);
+        $this->get('/')->assertOk()
+            ->assertSeeInOrder(['Program per usia', 'Tentang klub', 'Turnamen dan prestasi', 'Galeri latihan', 'Jadwal latihan', 'Yang sering ditanyakan'])
+            ->assertSee('images/klub/sampul.webp') // HP
+            ->assertSee('images/klub/sampul-tanpa-latar.webp') // laptop, di atas lingkaran oranye
+            ->assertSee('Berdiri sejak 27 Agustus 2023')
+            ->assertSeeInOrder(['27 Agustus: Bandung Spiders berdiri', 'Desember: dua tim Spiders'])
+            ->assertSee('BSB Basketball Invitational Tournament')
+            ->assertSee('20–24 Desember 2023')
+            ->assertSee('Lihat video:', false)
+            ->assertSee('Bagaimana cara membayar iuran?')
+            // Coach baru tampil setelah Admin mencentang "Tampilkan di bagian Coach kami"
+            ->assertDontSee('Coach kami');
+
+        User::where('peran', 'coach')->first()->update(['tampil_di_landing' => true, 'jabatan' => 'Kepala pelatih', 'lisensi' => 'Lisensi Perbasi C']);
+        $this->get('/')->assertSee('Coach kami')->assertSee('Kepala pelatih')->assertSee('Lisensi Perbasi C');
+    }
+
+    public function test_bagian_tanpa_isi_tidak_ditampilkan(): void
+    {
+        \App\Models\Turnamen::query()->delete();
+        \App\Models\Galeri::query()->delete();
+        \App\Models\TanyaJawab::query()->delete();
 
         $this->get('/')->assertOk()
-            ->assertSeeInOrder(['Program per usia', 'Sejarah klub', 'Coach kami', 'Siswa berprestasi', 'Galeri latihan', 'Jadwal latihan', 'Yang sering ditanyakan'])
-            ->assertSee('Latihan pertama di Dago.')
-            ->assertSee('Pemain terbaik 2025')
-            ->assertSee('Lihat video: Latihan Sabtu')
-            ->assertSee('Bagaimana cara membayar iuran?')
-            ->assertDontSee('Isi contoh');
-
-        config(['landing.contoh' => true]);
-        $this->get('/')->assertSee('Isi contoh');
+            ->assertDontSee('Turnamen dan prestasi')
+            ->assertDontSee('Galeri latihan')
+            ->assertDontSee('Yang sering ditanyakan')
+            ->assertDontSee('href="#galeri"', false);
     }
 
     public function test_landing_menyapa_member_yang_sudah_masuk(): void

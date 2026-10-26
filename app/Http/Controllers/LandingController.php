@@ -2,34 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Galeri;
 use App\Models\KelompokUsia;
+use App\Models\Linimasa;
+use App\Models\TanyaJawab;
+use App\Models\Turnamen;
+use App\Models\User;
 use App\Support\Klub;
 use Illuminate\View\View;
 
-// L10 Landing page dan L12 menu: informasi untuk calon member tanpa login (K7)
+// L10 Landing page dan L12 menu: informasi untuk calon member tanpa login (K7, K8).
+// Semua isinya dari database dan dikelola Admin.
 class LandingController extends Controller
 {
-    // Isi program per kelompok usia (mockup L10), dicocokkan dengan usia_min
-    private const PROGRAM = [
-        6 => 'Gerak dasar lewat permainan',
-        9 => 'Dribbling, passing, kerja tim',
-        13 => 'Taktik tim dan persiapan turnamen',
-    ];
-
     public function __invoke(): View
     {
         $kelompok = KelompokUsia::orderBy('usia_min')
             ->with(['jadwal' => fn ($q) => $q->where('aktif', true)->whereDate('berlaku_mulai', '<=', today())->orderBy('hari')])
-            ->get()
-            ->each(fn ($k) => $k->setAttribute('program', self::PROGRAM[$k->usia_min] ?? ''));
+            ->get();
 
-        $alamat = Klub::get('alamat_gor', 'GOR Spiders, Bandung');
+        $alamat = Klub::get('alamat_gor', 'GOR, Bandung');
         $wa = preg_replace('/^0/', '62', (string) Klub::get('whatsapp_admin'));
 
         return view('landing', [
             'kelompok' => $kelompok,
             'hari' => $kelompok->pluck('jadwal')->flatten()->pluck('hari')->unique()->sort()->values(),
-            'iuranTermurah' => $kelompok->min('iuran_bulanan'),
+            'iuranTermurah' => $kelompok->min('iuran_bulanan') ?? 0,
             'usiaMin' => $kelompok->min('usia_min'),
             'usiaMax' => $kelompok->max('usia_max'),
             'alamat' => $alamat,
@@ -38,8 +36,14 @@ class LandingController extends Controller
             'tautanWa' => 'https://wa.me/'.$wa.'?text='.rawurlencode('Halo Admin Bandung Spiders, saya ingin bertanya tentang latihan basket untuk anak.'),
             'tautanMaps' => 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($alamat),
             'petaEmbed' => 'https://maps.google.com/maps?q='.rawurlencode($alamat).'&output=embed',
-            // Sejarah, coach, prestasi, galeri, tanya jawab (config/landing.php, masih isi contoh)
-            'konten' => config('landing'),
+            'sampul' => Klub::get('foto_sampul'),
+            'sampulTanpaLatar' => Klub::get('foto_sampul_tanpa_latar'),
+            'tentang' => ['judul' => Klub::get('tentang_judul'), 'cerita' => Klub::get('tentang_cerita'), 'foto' => Klub::get('tentang_foto')],
+            'linimasa' => Linimasa::orderBy('tahun')->orderBy('id')->get(),
+            'coach' => User::where('peran', User::PERAN_COACH)->where('aktif', true)->where('tampil_di_landing', true)->with('kelompokDipegang')->orderBy('nama')->get(),
+            'turnamen' => Turnamen::orderByDesc('tanggal_mulai')->get(),
+            'galeri' => Galeri::orderBy('urutan')->orderBy('id')->get(),
+            'tanyaJawab' => TanyaJawab::orderBy('urutan')->orderBy('id')->get(),
         ]);
     }
 }
