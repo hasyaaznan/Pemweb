@@ -61,6 +61,8 @@ class LandingPendaftaranTest extends TestCase
         $this->get('/')->assertOk()
             ->assertSeeInOrder(['Program per usia', 'Tentang klub', 'Turnamen dan prestasi', 'Galeri latihan', 'Jadwal latihan', 'Yang sering ditanyakan'])
             ->assertSee('images/klub/sampul.webp')
+            ->assertSee('Berdiri sejak 27 Agustus 2023')
+            ->assertSeeInOrder(['27 Agustus: Bandung Spiders berdiri', 'Desember: dua tim Spiders'])
             ->assertSee('BSB Basketball Invitational Tournament')
             ->assertSee('20–24 Desember 2023')
             ->assertSee('Lihat video:', false)

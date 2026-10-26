@@ -9,7 +9,7 @@
     $label = 'mb-1.5 mt-4 block text-[13px] font-semibold text-ungu-700';
     $aksiAwal = old('aksi', 'ubah');
 @endphp
-<x-dynamic-component :component="$admin ? 'admin' : 'coach'" title="Ubah latihan" :aktif="$admin ? 'Beranda' : 'Jadwal'" judul="Ubah latihan" :kembali="$kembali">
+<x-dynamic-component :component="$admin ? 'admin' : 'coach'" title="Ubah latihan" :aktif="$admin ? 'Profil' : 'Jadwal'" judul="Ubah latihan" :kembali="$kembali">
     <div class="px-4 lg:max-w-xl" x-data="{ aksi: @js($aksiAwal) }">
         <div class="rounded-[18px] bg-white p-3.5 shadow-[0_2px_10px_rgba(34,0,90,.06)]">
             <p class="font-display text-[26px] font-extrabold leading-none">{{ $ku->nama }}</p>

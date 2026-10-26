@@ -41,6 +41,16 @@ class KelolaDataTest extends TestCase
         $this->actingAs(User::where('peran', 'coach')->first())->get('/manajemen/kelola')->assertForbidden();
     }
 
+    public function test_jadwal_latihan_ada_di_kelola_data_dan_kembali_ke_halaman_asal(): void
+    {
+        $this->actingAs($this->admin);
+        $this->get('/manajemen/profil')->assertSee('Kelola data klub')->assertDontSee('href="'.route('manajemen.jadwal').'"', false);
+        $this->get('/manajemen/kelola')->assertSee('href="'.route('manajemen.jadwal').'"', false);
+        $this->get('/manajemen/jadwal')->assertSee('href="'.route('manajemen.kelola').'" class="flex size-[38px]', false);
+        $this->get('/manajemen')->assertSee(route('manajemen.jadwal', ['dari' => 'beranda']), false);
+        $this->get('/manajemen/jadwal?dari=beranda')->assertSee('href="'.route('manajemen.beranda').'" class="flex size-[38px]', false);
+    }
+
     public function test_kelompok_usia_tambah_ubah_hapus(): void
     {
         $this->actingAs($this->admin);

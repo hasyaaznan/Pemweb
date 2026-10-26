@@ -15,7 +15,6 @@
         </dl>
         <a href="{{ route('profil.ubah') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="user" class="text-ungu-600" /> Ubah profil dan kata sandi <x-icon name="chev" class="ml-auto text-redup" /></a>
         <a href="{{ route('manajemen.kelola') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="settings" class="text-ungu-600" /> Kelola data klub dan halaman depan <x-icon name="chev" class="ml-auto text-redup" /></a>
-        <a href="{{ route('manajemen.jadwal') }}" class="flex items-center gap-3 rounded-[18px] bg-white px-4 py-3.5 font-bold"><x-icon name="cal" class="text-ungu-600" /> Jadwal latihan <x-icon name="chev" class="ml-auto text-redup" /></a>
         <form method="POST" action="{{ route('logout') }}">
             @csrf
             <button type="submit" class="flex h-[50px] w-full items-center justify-center rounded-[14px] bg-white font-bold text-merah ring-[1.5px] ring-inset ring-merah-bg">Keluar</button>

@@ -38,7 +38,7 @@ class LandingController extends Controller
             'petaEmbed' => 'https://maps.google.com/maps?q='.rawurlencode($alamat).'&output=embed',
             'sampul' => Klub::get('foto_sampul'),
             'tentang' => ['judul' => Klub::get('tentang_judul'), 'cerita' => Klub::get('tentang_cerita'), 'foto' => Klub::get('tentang_foto')],
-            'linimasa' => Linimasa::orderBy('tahun')->get(),
+            'linimasa' => Linimasa::orderBy('tahun')->orderBy('id')->get(),
             'coach' => User::where('peran', User::PERAN_COACH)->where('aktif', true)->where('tampil_di_landing', true)->with('kelompokDipegang')->orderBy('nama')->get(),
             'turnamen' => Turnamen::orderByDesc('tanggal_mulai')->get(),
             'galeri' => Galeri::orderBy('urutan')->orderBy('id')->get(),

@@ -3,7 +3,9 @@
     use App\Http\Controllers\Admin\JadwalController;
     use App\Support\Format;
 @endphp
-<x-admin title="Jadwal latihan" aktif="Beranda" judul="Jadwal latihan" :kembali="route('manajemen.beranda')">
+{{-- Jadwal ada di menu Kelola data; dari kartu Jadwal di Beranda, tombol kembali menuju Beranda --}}
+@php $dariBeranda = request('dari') === 'beranda'; @endphp
+<x-admin title="Jadwal latihan" :aktif="$dariBeranda ? 'Beranda' : 'Profil'" judul="Jadwal latihan" :kembali="$dariBeranda ? route('manajemen.beranda') : route('manajemen.kelola')">
     <div class="px-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] lg:items-start lg:gap-8">
         <div>
         <div class="flex items-center justify-between">

@@ -9,22 +9,34 @@ use App\Models\TanyaJawab;
 use App\Models\Turnamen;
 use Illuminate\Database\Seeder;
 
-// Isi awal halaman depan dari foto, video, dan data asli klub (dikirim Reza 24 Okt 2026).
-// Semuanya bisa diubah Admin di menu Profil → Kelola halaman depan.
+// Isi awal halaman depan dari foto, video, dan data asli klub (dikirim Reza 24 dan 26 Okt 2026).
+// Semuanya bisa diubah Admin di menu Profil → Kelola data klub dan halaman depan.
+// Dipanggil juga oleh migration 2026_10_26_000001 untuk database yang sudah ada, jadi isinya tidak ditambah dua kali.
 class KontenLandingSeeder extends Seeder
 {
+    public const TENTANG_JUDUL = 'Berdiri sejak 27 Agustus 2023';
+
+    public const TENTANG_CERITA = 'Bandung Spiders Basketball didirikan oleh Fahmi Dyah Puspitasari, SST. pada 27 Agustus 2023. Nama Spiders diambil dari spider trick, gerakan dribel freestyle yang butuh tangan cepat, fokus, dan konsisten.
+
+Awalnya sekitar 20 atlet berlatih di Lapangan Beebucks bersama Direktur Teknik Bambang Yudi dan tim pelatih. Sekarang home base kami di GOR Rabbani, Ujung Berung. Sejak awal tujuannya membina atlet usia dini, terutama membentuk karakter anak dan memberi mereka kegiatan yang positif.';
+
     public function run(): void
     {
+        if (Linimasa::exists() || Turnamen::exists() || Galeri::exists() || TanyaJawab::exists()) {
+            return;
+        }
+
         foreach ([
             'foto_sampul' => 'images/klub/sampul.webp',
-            'tentang_judul' => 'Latihan di GOR Rabbani, Ujung Berung',
-            'tentang_cerita' => 'Bandung Spiders melatih anak usia 6–16 tahun di Sportainment Rabbani (GOR Rabbani), Ujung Berung. Anak berlatih bersama teman seusianya di tiga kelompok usia, dan setiap bulan coach menilai perkembangan mereka lewat rapor. Klub juga ikut turnamen antarklub di Bandung.',
+            'tentang_judul' => self::TENTANG_JUDUL,
+            'tentang_cerita' => self::TENTANG_CERITA,
             'tentang_foto' => 'images/klub/tentang-rabbani.webp',
         ] as $kunci => $nilai) {
             Pengaturan::updateOrCreate(['kunci' => $kunci], ['nilai' => $nilai]);
         }
 
-        Linimasa::create(['tahun' => '2023', 'isi' => 'Dua tim Spiders meraih juara 3 dan juara 4 di BSB Basketball Invitational Tournament, Rabbani Sportainment.']);
+        Linimasa::create(['tahun' => '2023', 'isi' => '27 Agustus: Bandung Spiders berdiri. Sekitar 20 atlet berlatih di Lapangan Beebucks.']);
+        Linimasa::create(['tahun' => '2023', 'isi' => 'Desember: dua tim Spiders meraih juara 3 dan juara 4 di BSB Basketball Invitational Tournament, Rabbani Sportainment.']);
         Linimasa::create(['tahun' => '2026', 'isi' => 'Rapor, absensi, dan iuran mulai dicatat di website ini.']);
 
         Turnamen::create([
