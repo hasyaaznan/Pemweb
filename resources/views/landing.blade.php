@@ -25,9 +25,11 @@
 @endphp
 <x-layout title="Bandung Spiders Basketball · Latihan basket anak 6–16 tahun di Bandung">
     <div x-data="{ menu: false }" @keydown.escape.window="menu = false" x-effect="window.lenis?.[menu ? 'stop' : 'start']()" class="bg-white" data-landing>
-        {{-- Hero: latar ungu polos. Foto sampul tanpa latar berdiri di atas lingkaran oranye, menempel ke tepi bawah.
-             Ponsel: teks di atas, foto di bawah (tidak bertumpuk). Laptop: teks kiri, foto kanan. --}}
-        <section class="relative flex flex-col overflow-hidden bg-ungu-900 text-white lg:min-h-[min(92vh,860px)]">
+        {{-- Hero: latar ungu polos. Ponsel: foto sampul di atas memudar ke ungu, teks di bawahnya. Laptop: teks kiri, foto kanan --}}
+        <section class="relative flex min-h-[100svh] flex-col overflow-hidden bg-ungu-900 text-white md:min-h-[min(100svh,760px)] lg:min-h-[min(92vh,860px)]">
+            {{-- Ponsel: foto di bagian atas, memudar ke ungu --}}
+            <img src="{{ $fotoSampul }}" alt="" class="absolute inset-x-0 top-0 h-[60%] w-full object-cover object-[50%_35%] opacity-80 [mask-image:linear-gradient(#000_50%,transparent)] lg:hidden" fetchpriority="high">
+            <span class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/55 to-transparent lg:hidden" aria-hidden="true"></span>
             <svg class="garis-gambar pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 360 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
                 <g fill="none" stroke="rgba(255,255,255,.14)" stroke-width="2"><path d="M0 330h360"/><circle cx="180" cy="330" r="62"/><rect x="110" y="-40" width="140" height="190" rx="2"/><circle cx="180" cy="150" r="52"/><path d="M40 -10v120a140 140 0 0 0 280 0V-10"/></g>
             </svg>
@@ -47,8 +49,9 @@
                 <button type="button" @click="menu = true" class="flex size-11 items-center justify-center rounded-xl bg-white/15 lg:hidden" aria-label="Buka menu"><x-icon name="menu" /></button>
             </header>
 
-            <div class="relative mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 lg:flex-row lg:items-stretch lg:gap-8 lg:px-8">
-                <div class="relative z-10 pt-8 lg:w-[54%] lg:self-center lg:py-16">
+            <div @class(['relative mx-auto flex w-full max-w-6xl flex-1 items-end px-4 pb-6 lg:px-8', 'lg:items-stretch lg:pb-0' => $sampulTanpaLatar, 'lg:items-center lg:pb-16' => ! $sampulTanpaLatar])>
+                <div class="w-full lg:grid lg:grid-cols-[1.15fr_1fr] lg:items-center lg:gap-12">
+                    <div>
                         <h1 class="font-display font-extrabold uppercase italic leading-[.86]">
                             <span class="block overflow-hidden pr-3"><span data-hero-baris class="block text-[72px] sm:text-[96px] lg:text-[112px]">Bandung</span></span>
                             <span class="block overflow-hidden pr-3"><span data-hero-baris class="block text-[94px] sm:text-[124px] lg:text-[148px]">Spiders</span></span>
@@ -66,11 +69,20 @@
                             </div>
                         </div>
                     </div>
-                <figure data-hero-foto class="relative mt-8 flex flex-1 items-end justify-center lg:mt-0 lg:w-[46%]">
-                    <span data-hero-lingkaran class="absolute left-1/2 top-0 aspect-square w-[86%] max-w-[520px] -translate-x-1/2 rounded-full bg-oranye-500 lg:top-[22%] lg:w-[88%]" aria-hidden="true"></span>
-                    <img data-hero-anak src="{{ $fotoSampul }}" alt="Coach Bandung Spiders memberi arahan kepada anak-anak berjersey ungu" fetchpriority="high"
-                        class="relative block w-full max-w-[520px] object-contain object-bottom [mask-image:linear-gradient(to_right,transparent,#000_7%,#000_93%,transparent)] lg:max-h-[min(72vh,640px)] lg:max-w-none">
-                </figure>
+                    {{-- Laptop: foto sampul tanpa latar di atas lingkaran oranye, menempel ke tepi bawah hero.
+                         Kalau belum ada foto tanpa latar, foto sampul biasa tampil dalam bingkai tinggi. --}}
+                    @if ($sampulTanpaLatar)
+                        <figure data-hero-foto class="relative hidden h-full items-end justify-center self-stretch pt-10 lg:flex">
+                            <span data-hero-lingkaran class="absolute left-1/2 top-[22%] aspect-square w-[88%] -translate-x-1/2 rounded-full bg-oranye-500" aria-hidden="true"></span>
+                            <img data-hero-anak src="{{ asset($sampulTanpaLatar) }}" alt="Coach Bandung Spiders memberi arahan kepada anak-anak berjersey ungu"
+                                class="relative block max-h-[min(72vh,640px)] w-full object-contain object-bottom [mask-image:linear-gradient(to_right,transparent,#000_7%,#000_93%,transparent)]">
+                        </figure>
+                    @else
+                        <figure data-hero-foto data-hero-bingkai class="relative hidden aspect-[4/5] max-h-[640px] overflow-hidden rounded-[28px] lg:block">
+                            <img src="{{ $fotoSampul }}" alt="Anak-anak Bandung Spiders berfoto bersama coach di lapangan" class="size-full object-cover object-[50%_40%]">
+                        </figure>
+                    @endif
+                </div>
             </div>
         </section>
 

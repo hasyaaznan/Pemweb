@@ -27,7 +27,8 @@ Awalnya sekitar 20 atlet berlatih di Lapangan Beebucks bersama Direktur Teknik B
         }
 
         foreach ([
-            'foto_sampul' => 'images/klub/sampul-tanpa-latar.webp',
+            'foto_sampul' => 'images/klub/sampul.webp',
+            'foto_sampul_tanpa_latar' => 'images/klub/sampul-tanpa-latar.webp',
             'tentang_judul' => self::TENTANG_JUDUL,
             'tentang_cerita' => self::TENTANG_CERITA,
             'tentang_foto' => 'images/klub/tentang-rabbani.webp',

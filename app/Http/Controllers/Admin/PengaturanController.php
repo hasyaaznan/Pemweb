@@ -25,7 +25,11 @@ class PengaturanController extends Controller
         'batas_verifikasi_hari_kerja' => ['Batas verifikasi bukti (hari kerja)', ['required', 'integer', 'between:1,14']],
     ];
 
-    public const FOTO = ['foto_sampul' => 'Foto sampul halaman depan', 'tentang_foto' => 'Foto bagian Tentang klub'];
+    public const FOTO = [
+        'foto_sampul' => 'Foto sampul halaman depan',
+        'foto_sampul_tanpa_latar' => 'Foto sampul tanpa latar (laptop)',
+        'tentang_foto' => 'Foto bagian Tentang klub',
+    ];
 
     public function edit(): View
     {
@@ -40,6 +44,7 @@ class PengaturanController extends Controller
                 'tentang_judul' => ['required', 'string', 'max:80'],
                 'tentang_cerita' => ['required', 'string', 'max:600'],
                 'foto_sampul' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+                'foto_sampul_tanpa_latar' => ['nullable', 'image', 'mimes:png,webp', 'max:4096'],
                 'tentang_foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             ],
             [
@@ -50,6 +55,7 @@ class PengaturanController extends Controller
                 'batas_verifikasi_hari_kerja.between' => 'Isi 1 sampai 14 hari kerja.',
                 'image' => 'Foto harus berupa gambar JPG, PNG, atau WebP.',
                 'mimes' => 'Foto harus berupa gambar JPG, PNG, atau WebP.',
+                'foto_sampul_tanpa_latar.mimes' => 'Foto tanpa latar harus PNG atau WebP supaya latarnya tetap transparan.',
                 'max' => 'Isian terlalu panjang atau berkas terlalu besar (foto maksimal 4 MB).',
             ],
         );

@@ -37,6 +37,7 @@ class LandingController extends Controller
             'tautanMaps' => 'https://www.google.com/maps/search/?api=1&query='.rawurlencode($alamat),
             'petaEmbed' => 'https://maps.google.com/maps?q='.rawurlencode($alamat).'&output=embed',
             'sampul' => Klub::get('foto_sampul'),
+            'sampulTanpaLatar' => Klub::get('foto_sampul_tanpa_latar'),
             'tentang' => ['judul' => Klub::get('tentang_judul'), 'cerita' => Klub::get('tentang_cerita'), 'foto' => Klub::get('tentang_foto')],
             'linimasa' => Linimasa::orderBy('tahun')->orderBy('id')->get(),
             'coach' => User::where('peran', User::PERAN_COACH)->where('aktif', true)->where('tampil_di_landing', true)->with('kelompokDipegang')->orderBy('nama')->get(),

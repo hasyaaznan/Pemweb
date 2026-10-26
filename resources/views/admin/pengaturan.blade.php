@@ -17,12 +17,14 @@
             <h2 class="mt-3 font-display text-[22px] font-extrabold text-ungu-700">Halaman depan</h2>
             @foreach (P::FOTO as $kunci => $label)
                 @if (! empty($nilai[$kunci]))
-                    <img src="{{ asset($nilai[$kunci]) }}" alt="{{ $label }} sekarang" @class(['mt-4 aspect-[16/9] w-full rounded-[14px]', 'bg-ungu-900 object-contain object-bottom' => $kunci === 'foto_sampul', 'object-cover' => $kunci !== 'foto_sampul'])>
+                    <img src="{{ asset($nilai[$kunci]) }}" alt="{{ $label }} sekarang" @class(['mt-4 aspect-[16/9] w-full rounded-[14px]', 'bg-ungu-900 object-contain object-bottom' => $kunci === 'foto_sampul_tanpa_latar', 'object-cover' => $kunci !== 'foto_sampul_tanpa_latar'])>
                 @endif
                 <x-kolom :name="$kunci" :label="(empty($nilai[$kunci]) ? '' : 'Ganti ').lcfirst($label)" type="file" accept="image/jpeg,image/png,image/webp"
-                    :bantuan="$kunci === 'foto_sampul'
-                        ? 'PNG atau WebP tanpa latar (transparan), maksimal 4 MB. Latar foto bisa dihapus gratis di remove.bg. Foto berlatar tetap bisa dipakai, tetapi tampil kotak di atas lingkaran oranye.'
-                        : 'JPG, PNG, atau WebP, maksimal 4 MB. Foto tegak atau mendatar, ditampilkan utuh tanpa dipotong.'" :class="empty($nilai[$kunci]) ? '' : 'mt-2'" />
+                    :bantuan="[
+                        'foto_sampul' => 'JPG, PNG, atau WebP, maksimal 4 MB. Tampil di bagian atas halaman depan di HP.',
+                        'foto_sampul_tanpa_latar' => 'PNG atau WebP tanpa latar (transparan), maksimal 4 MB. Tampil di laptop di atas lingkaran oranye. Latar foto bisa dihapus gratis di remove.bg. Kalau kosong, laptop memakai foto sampul biasa.',
+                        'tentang_foto' => 'JPG, PNG, atau WebP, maksimal 4 MB. Foto tegak atau mendatar, ditampilkan utuh tanpa dipotong.',
+                    ][$kunci]" :class="empty($nilai[$kunci]) ? '' : 'mt-2'" />
             @endforeach
             <x-kolom name="tentang_judul" label="Judul bagian Tentang klub" :value="$nilai['tentang_judul'] ?? null" required maxlength="80" />
             <x-kolom name="tentang_cerita" label="Cerita singkat klub" type="textarea" :value="$nilai['tentang_cerita'] ?? null" required maxlength="600" bantuan="Maksimal 600 huruf. Tulis apa adanya: sejak kapan, latihan di mana, untuk siapa." />

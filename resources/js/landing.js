@@ -17,9 +17,10 @@ export default function mulaiGerakLanding() {
     gsap.ticker.add((waktu) => lenis.raf(waktu * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // Momen utama: judul naik dari balik garis, lingkaran oranye membesar, anak-anak naik dari tepi bawah, lalu teks dan tombol
+    // Momen utama: judul naik dari balik garis, foto muncul (bingkai terbuka dari bawah, atau lingkaran oranye membesar dan anak-anak naik), lalu teks dan tombol
     gsap.timeline({ defaults: { ease: 'expo.out' } })
         .from('[data-hero-baris]', { yPercent: 110, duration: 1, stagger: 0.1 })
+        .from('[data-hero-bingkai]', { clipPath: 'inset(100% 0% 0% 0% round 28px)', duration: 1.1, ease: 'power3.inOut' }, 0.05)
         .from('[data-hero-lingkaran]', { scale: 0.6, opacity: 0, duration: 1.1 }, 0.05)
         .from('[data-hero-anak]', { yPercent: 18, opacity: 0, duration: 1.1, ease: 'power3.out' }, 0.2)
         .from('[data-hero-isi] > *', { y: 18, opacity: 0, duration: 0.6, stagger: 0.08 }, 0.4);

@@ -138,6 +138,9 @@ class KelolaDataTest extends TestCase
 
     public function test_pengaturan_menolak_tanggal_jatuh_tempo_di_luar_1_sampai_28(): void
     {
+        $this->actingAs($this->admin)->put('/manajemen/pengaturan', ['foto_sampul_tanpa_latar' => UploadedFile::fake()->image('sampul.jpg')])
+            ->assertSessionHasErrors('foto_sampul_tanpa_latar'); // JPG tidak bisa transparan
+
         $this->actingAs($this->admin)->put('/manajemen/pengaturan', ['tanggal_jatuh_tempo' => 31])
             ->assertSessionHasErrors(['tanggal_jatuh_tempo', 'rekening_bank']);
     }
