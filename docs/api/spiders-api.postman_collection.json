@@ -1,0 +1,1158 @@
+{
+  "info": {
+    "name": "Bandung Spiders API v1",
+    "description": "REST API Bandung Spiders Basketball (PWL Kelompok 2).\n\n1. Jalankan `php artisan serve` (port 8000).\n2. Buka folder **0. Masuk** dan jalankan salah satu request masuk. Token otomatis disimpan ke variabel `token`.\n3. Jalankan request lain. Request POST otomatis menyimpan id data baru (member_id, ku_id, jadwal_id, coach_id) untuk dipakai GET/PUT/PATCH/DELETE berikutnya.\n\nAkun contoh (kata sandi `password`): admin@spiders.test (Admin), dita@spiders.test (coach), rina.pratama@gmail.com (orang tua).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "member_id",
+      "value": "1"
+    },
+    {
+      "key": "ku_id",
+      "value": "1"
+    },
+    {
+      "key": "jadwal_id",
+      "value": "1"
+    },
+    {
+      "key": "coach_id",
+      "value": "2"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Masuk",
+      "item": [
+        {
+          "name": "Masuk sebagai Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/masuk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "masuk"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"admin@spiders.test\",\n  \"password\": \"password\",\n  \"perangkat\": \"Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('token', pm.response.json().token);",
+                  "  console.log('Token disimpan untuk', pm.response.json().data.peran);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Masuk sebagai coach",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/masuk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "masuk"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"dita@spiders.test\",\n  \"password\": \"password\",\n  \"perangkat\": \"Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('token', pm.response.json().token);",
+                  "  console.log('Token disimpan untuk', pm.response.json().data.peran);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Masuk sebagai orang tua (pakai No. HP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/masuk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "masuk"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"081234567890\",\n  \"password\": \"password\",\n  \"perangkat\": \"Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  pm.collectionVariables.set('token', pm.response.json().token);",
+                  "  console.log('Token disimpan untuk', pm.response.json().data.peran);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Akun saya",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/saya",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "saya"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Keluar (cabut token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/keluar",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "keluar"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Member",
+      "item": [
+        {
+          "name": "Daftar member",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member?status=aktif&per_page=20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "aktif"
+                },
+                {
+                  "key": "per_page",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cari member",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member?cari=raka",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member"
+              ],
+              "query": [
+                {
+                  "key": "cari",
+                  "value": "raka"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah member (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Bima Saputra\",\n  \"tanggal_lahir\": \"2015-05-02\",\n  \"jenis_kelamin\": \"L\",\n  \"sekolah\": \"SDN 5 Bandung\",\n  \"kelompok_usia_id\": 2,\n  \"hubungan_orang_tua\": \"Ayah\",\n  \"orang_tua\": {\n    \"nama\": \"Andi Saputra\",\n    \"email\": \"andi.saputra@contoh.test\",\n    \"no_hp\": \"081299990001\",\n    \"alamat\": \"Jl. Riau No. 1, Bandung\",\n    \"password\": \"rahasia123\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('member_id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail member (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/{{member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "{{member_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ubah semua data member (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/{{member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "{{member_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Bima Putra Saputra\",\n  \"tanggal_lahir\": \"2015-05-02\",\n  \"jenis_kelamin\": \"L\",\n  \"sekolah\": \"SMPN 2 Bandung\",\n  \"kelompok_usia_id\": 2,\n  \"hubungan_orang_tua\": \"Ayah\",\n  \"orang_tua\": {\n    \"nama\": \"Andi Saputra\",\n    \"email\": \"andi.saputra@contoh.test\",\n    \"no_hp\": \"081299990001\",\n    \"alamat\": \"Jl. Riau No. 1, Bandung\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ubah sebagian member (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/{{member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "{{member_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"nonaktif\",\n  \"orang_tua\": {\n    \"alamat\": \"Jl. Dago No. 7, Bandung\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Hapus member (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/{{member_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "{{member_id}}"
+              ]
+            },
+            "description": "Member yang sudah punya absensi, rapor, iuran, atau pendaftaran dijawab 409 dan tidak dihapus. Nonaktifkan dengan PATCH."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Kelompok usia",
+      "item": [
+        {
+          "name": "Daftar kelompok usia",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah kelompok usia (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"KU 17–18\",\n  \"usia_min\": 17,\n  \"usia_max\": 18,\n  \"iuran_bulanan\": 350000,\n  \"program\": \"Persiapan kompetisi senior\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('ku_id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail kelompok usia (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia/{{ku_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia",
+                "{{ku_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ubah semua (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia/{{ku_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia",
+                "{{ku_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"KU 17–19\",\n  \"usia_min\": 17,\n  \"usia_max\": 19,\n  \"iuran_bulanan\": 375000,\n  \"program\": \"Persiapan kompetisi senior\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ubah iuran saja (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia/{{ku_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia",
+                "{{ku_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"iuran_bulanan\": 400000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Hapus (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/kelompok-usia/{{ku_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kelompok-usia",
+                "{{ku_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Coach",
+      "item": [
+        {
+          "name": "Daftar coach",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah coach (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Bayu Pratama\",\n  \"email\": \"bayu@spiders.test\",\n  \"no_hp\": \"081277770000\",\n  \"jabatan\": \"Asisten coach\",\n  \"lisensi\": \"Lisensi C Perbasi\",\n  \"kelompok_usia_ids\": [\n    1,\n    2\n  ],\n  \"tampil_di_landing\": false,\n  \"password\": \"rahasia123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('coach_id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail coach (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach/{{coach_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach",
+                "{{coach_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ubah semua (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach/{{coach_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach",
+                "{{coach_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"Bayu Pratama\",\n  \"email\": \"bayu.pratama@spiders.test\",\n  \"no_hp\": \"081277770000\",\n  \"jabatan\": \"Coach\",\n  \"lisensi\": \"Lisensi B Perbasi\",\n  \"kelompok_usia_ids\": [\n    3\n  ],\n  \"tampil_di_landing\": true,\n  \"aktif\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Nonaktifkan (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach/{{coach_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach",
+                "{{coach_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aktif\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Hapus (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coach/{{coach_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coach",
+                "{{coach_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Jadwal",
+      "item": [
+        {
+          "name": "Daftar jadwal aktif",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Jadwal satu kelompok",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal?kelompok_usia_id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal"
+              ],
+              "query": [
+                {
+                  "key": "kelompok_usia_id",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Tambah jadwal (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kelompok_usia_id\": 1,\n  \"hari\": 3,\n  \"jam_mulai\": \"16:00\",\n  \"jam_selesai\": \"17:30\",\n  \"lokasi\": \"GOR Rabbani\",\n  \"berlaku_mulai\": \"2026-12-01\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "hari: 1 = Senin ... 7 = Minggu"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('jadwal_id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail jadwal (GET)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal/{{jadwal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal",
+                "{{jadwal_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ubah semua (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal/{{jadwal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal",
+                "{{jadwal_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kelompok_usia_id\": 1,\n  \"hari\": 4,\n  \"jam_mulai\": \"15:30\",\n  \"jam_selesai\": \"17:00\",\n  \"lokasi\": \"GOR Rabbani\",\n  \"berlaku_mulai\": \"2026-12-01\",\n  \"aktif\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Ubah jam selesai saja (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal/{{jadwal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal",
+                "{{jadwal_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jam_selesai\": \"17:30\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Hapus (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jadwal/{{jadwal_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jadwal",
+                "{{jadwal_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Contoh error",
+      "item": [
+        {
+          "name": "401 tanpa token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "422 validasi gagal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nama\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "404 data tidak ada",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/99999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "99999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "409 member punya riwayat",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/member/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "member",
+                "1"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
