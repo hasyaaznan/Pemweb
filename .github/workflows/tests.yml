@@ -46,3 +46,11 @@ jobs:
 
       - name: Execute tests
         run: php artisan test
+
+      - name: Execute client tests
+        working-directory: client
+        run: |
+          composer install --prefer-dist --no-interaction --no-progress
+          cp .env.example .env
+          php artisan key:generate
+          php artisan test
