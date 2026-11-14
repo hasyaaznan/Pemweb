@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-// Akun login untuk 3 peran: orang_tua, coach, manajemen (K2).
+// Akun login untuk 3 peran: orang_tua, coach, manajemen (K2). Token API (Sanctum) untuk aplikasi mobile.
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     public const PERAN_ORANG_TUA = 'orang_tua';
     public const PERAN_COACH = 'coach';
